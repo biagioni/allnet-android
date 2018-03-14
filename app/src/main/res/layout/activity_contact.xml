@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.coutocode.allnet_xchat.ContactListActivity">
+    tools:context="com.coutocode.allnet_android.ContactActivity">
 
     <TextView
+        android:id="@+id/sample_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!"

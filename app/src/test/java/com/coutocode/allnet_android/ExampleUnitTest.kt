@@ -1,4 +1,4 @@
-package com.coutocode.allnet_xchat
+package com.coutocode.allnet_android
 
 import org.junit.Test
 
