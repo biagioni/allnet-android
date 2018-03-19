@@ -11,7 +11,7 @@
 JNIEXPORT jint
 
 JNICALL
-Java_com_coutocode_allnet_1android_ContactActivity_Math_1add(
+Java_com_coutocode_allnet_1android_ContactActivity_mathAdd(
         JNIEnv* pEnv,
         jobject pThis,
         jint a,
@@ -20,3 +20,16 @@ Java_com_coutocode_allnet_1android_ContactActivity_Math_1add(
     astart_main(3, args);
     return a + b;
 }
+
+
+JNIEXPORT void
+
+JNICALL
+Java_com_coutocode_allnet_1android_ContactActivity_stopAllnetThreads(
+        JNIEnv* pEnv,
+        jobject pThis,
+        jint a,
+        jint b) {
+    stop_allnet_threads();
+}
+

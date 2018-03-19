@@ -9,13 +9,12 @@ class ContactActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contact)
-
         // Example of a call to a native method
-        sample_text.text = Math_add(12,2).toString()
+        sample_text.text = mathAdd(12,2).toString()
     }
 
 
-    external fun Math_add(a: Int, b: Int): Int
+    external fun mathAdd(a: Int, b: Int): Int
 
     companion object {
         init {
