@@ -15,65 +15,61 @@ class NetworkAPI {
 
     val DEBUG = "NETWORKAPI_DEBUG"
 
-    external fun stop_allnet_threads(): Void
+    external fun stopAllnetThreads(): Void
+    external fun ableToConnect(): Int
+    external fun reconnect(): Void
+    external fun acacheSaveData(): Void
+    external fun astart_main(): Int
+    external fun initLog(): Void
+    external fun addPipe(): Void
 
-    var firstCall = false
+    var firstCall = true
 
     fun startAllnet() {
         if (!firstCall) {
             sleep (1)
-            //#if USE_ABLE_TO_CONNECT
-//            if ableToConnect() {
-//                return
-//            }
-            stop_allnet_threads()
+            if (ableToConnect() == 1) {
+                return
+            }
+            stopAllnetThreads()
             Log.d(DEBUG, "calling stop_allnet_threads\n")
             sleep (1)
-           // #endif /* USE_ABLE_TO_CONNECT */
             Log.d(DEBUG, "reconnecting xcommon to alocal\n")
-            //xChat.reconnect()
+            reconnect()
             sleep (1)
         }
 
-//        application.beginBackgroundTask {
-//            NSLog("allnet task ending background task (started by calling astart_main)\n")
-//            acache_save_data()
-//            self.xChat.disconnect()
-//        }
+
+        acacheSaveData()
+
         if (firstCall) {
-//            Log.d(DEBUG, "calling astart_main\n")
-//            DispatchQueue.global(qos: .userInitiated).async {
-//            let args = ["allnet", "-v", "default", nil]
-//            var pointer = args.map{Pointer(mutating: (($0 ?? "") as NSString).utf8String)}
-//            astart_main(3, &pointer)
-//            NSLog("astart_main has completed, starting multipeer thread\n")
-//            multipeer_queue_indices(&self.self.multipeer_read_queue_index, &self.multipeer_write_queue_index)
-//            self.multipeer_queues_initialized = 1
-//            // the rest of this is the multipeer thread that reads from ad and forwards to the peers
-//            let p = init_pipe_descriptor (self.allnet_log)
-//            add_pipe(p, self.multipeer_read_queue_index, "AppDelegate multipeer read pipe from ad")
-//            while (true) {  // read the ad queue, forward messages to the peers
-//                var buffer: Pointer?
-//                var from_pipe: Int32 = 0
-//                var priority: UInt32 = 0
-//                let n = receive_pipe_message_any(p, PIPE_MESSAGE_WAIT_FOREVER, &buffer, &from_pipe, &priority)
-//                var debug_peers = 0;
-//                for q in 0..<self.sessions.count {
-//                    let s = self.sessions[q]
-//                    debug_peers += s.connectedPeers.count
+            Log.d(DEBUG, "calling astart_main\n")
+            initLog()
+            val background = Thread({
+                astart_main()
+                Log.d(DEBUG, "astart_main has completed, starting multipeer thread\n")
+                addPipe()
+//                while (true) {  // read the ad queue, forward messages to the peers
+////                    let n = receive_pipe_message_any (p, PIPE_MESSAGE_WAIT_FOREVER, &buffer, &from_pipe, &priority)
+////                    var debug_peers = 0;
+////                    for q in 0..< self . sessions . count {
+////                        let s = self . sessions [q]
+////                        debug_peers += s.connectedPeers.count
+////                    }
+////                    if debug_peers > 0{
+////                        NSLog("multipeer thread got %d-byte message from ad, forwarding to %d peers\n", n, debug_peers)
+////                    }
+////                    if from_pipe == self.multipeer_read_queue_index && n > 0 {
+////                        self.sendSession(buffer: buffer!, length: n)
+////                    }
+////                    if n > 0 && buffer != nil {
+////                        free(buffer)
+////                    }
 //                }
-//                if debug_peers > 0{
-//                    NSLog("multipeer thread got %d-byte message from ad, forwarding to %d peers\n", n, debug_peers)
-//                }
-//                if from_pipe == self.multipeer_read_queue_index && n > 0 {
-//                    self.sendSession(buffer: buffer!, length: n)
-//                }
-//                if n > 0 && buffer != nil {
-//                    free(buffer)
-//                }
-//            }
+            })
+            background.start()
         }
-           // NSLog("astart_main has been started\n")
-       // }
-    }
+            Log.d(DEBUG, "astart_main has been started\n")
+        }
+    //}
 }

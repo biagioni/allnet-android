@@ -9,8 +9,10 @@ class ContactActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contact)
-        // Example of a call to a native method
         sample_text.text = mathAdd(12,2).toString()
+
+        val networkAPI = NetworkAPI()
+        networkAPI.startAllnet()
     }
 
 

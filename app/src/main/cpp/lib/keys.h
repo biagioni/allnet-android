@@ -46,7 +46,7 @@ extern keyset create_contact (const char * contact, int keybits, int feedback,
  * if the old name does not exist, or if the new one does, and of
  * course for other reasons too.
  * returns 1 for success */
-extern int rename_contact (const char * old, const char * new);
+extern int rename_contact (const char * old, const char * newTODO);
 
 /* a contact may be marked as not visible.  Nothing is deleted,
  * but the contact can no longer be accessed unless made visible again.

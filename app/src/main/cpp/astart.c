@@ -337,7 +337,7 @@ static void print_pid (int fd, int pid)
 }
 #endif /* ALLNET_USE_FORK */
 
-static void replace_command (char * old, int olen, char * new)
+static void replace_command (char * old, int olen, char * newTODO)
 {
 #ifdef ALLNET_USE_FORK
   /* printf ("replacing %s ", old); */
