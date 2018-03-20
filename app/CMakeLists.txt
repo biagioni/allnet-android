@@ -18,7 +18,7 @@ add_library( # Sets the name of the library.
 
              # Provides a relative path to your source file(s).
               src/main/native/XChat.c
-             # src/main/cpp/astart.c
+              src/main/cpp/astart.c
               src/main/cpp/adht.c
               src/main/cpp/acache.c
               src/main/cpp/alocal.c

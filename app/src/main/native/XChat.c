@@ -6,8 +6,7 @@
 #include <jni.h>
 #include <lib/pipemsg.h>
 #include <xchat/xcommon.h>
-
-#include "astart.c"
+#include <pthread.h>
 
 
 static pd p;
@@ -17,10 +16,28 @@ int multipeer_write_queue_index = 0;
 int multipeer_queues_initialized = 0;
 struct allnet_log *allnetlog;
 
+extern int astart_main(int argc, char ** argv);
+extern void stop_allnet_threads();
 
-JNIEXPORT jint
+void *thread_acache_save_data() {
+    extern void acache_save_data();
+    acache_save_data();
+    return NULL;
+}
 
-JNICALL
+void *thread_init_log() {
+    allnetlog = init_log("xchat.c");
+    return NULL;
+}
+
+void *thread_add_pipe() {
+    int p = init_pipe_descriptor (allnetlog);
+    add_pipe(p, multipeer_read_queue_index, "xchat multipeer read pipe from ad");
+    return NULL;
+}
+
+
+JNIEXPORT jint JNICALL
 Java_com_coutocode_allnet_1android_ContactActivity_mathAdd(
         JNIEnv* pEnv,
         jobject pThis,
@@ -28,7 +45,6 @@ Java_com_coutocode_allnet_1android_ContactActivity_mathAdd(
         jint b) {
     return a + b;
 }
-
 
 JNIEXPORT void JNICALL
 Java_com_coutocode_allnet_1android_NetworkAPI_stopAllnetThreads(
@@ -67,6 +83,7 @@ JNICALL
 Java_com_coutocode_allnet_1android_NetworkAPI_reconnect(
         JNIEnv* pEnv,
         jobject pThis) {
+
     struct allnet_log * alog = init_log ("ios xchat reconnect");
     p = init_pipe_descriptor(alog);
     sock = xchat_init ("xchat reconnect", NULL, p);
@@ -79,7 +96,14 @@ JNICALL
 Java_com_coutocode_allnet_1android_NetworkAPI_acacheSaveData(
         JNIEnv* pEnv,
         jobject pThis) {
-    acache_save_data();
+
+    pthread_t t;
+
+    //Launch a thread
+    pthread_create(&t, NULL, thread_acache_save_data, NULL);
+
+    //Join the thread with the main thread
+    pthread_join(t, NULL);
 }
 
 JNIEXPORT void
@@ -96,7 +120,14 @@ JNIEXPORT void JNICALL
 Java_com_coutocode_allnet_1android_NetworkAPI_initLog(
         JNIEnv* pEnv,
         jobject pThis) {
-    allnetlog = init_log("xchat.c");
+
+    pthread_t t;
+
+    //Launch a thread
+    pthread_create(&t, NULL, thread_init_log, NULL);
+
+    //Join the thread with the main thread
+    pthread_join(t, NULL);
 }
 
 JNIEXPORT void
@@ -105,6 +136,14 @@ JNICALL
 Java_com_coutocode_allnet_1android_NetworkAPI_addPipe(
         JNIEnv* pEnv,
         jobject pThis) {
-    int p = init_pipe_descriptor (allnetlog);
-    add_pipe(p, multipeer_read_queue_index, "xchat multipeer read pipe from ad");
+
+    pthread_t t;
+
+    //Launch a thread
+    pthread_create(&t, NULL, thread_add_pipe, NULL);
+
+    //Join the thread with the main thread
+    pthread_join(t, NULL);
 }
+
+

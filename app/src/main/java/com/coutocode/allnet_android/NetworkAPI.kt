@@ -19,7 +19,7 @@ class NetworkAPI {
     external fun ableToConnect(): Int
     external fun reconnect(): Void
     external fun acacheSaveData(): Void
-    external fun astart_main(): Int
+    external fun astartMain(): Int
     external fun initLog(): Void
     external fun addPipe(): Void
 
@@ -27,16 +27,16 @@ class NetworkAPI {
 
     fun startAllnet() {
         if (!firstCall) {
-            sleep (1)
+            sleep(1)
             if (ableToConnect() == 1) {
                 return
             }
             stopAllnetThreads()
             Log.d(DEBUG, "calling stop_allnet_threads\n")
-            sleep (1)
+            sleep(1)
             Log.d(DEBUG, "reconnecting xcommon to alocal\n")
             reconnect()
-            sleep (1)
+            sleep(1)
         }
 
 
@@ -46,7 +46,7 @@ class NetworkAPI {
             Log.d(DEBUG, "calling astart_main\n")
             initLog()
             val background = Thread({
-                astart_main()
+                astartMain()
                 Log.d(DEBUG, "astart_main has completed, starting multipeer thread\n")
                 addPipe()
 //                while (true) {  // read the ad queue, forward messages to the peers
@@ -69,7 +69,6 @@ class NetworkAPI {
             })
             background.start()
         }
-            Log.d(DEBUG, "astart_main has been started\n")
-        }
-    //}
+        Log.d(DEBUG, "astart_main has been started\n")
+    }
 }
