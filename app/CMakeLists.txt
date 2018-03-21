@@ -17,52 +17,53 @@ add_library( # Sets the name of the library.
              SHARED
 
              # Provides a relative path to your source file(s).
+              src/main/native/CHelper.c
               src/main/native/XChat.c
-              src/main/cpp/astart.c
-              src/main/cpp/adht.c
-              src/main/cpp/acache.c
-              src/main/cpp/alocal.c
-              src/main/cpp/track.c
-              src/main/cpp/listen.c
-              src/main/cpp/record.c
-              src/main/cpp/ad.c
-              src/main/cpp/social.c
-              src/main/cpp/aip.c
-              src/main/cpp/lib/util.c
-              src/main/cpp/xchat/xcommon.c
-              src/main/cpp/xchat/store.c
-              src/main/cpp/xchat/cutil.c
-              src/main/cpp/xchat/retransmit.c
-              src/main/cpp/xchat/message.c
-              src/main/cpp/lib/configfiles.c
-              src/main/cpp/lib/allnet_log.c
-              src/main/cpp/lib/priority.c
-              src/main/cpp/lib/allnet_queue.c
-              src/main/cpp/lib/util.c
-              src/main/cpp/lib/trace_util.c
-              src/main/cpp/lib/ai.c
-              src/main/cpp/lib/routing.c
-              src/main/cpp/lib/table.c
-              src/main/cpp/lib/pqueue.c
-              src/main/cpp/lib/app_util.c
-              src/main/cpp/lib/mapchar.c
-              src/main/cpp/lib/keys.c
-              src/main/cpp/lib/pipemsg.c
-              src/main/cpp/lib/sha.c
-              src/main/cpp/lib/asn1.c
-              src/main/cpp/lib/wp_rsa.c
-              src/main/cpp/lib/wp_arith.c
-              src/main/cpp/lib/crypt_sel.c
-              src/main/cpp/lib/cipher.c
-              src/main/cpp/lib/stream.c
-              src/main/cpp/lib/wp_aes.c
-              src/main/cpp/lib/dcache.c
-              src/main/cpp/mgmt/traced.c
-              src/main/cpp/mgmt/keyd.c
-              src/main/cpp/mgmt/trace.c
+              src/main/cfiles/astart.c
+              src/main/cfiles/adht.c
+              src/main/cfiles/acache.c
+              src/main/cfiles/alocal.c
+              src/main/cfiles/track.c
+              src/main/cfiles/listen.c
+              src/main/cfiles/record.c
+              src/main/cfiles/ad.c
+              src/main/cfiles/social.c
+              src/main/cfiles/aip.c
+              src/main/cfiles/lib/util.c
+              src/main/cfiles/xchat/xcommon.c
+              src/main/cfiles/xchat/store.c
+              src/main/cfiles/xchat/cutil.c
+              src/main/cfiles/xchat/retransmit.c
+              src/main/cfiles/xchat/message.c
+              src/main/cfiles/lib/configfiles.c
+              src/main/cfiles/lib/allnet_log.c
+              src/main/cfiles/lib/priority.c
+              src/main/cfiles/lib/allnet_queue.c
+              src/main/cfiles/lib/util.c
+              src/main/cfiles/lib/trace_util.c
+              src/main/cfiles/lib/ai.c
+              src/main/cfiles/lib/routing.c
+              src/main/cfiles/lib/table.c
+              src/main/cfiles/lib/pqueue.c
+              src/main/cfiles/lib/app_util.c
+              src/main/cfiles/lib/mapchar.c
+              src/main/cfiles/lib/keys.c
+              src/main/cfiles/lib/pipemsg.c
+              src/main/cfiles/lib/sha.c
+              src/main/cfiles/lib/asn1.c
+              src/main/cfiles/lib/wp_rsa.c
+              src/main/cfiles/lib/wp_arith.c
+              src/main/cfiles/lib/crypt_sel.c
+              src/main/cfiles/lib/cipher.c
+              src/main/cfiles/lib/stream.c
+              src/main/cfiles/lib/wp_aes.c
+              src/main/cfiles/lib/dcache.c
+              src/main/cfiles/mgmt/traced.c
+              src/main/cfiles/mgmt/keyd.c
+              src/main/cfiles/mgmt/trace.c
                )
 
- include_directories(src/main/cpp)
+ include_directories(src/main/cfiles)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
