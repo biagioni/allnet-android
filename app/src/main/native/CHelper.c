@@ -7,6 +7,8 @@
 #include <lib/pipemsg.h>
 #include <xchat/xcommon.h>
 #include <pthread.h>
+#include <lib/util.h>
+#include <syslog.h>
 
 
 static pd p;
@@ -16,8 +18,16 @@ int multipeer_write_queue_index = 0;
 int multipeer_queues_initialized = 0;
 struct allnet_log *allnetlog;
 
+JavaVM * g_vm;
+jobject g_obj;
+jmethodID g_mid;
+JNIEnv *env;
+jclass netAPI;
+
+
 extern int astart_main(int argc, char ** argv);
 extern void stop_allnet_threads();
+extern void gui_contacts();
 
 void *thread_acache_save_data() {
     extern void acache_save_data();
@@ -36,8 +46,56 @@ void *thread_add_pipe() {
     return NULL;
 }
 
+JNIEnv *AttachJava() {
+    JavaVMAttachArgs args = {JNI_VERSION_1_6,0, 0};
+    (*g_vm)->AttachCurrentThread(g_vm, &env, &args);
+    return env;
+}
+
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *jvm, void *reserved) {
+    g_vm = jvm;
+    JNIEnv *NewEnv = AttachJava();
+    jclass mActivityClass= (*NewEnv)->FindClass(NewEnv, "org/alnet/allnet_android/NetworkAPI");
+    netAPI = (jclass)((*NewEnv)->NewGlobalRef(NewEnv, mActivityClass));
+    return JNI_VERSION_1_6;
+}
+
 JNIEXPORT void JNICALL
-Java_com_coutocode_allnet_1android_NetworkAPI_stopAllnetThreads(
+Java_org_alnet_allnet_1android_NetworkAPI_init(JNIEnv *env, jobject instance) {
+    g_obj = (jclass)((*env)->NewGlobalRef(env, instance));
+}
+
+JNIEXPORT void JNICALL
+Java_org_alnet_allnet_1android_NetworkAPI_startAllnet(JNIEnv *env,
+                                                          jobject instance,
+                                                          jstring path_) {
+
+    const char * dir=strcpy_malloc((*env)->GetStringUTFChars( env, path_ , NULL ),"startAllnetDeamon") ;
+    syslog (LOG_DAEMON | LOG_WARNING, " directoryC : %s\n",dir);
+    extern int astart_main(int argc, char ** argv);
+    char * args [] = { "allnet", "-v","-d",dir, NULL };
+    astart_main(4, args);
+    extern int main_gui(int argc, char ** argv);
+    char * arg [] = { "allnet", dir };
+    int result=main_gui(2, arg);
+    (*env)->ReleaseStringUTFChars(env, path_, dir);
+
+    jclass cls = (*env)->GetObjectClass(env, g_obj);
+    jmethodID methodid = (*env)->GetMethodID(env, cls, "callback", "(I)V");
+    if(!methodid) {
+        return;
+    }
+    (*env)->CallVoidMethod(env, g_obj , methodid);
+}
+
+JNIEXPORT void JNICALL
+Java_org_alnet_allnet_1android_NetworkAPI_getContacts(JNIEnv *env,
+                                                          jobject instance) {
+    gui_contacts();
+}
+
+JNIEXPORT void JNICALL
+Java_org_alnet_allnet_1android_NetworkAPI_stopAllnetThreads(
         JNIEnv* pEnv,
         jobject pThis) {
     stop_allnet_threads();
@@ -45,7 +103,7 @@ Java_com_coutocode_allnet_1android_NetworkAPI_stopAllnetThreads(
 
 
 JNIEXPORT int JNICALL
-Java_com_coutocode_allnet_1android_NetworkAPI_ableToConnect(
+Java_org_alnet_allnet_1android_NetworkAPI_ableToConnect(
         JNIEnv* pEnv,
         jobject pThis,
         jint a,
@@ -66,7 +124,7 @@ Java_com_coutocode_allnet_1android_NetworkAPI_ableToConnect(
 
 
 JNIEXPORT void JNICALL
-Java_com_coutocode_allnet_1android_NetworkAPI_reconnect(
+Java_org_alnet_allnet_1android_NetworkAPI_reconnect(
         JNIEnv* pEnv,
         jobject pThis) {
 
@@ -77,7 +135,7 @@ Java_com_coutocode_allnet_1android_NetworkAPI_reconnect(
 }
 
 JNIEXPORT void JNICALL
-Java_com_coutocode_allnet_1android_NetworkAPI_acacheSaveData(
+Java_org_alnet_allnet_1android_NetworkAPI_acacheSaveData(
         JNIEnv* pEnv,
         jobject pThis) {
 
@@ -91,7 +149,7 @@ Java_com_coutocode_allnet_1android_NetworkAPI_acacheSaveData(
 }
 
 JNIEXPORT void JNICALL
-Java_com_coutocode_allnet_1android_NetworkAPI_astartMain(
+Java_org_alnet_allnet_1android_NetworkAPI_astartMain(
         JNIEnv* pEnv,
         jobject pThis) {
     char * args [] = { "allnet", "-v", "def", NULL };
@@ -99,7 +157,7 @@ Java_com_coutocode_allnet_1android_NetworkAPI_astartMain(
 }
 
 JNIEXPORT void JNICALL
-Java_com_coutocode_allnet_1android_NetworkAPI_initLog(
+Java_org_alnet_allnet_1android_NetworkAPI_initLog(
         JNIEnv* pEnv,
         jobject pThis) {
 
@@ -113,7 +171,7 @@ Java_com_coutocode_allnet_1android_NetworkAPI_initLog(
 }
 
 JNIEXPORT void JNICALL
-Java_com_coutocode_allnet_1android_NetworkAPI_addPipe(
+Java_org_alnet_allnet_1android_NetworkAPI_addPipe(
         JNIEnv* pEnv,
         jobject pThis) {
 
