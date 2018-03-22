@@ -138,7 +138,7 @@ static void gui_send_string_array (int code, char ** array, int count, int sock,
 }
 
 /* send all the contacts to the gui, null-separated */
-static void gui_contacts (int sock)
+void gui_contacts (int sock)
 {
 /* format: code, 64-bit number of contacts, null-terminated contacts */
   char ** contacts = NULL;

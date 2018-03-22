@@ -1,4 +1,4 @@
-package com.coutocode.allnet_android
+package org.alnet.allnet_android
 
 import org.junit.Test
 

@@ -18,7 +18,7 @@ add_library( # Sets the name of the library.
 
              # Provides a relative path to your source file(s).
               src/main/native/CHelper.c
-              src/main/native/XChat.c
+              src/main/native/android_xchat.c
               src/main/cfiles/astart.c
               src/main/cfiles/adht.c
               src/main/cfiles/acache.c
@@ -35,6 +35,8 @@ add_library( # Sets the name of the library.
               src/main/cfiles/xchat/cutil.c
               src/main/cfiles/xchat/retransmit.c
               src/main/cfiles/xchat/message.c
+              src/main/cfiles/xchat/gui_callback.c
+              src/main/cfiles/xchat/gui_respond.c
               src/main/cfiles/lib/configfiles.c
               src/main/cfiles/lib/allnet_log.c
               src/main/cfiles/lib/priority.c

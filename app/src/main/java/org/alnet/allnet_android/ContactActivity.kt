@@ -1,4 +1,4 @@
-package com.coutocode.allnet_android
+package org.alnet.allnet_android
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -10,7 +10,10 @@ class ContactActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contact)
 
-        val networkAPI = NetworkAPI()
+        val file = filesDir
+        val path = file.absolutePath
+
+        val networkAPI = NetworkAPI(path)
     }
 
 
@@ -19,4 +22,8 @@ class ContactActivity : AppCompatActivity() {
             System.loadLibrary("native-lib")
         }
     }
+
+    external fun init()
 }
+
+
