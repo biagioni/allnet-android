@@ -1,6 +1,7 @@
 package org.alnet.allnet_android.fragments
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -13,6 +14,7 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import kotlinx.android.synthetic.main.fragment_contact_new.view.*
+import org.alnet.allnet_android.KeyExchangeActivity
 
 
 class ContactNewFragment : Fragment() {
@@ -38,6 +40,12 @@ class ContactNewFragment : Fragment() {
             val name = editTextName!!.text
             val secret = editTextSecret!!.text
             val index = spinner!!.selectedItemPosition
+
+            val intent = Intent(context,KeyExchangeActivity::class.java)
+            intent.putExtra("name", name)
+            intent.putExtra("secret", secret)
+            intent.putExtra("type", index)
+            startActivity(intent)
         }
 
         return view
