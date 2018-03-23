@@ -10,10 +10,13 @@ class ContactActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contact)
 
+
         val file = filesDir
         val path = file.absolutePath
 
         val networkAPI = NetworkAPI(path)
+
+        networkAPI.listContacts()
     }
 
 
@@ -22,8 +25,6 @@ class ContactActivity : AppCompatActivity() {
             System.loadLibrary("native-lib")
         }
     }
-
-    external fun init()
 }
 
 

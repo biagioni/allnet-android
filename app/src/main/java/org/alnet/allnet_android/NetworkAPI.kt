@@ -28,12 +28,18 @@ class NetworkAPI(path: String){
         init()
 
         startAllnet(path)
-        System.out.println("the socket is : $socket")
-        getContacts()
     }
 
-    fun callback(value: String) {
-        Log.e(TAG, "value:$value")
+    fun callback(socket: Int) {
+        this.socket = socket
+        Log.e("SOCKET: ", socket.toString())
+    }
+
+    fun listContacts(){
+        getContacts()
+    }
+    fun callbackContacts(){
+
     }
 
 }
