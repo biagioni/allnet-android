@@ -40,6 +40,7 @@
                     android:textSize="16sp" />
 
                 <EditText
+                    android:id="@+id/etName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="16sp"
@@ -89,6 +90,7 @@
                     android:textSize="16sp" />
 
                 <EditText
+                    android:id="@+id/etSecret"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="16sp"
@@ -138,7 +140,7 @@
                     android:textSize="16sp" />
 
                 <Spinner
-                    android:id="@+id/spinner"
+                    android:id="@+id/spinnerType"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="8sp"
@@ -168,7 +170,7 @@
                 android:textAlignment="textStart" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/buttonRequest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
