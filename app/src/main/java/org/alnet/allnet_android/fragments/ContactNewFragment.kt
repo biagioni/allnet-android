@@ -41,7 +41,7 @@ class ContactNewFragment : Fragment() {
             val secret = editTextSecret!!.text
             val index = spinner!!.selectedItemPosition
 
-            val intent = Intent(context,KeyExchangeActivity::class.java)
+            val intent = Intent(activity, KeyExchangeActivity::class.java)
             intent.putExtra("name", name)
             intent.putExtra("secret", secret)
             intent.putExtra("type", index)

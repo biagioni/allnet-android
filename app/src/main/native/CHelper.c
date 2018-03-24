@@ -9,6 +9,7 @@
 #include <pthread.h>
 #include <lib/util.h>
 #include <syslog.h>
+#include <xchat/cutil.h>
 
 
 static pd p;
@@ -17,6 +18,7 @@ jobject g_obj;
 jmethodID g_mid;
 JNIEnv *g_env;
 jclass netAPI;
+jclass keyExchange;
 
 
 extern int astart_main(int argc, char ** argv);
@@ -33,6 +35,10 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *jvm, void *reserved) {
     JNIEnv *NewEnv = AttachJava();
     jclass mActivityClass= (*NewEnv)->FindClass(NewEnv, "org/alnet/allnet_android/NetworkAPI");
     netAPI = (jclass)((*NewEnv)->NewGlobalRef(NewEnv, mActivityClass));
+
+    jclass mKeyExchangeClass= (*NewEnv)->FindClass(NewEnv, "org/alnet/allnet_android/KeyExchangeActivity");
+    keyExchange = (jclass)((*NewEnv)->NewGlobalRef(NewEnv, mKeyExchangeClass));
+
     return JNI_VERSION_1_6;
 }
 
@@ -55,11 +61,11 @@ Java_org_alnet_allnet_1android_NetworkAPI_startAllnet(JNIEnv *env,
     p = init_pipe_descriptor(alog);
     int result = xchat_init("xchat",dir, p);
 
-    //jclass cls = (*env)->GetObjectClass(env, g_obj);
     jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callback", "(I)V");
     if(!methodid) {
         return;
     }
+    g_obj = (jclass)((*env)->NewGlobalRef(env, instance));
     (*env)->CallVoidMethod(env, g_obj , methodid, result);
 }
 
@@ -79,4 +85,22 @@ Java_org_alnet_allnet_1android_NetworkAPI_getContacts(JNIEnv *env,
     (*env)->CallVoidMethod(env, g_obj , methodid);
 }
 
+JNIEXPORT void JNICALL
+Java_org_alnet_allnet_1android_KeyExchangeActivity_generateRandomKey(JNIEnv *env,
+                                                      jobject instance) {
+#define MAX_RANDOM  15
+    char randomString [MAX_RANDOM];
+    random_string(&randomString, MAX_RANDOM);
+    normalize_secret(&randomString);
 
+    jmethodID methodid = (*env)->GetMethodID(env, keyExchange, "callbackRandomKey",
+                                             "(Ljava/lang/String;)V");
+    if(!methodid) {
+        return;
+    }
+    g_obj = (jclass)((*env)->NewGlobalRef(env, instance));
+
+    jstring string = (*env)->NewStringUTF(env, randomString);
+
+    (*env)->CallVoidMethod(env, g_obj , methodid, string);
+}
