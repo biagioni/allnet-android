@@ -10,6 +10,7 @@
 #include <lib/util.h>
 #include <syslog.h>
 #include <xchat/cutil.h>
+#include <string.h>
 
 
 static pd p;
@@ -19,9 +20,39 @@ jmethodID g_mid;
 JNIEnv *g_env;
 jclass netAPI;
 jclass keyExchange;
-
+int sock;
+static pthread_mutex_t key_generated_mutex;
+static int waiting_for_key = 0;
 
 extern int astart_main(int argc, char ** argv);
+
+struct request_key_arg {
+    int sock;
+    char * contact;
+    char * secret1;
+    char * secret2;
+    int hops;
+};
+
+static void * request_key (void * arg_void) {
+    // now save the result
+    struct request_key_arg * arg = (struct request_key_arg *) arg_void;
+    waiting_for_key = 1;
+    // next line will be slow if it has to generate the key from scratch
+    create_contact_send_key(arg->sock, arg->contact, arg->secret1, arg->secret2, arg->hops);
+    make_invisible(arg->contact);  // make sure the new contact is not (yet) visible
+    waiting_for_key = 0;
+    pthread_mutex_unlock(&key_generated_mutex);
+    free(arg->contact);
+    if (arg->secret1 != NULL)
+        free (arg->secret1);
+    if (arg->secret2 != NULL)
+        free (arg->secret2);
+    // NSLog(@"unlocked key generated mutex 2\n");
+    printf ("finished generating and sending key\n");
+    free (arg_void);  // we must free it
+    return NULL;
+}
 
 
 JNIEnv *AttachJava() {
@@ -61,6 +92,8 @@ Java_org_alnet_allnet_1android_NetworkAPI_startAllnet(JNIEnv *env,
     p = init_pipe_descriptor(alog);
     int result = xchat_init("xchat",dir, p);
 
+    sock = result;
+
     jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callback", "(I)V");
     if(!methodid) {
         return;
@@ -75,14 +108,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_getContacts(JNIEnv *env,
     char * contatcs;
     int nc = all_contacts(&contatcs);
     for (int i = 0; i < nc; i++){
-        syslog (LOG_DAEMON | LOG_WARNING, " contact : %s\n",contatcs[i]);
     }
-
-    jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callbackContacts", "()V");
-    if(!methodid) {
-        return;
-    }
-    (*env)->CallVoidMethod(env, g_obj , methodid);
 }
 
 JNIEXPORT void JNICALL
@@ -104,3 +130,43 @@ Java_org_alnet_allnet_1android_KeyExchangeActivity_generateRandomKey(JNIEnv *env
 
     (*env)->CallVoidMethod(env, g_obj , methodid, string);
 }
+
+JNIEXPORT void JNICALL
+Java_org_alnet_allnet_1android_KeyExchangeActivity_requestNewContact(
+        JNIEnv *env,
+        jobject instance,
+        jstring contact,
+        jint hops,
+        jstring s1,
+        jstring s2
+) {
+    pthread_mutex_lock(&key_generated_mutex);
+    struct request_key_arg * arg =
+            (struct request_key_arg *)malloc_or_fail(sizeof (struct request_key_arg), "request_key thread");
+    arg->sock = sock;
+
+    const char * secret1 = strcpy_malloc((*env)->GetStringUTFChars( env, s1 , NULL ),"secret1");
+    const char * secret2 = strcpy_malloc((*env)->GetStringUTFChars( env, s2 , NULL ),"secret2");
+    const char * keyContact = strcpy_malloc ((*env)->GetStringUTFChars( env, contact , NULL ), "requestNewContact contact");
+
+    arg->contact = strcpy_malloc ((*env)->GetStringUTFChars( env, contact , NULL ), "requestNewContact contact");
+    arg->secret1 = NULL;
+    arg->secret2 = NULL;
+
+    size_t length = strlen(secret1);
+    size_t length2 = strlen(secret2);
+
+    if ((secret1 != NULL) && (length > 0)) {
+        arg->secret1 = strcpy_malloc (secret1, "requestNewContact secret");
+        normalize_secret(arg->secret1);
+    }
+    if ((secret2 != NULL) && (length2 > 0)) {
+        arg->secret2 = strcpy_malloc (secret2, "requestNewContact secret2");
+        normalize_secret(arg->secret2);
+    }
+    arg->hops = (int)hops;
+//create_contact_send_key(self.sock, keyContact, keySecret, keySecret2, (int)hops);
+    pthread_t thread;
+    pthread_create(&thread, NULL, request_key, (void *) arg);
+}
+

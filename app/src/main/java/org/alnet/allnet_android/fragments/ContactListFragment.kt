@@ -21,4 +21,4 @@ class ContactListFragment : Fragment() {
         return inflater!!.inflate(R.layout.fragment_contact_list, container, false)
     }
 
-}// Required empty public constructor
+}
