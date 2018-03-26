@@ -33,7 +33,7 @@ class NetworkAPI(path: String){
     fun callback(socket: Int) {
         this.socket = socket
         Log.e("SOCKET: ", socket.toString())
-        getContacts()
+        //getContacts()
     }
 
     fun listContacts(){

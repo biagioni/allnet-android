@@ -11,6 +11,7 @@
 #include <syslog.h>
 #include <xchat/cutil.h>
 #include <string.h>
+#include <xchat/gui_socket.h>
 
 
 static pd p;
@@ -54,6 +55,83 @@ static void * request_key (void * arg_void) {
     return NULL;
 }
 
+void packet_main_loop (void * arg)
+{
+    int * socks = (int*)arg;
+    int allnet_sock = socks [0];
+    pd p = socks [1];
+
+    int rcvd = 0;
+    char * packet;
+    int pipe;
+    unsigned int pri;
+    int timeout = 100;      /* sleep up to 1/10 second */
+    char * old_contact = NULL;
+    keyset old_kset = -1;
+    while ((rcvd = receive_pipe_message_any (p, timeout, &packet, &pipe, &pri))
+           >= 0) {
+        int verified, duplicate, broadcast;
+        uint64_t seq;
+        char * peer;
+        keyset kset;
+        char * desc;
+        char * message;
+        struct allnet_ack_info acks;
+        struct allnet_mgmt_trace_reply * trace = NULL;
+        time_t mtime = 0;
+        int mlen = handle_packet (allnet_sock, packet, rcvd, pri,
+                                  &peer, &kset, &message, &desc,
+                                  &verified, &seq, &mtime,
+                                  &duplicate, &broadcast, &acks, &trace);
+
+        if ((mlen > 0) && (verified) && (! duplicate)) {
+            if (!duplicate) {
+                // if (is_visible (peer))
+                //gui_callback_message_received (peer, message, desc, seq,
+                //                             mtime, broadcast, gui_sock);
+                char **groups = NULL;
+                int ngroups = member_of_groups_recursive(peer, &groups);
+                int ig;
+                for (ig = 0; ig < ngroups; ig++) {
+//                    if (is_visible (groups [ig]))
+//                        gui_callback_message_received (groups [ig], message, desc, seq,
+//                                                       mtime, broadcast, gui_sock);
+                }
+                if (groups != NULL)
+                    free(groups);
+            }
+            if ((!broadcast) &&
+                ((old_contact == NULL) ||
+                 (strcmp(old_contact, peer) != 0) || (old_kset != kset))) {
+                request_and_resend(allnet_sock, peer, kset, 1);
+                if (old_contact != NULL)
+                    free(old_contact);
+                old_contact = peer;
+                old_kset = kset;
+            } else { /* same peer or broadcast, do nothing */
+                free(peer);
+            }
+            free(message);
+            if (!broadcast)
+                free(desc);
+        }
+//        } else if (mlen == -1) {   /* confirm successful key exchange */
+//            gui_callback_created (GUI_CALLBACK_CONTACT_CREATED, peer, gui_sock);
+//        } else if (mlen == -2) {   /* confirm successful subscription */
+//            gui_callback_created (GUI_CALLBACK_SUBSCRIPTION_COMPLETE, peer, gui_sock);
+//        } else if (mlen == -4) {   /* got a trace reply */
+//            gui_callback_trace_response (trace, gui_sock);
+//        }
+        /* handle_packet may have changed what has and has not been acked */
+        int i;
+        for (i = 0; i < acks.num_acks; i++) {
+            //gui_callback_message_acked (acks.peers [i], acks.acks [i], gui_sock);
+            free (acks.peers [i]);
+        }
+    }
+    printf ("xchat_socket pipe closed, exiting\n");
+}
+
 
 JNIEnv *AttachJava() {
     JavaVMAttachArgs args = {JNI_VERSION_1_6,0, 0};
@@ -93,6 +171,14 @@ Java_org_alnet_allnet_1android_NetworkAPI_startAllnet(JNIEnv *env,
     int result = xchat_init("xchat",dir, p);
 
     sock = result;
+
+    /* create the thread to handle messages from the GUI */
+    void * args2 = malloc_or_fail (sizeof (int) * 2 , "gui_socket main");
+    ((int *) args2) [0] = sock;
+    ((pd *) args2) [1] = p;
+
+    //pthread_t t;
+    //pthread_create (&t, NULL, packet_main_loop, args);
 
     jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callback", "(I)V");
     if(!methodid) {
