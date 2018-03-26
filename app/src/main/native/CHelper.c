@@ -173,12 +173,12 @@ Java_org_alnet_allnet_1android_NetworkAPI_startAllnet(JNIEnv *env,
     sock = result;
 
     /* create the thread to handle messages from the GUI */
-    void * args2 = malloc_or_fail (sizeof (int) * 2 , "gui_socket main");
-    ((int *) args2) [0] = sock;
-    ((pd *) args2) [1] = p;
-
-    //pthread_t t;
-    //pthread_create (&t, NULL, packet_main_loop, args);
+//    void * args2 = malloc_or_fail (sizeof (int) * 2 , "gui_socket main");
+//    ((int *) args2) [0] = sock;
+//    ((pd *) args2) [1] = p;
+//
+//    pthread_t t;
+//    pthread_create (&t, NULL, packet_main_loop, args);
 
     jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callback", "(I)V");
     if(!methodid) {
@@ -191,9 +191,16 @@ Java_org_alnet_allnet_1android_NetworkAPI_startAllnet(JNIEnv *env,
 JNIEXPORT void JNICALL
 Java_org_alnet_allnet_1android_NetworkAPI_getContacts(JNIEnv *env,
                                                       jobject instance) {
-    char * contatcs;
-    int nc = all_contacts(&contatcs);
+    char ** contatcs;
+    int nc = invisible_contacts(&contatcs);
     for (int i = 0; i < nc; i++){
+        jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callbackContacts", "(Ljava/lang/String;)V");
+        if(!methodid) {
+            return;
+        }
+        g_obj = (jclass)((*env)->NewGlobalRef(env, instance));
+        jstring string = (*env)->NewStringUTF(env, contatcs[i]);
+        (*env)->CallVoidMethod(env, g_obj , methodid, string);
     }
 }
 
