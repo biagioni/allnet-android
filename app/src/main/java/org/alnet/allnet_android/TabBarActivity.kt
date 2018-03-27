@@ -5,12 +5,22 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import kotlinx.android.synthetic.main.activity_tab_bar.*
 import org.alnet.allnet_android.fragments.ContactListFragment
 import org.alnet.allnet_android.fragments.ContactNewFragment
 import org.alnet.allnet_android.fragments.MoreFragment
+import java.util.*
+import kotlin.collections.ArrayList
 
-class TabBarActivity : AppCompatActivity() {
+class TabBarActivity : AppCompatActivity(), INetwork {
+
+    var networkAPI: NetworkAPI? = null
+    lateinit var contacts: ArrayList<String>
+
+    override fun listContacts(contact: String) {
+        contacts.add(contact)
+    }
 
     var toolBar: ActionBar? = null
 
@@ -45,10 +55,14 @@ class TabBarActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tab_bar)
 
+        contacts = ArrayList<String>()
+
         val file = filesDir
         val path = file.absolutePath
 
-        val networkAPI = NetworkAPI(path)
+        networkAPI = NetworkAPI()
+        networkAPI!!.listener = this
+        networkAPI!!.initialize(path)
 
         toolBar = supportActionBar
         if (toolBar != null) {

@@ -12,21 +12,22 @@ import java.lang.Thread.sleep
  * Created by docouto on 3/19/18.
  */
 
+interface INetwork {
+    fun listContacts(contact: String)
+}
 
-class NetworkAPI(path: String){
+class NetworkAPI(){
+
+    lateinit var listener: INetwork
 
     external fun startAllnet(path: String): Int
     external fun getContacts()
     external fun init()
 
     var socket: Int = 0
-    private val path: String
 
-    init {
-        this.path = path
-
+    fun initialize(path: String){
         init()
-
         startAllnet(path)
     }
 
@@ -36,11 +37,8 @@ class NetworkAPI(path: String){
         getContacts()
     }
 
-    fun listContacts(){
-        getContacts()
-    }
     fun callbackContacts(contact: String){
-        Log.e("CONTACT: ", contact)
+        listener.listContacts(contact)
     }
 
 }
