@@ -5,7 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.alnet.allnet_android.TabBarActivity">
+    tools:context="org.alnet.allnet_android.activities.TabBarActivity">
 
     <FrameLayout
         android:id="@+id/frame_container"
