@@ -1,6 +1,7 @@
 package org.alnet.allnet_android.fragments
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -10,12 +11,21 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_contact_list.view.*
 import org.alnet.allnet_android.*
+import org.alnet.allnet_android.activities.MessageActivity
+import org.alnet.allnet_android.activities.TabBarActivity
+import org.alnet.allnet_android.adapters.ContactAdapter
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class ContactListFragment : Fragment(), INetwork {
+class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListener {
+    override fun onclick(contact: String) {
+        val intent = Intent(activity, MessageActivity::class.java)
+        intent.putExtra("contact", contact)
+        startActivity(intent)
+    }
+
     override fun listContacts(contact: String) {
         contacts.add(contact)
     }
@@ -40,7 +50,7 @@ class ContactListFragment : Fragment(), INetwork {
     fun updateUI(){
         val layoutManager = LinearLayoutManager(activity)
         mRecyclerView!!.layoutManager = layoutManager
-        val adapter = ContactAdapter(contacts);
+        val adapter = ContactAdapter(contacts, this);
         mRecyclerView!!.adapter = adapter
     }
 
