@@ -1,16 +1,17 @@
-package org.alnet.allnet_android
+package org.alnet.allnet_android.activities
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import kotlinx.android.synthetic.main.activity_tab_bar.*
+import org.alnet.allnet_android.INetwork
+import org.alnet.allnet_android.NetworkAPI
+import org.alnet.allnet_android.R
 import org.alnet.allnet_android.fragments.ContactListFragment
 import org.alnet.allnet_android.fragments.ContactNewFragment
 import org.alnet.allnet_android.fragments.MoreFragment
-import java.util.*
 import kotlin.collections.ArrayList
 
 class TabBarActivity : AppCompatActivity(), INetwork {

@@ -4,17 +4,15 @@ package org.alnet.allnet_android.fragments
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_contact_new.*
 import org.alnet.allnet_android.R
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import kotlinx.android.synthetic.main.fragment_contact_new.view.*
-import org.alnet.allnet_android.KeyExchangeActivity
+import org.alnet.allnet_android.activities.KeyExchangeActivity
 
 
 class ContactNewFragment : Fragment() {

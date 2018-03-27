@@ -12,6 +12,7 @@
 #include <xchat/cutil.h>
 #include <string.h>
 #include <xchat/gui_socket.h>
+#include <xchat/store.h>
 
 
 static pd p;
@@ -21,6 +22,7 @@ jmethodID g_mid;
 JNIEnv *g_env;
 jclass netAPI;
 jclass keyExchange;
+jclass messageClass;
 int sock;
 static pthread_mutex_t key_generated_mutex;
 static int waiting_for_key = 0;
@@ -145,8 +147,11 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *jvm, void *reserved) {
     jclass mActivityClass= (*NewEnv)->FindClass(NewEnv, "org/alnet/allnet_android/NetworkAPI");
     netAPI = (jclass)((*NewEnv)->NewGlobalRef(NewEnv, mActivityClass));
 
-    jclass mKeyExchangeClass= (*NewEnv)->FindClass(NewEnv, "org/alnet/allnet_android/KeyExchangeActivity");
+    jclass mKeyExchangeClass= (*NewEnv)->FindClass(NewEnv, "org/alnet/allnet_android/activities/KeyExchangeActivity");
     keyExchange = (jclass)((*NewEnv)->NewGlobalRef(NewEnv, mKeyExchangeClass));
+
+    jclass mMessageClass= (*NewEnv)->FindClass(NewEnv, "org/alnet/allnet_android/activities/MessageActivity");
+    messageClass = (jclass)((*NewEnv)->NewGlobalRef(NewEnv, mMessageClass));
 
     return JNI_VERSION_1_6;
 }
@@ -205,7 +210,38 @@ Java_org_alnet_allnet_1android_NetworkAPI_getContacts(JNIEnv *env,
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_KeyExchangeActivity_generateRandomKey(JNIEnv *env,
+Java_org_alnet_allnet_1android_activities_MessageActivity_getMessages(JNIEnv *env,
+                                                      jobject instance,
+                                                        jstring c) {
+
+    const char * contact = strcpy_malloc((*env)->GetStringUTFChars( env, c , NULL ),"contact");
+
+    struct message_store_info * messages = NULL;
+    int messages_used = 0;
+    int messages_allocated = 0;
+    list_all_messages (contact, &messages, &messages_allocated, &messages_used);
+
+    if (messages_used > 0) {
+        for (int i = 0; i < messages_used; i++) {
+            struct message_store_info mi = *(messages + (messages_used - i - 1));
+
+            jmethodID methodid = (*env)->GetMethodID(env, messageClass, "callbackMessages", "(Ljava/lang/String;)V");
+            if(!methodid) {
+                return;
+            }
+            g_obj = (jclass)((*env)->NewGlobalRef(env, instance));
+            jstring string = (*env)->NewStringUTF(env, mi.message);
+            (*env)->CallVoidMethod(env, g_obj , methodid, string);
+
+        }
+    }
+    if (messages != NULL)
+        free_all_messages(messages, messages_used);
+}
+
+
+JNIEXPORT void JNICALL
+Java_org_alnet_allnet_1android_activities_KeyExchangeActivity_generateRandomKey(JNIEnv *env,
                                                       jobject instance) {
 #define MAX_RANDOM  15
     char randomString [MAX_RANDOM];
@@ -225,7 +261,7 @@ Java_org_alnet_allnet_1android_KeyExchangeActivity_generateRandomKey(JNIEnv *env
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_KeyExchangeActivity_requestNewContact(
+Java_org_alnet_allnet_1android_activities_KeyExchangeActivity_requestNewContact(
         JNIEnv *env,
         jobject instance,
         jstring contact,

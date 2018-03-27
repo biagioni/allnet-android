@@ -23,7 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".TabBarActivity"
+            android:name=".activities.TabBarActivity"
             android:label="@string/title_activity_main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,11 +36,17 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".KeyExchangeActivity">
+        <activity android:name=".activities.KeyExchangeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.alnet.allnet_android.TabBarActivity" />
+                android:value="org.alnet.allnet_android.activities.TabBarActivity" />
         </activity>
+        <activity android:name=".activities.MessageActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.alnet.allnet_android.activities.TabBarActivity" />
+        </activity>
+
     </application>
 
 </manifest>

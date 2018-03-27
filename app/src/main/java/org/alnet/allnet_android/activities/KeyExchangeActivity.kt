@@ -1,9 +1,9 @@
-package org.alnet.allnet_android
+package org.alnet.allnet_android.activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import kotlinx.android.synthetic.main.activity_key_exchange.*
+import org.alnet.allnet_android.R
 
 class KeyExchangeActivity : AppCompatActivity() {
 
