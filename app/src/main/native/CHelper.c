@@ -44,60 +44,6 @@ struct data_to_send {
     size_t mlen;
 };
 
-static void * request_key (void * arg_void) {
-    // now save the result
-    struct request_key_arg * arg = (struct request_key_arg *) arg_void;
-    waiting_for_key = 1;
-    // next line will be slow if it has to generate the key from scratch
-    create_contact_send_key(arg->sock, arg->contact, arg->secret1, arg->secret2, arg->hops);
-    make_invisible(arg->contact);  // make sure the new contact is not (yet) visible
-    waiting_for_key = 0;
-    pthread_mutex_unlock(&key_generated_mutex);
-    free(arg->contact);
-    if (arg->secret1 != NULL)
-        free (arg->secret1);
-    if (arg->secret2 != NULL)
-        free (arg->secret2);
-    // NSLog(@"unlocked key generated mutex 2\n");
-    printf ("finished generating and sending key\n");
-    free (arg_void);  // we must free it
-    return NULL;
-}
-
-static void * send_message_thread (void * arg)
-{
-    struct data_to_send * d = (struct data_to_send *) arg;
-    int sock = d->sock;
-    char * contact = d->contact;
-    char * message = d->message;
-    int mlen = (int)(d->mlen);
-    free (arg);
-    uint64_t seq = 0;
-    pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
-    pthread_mutex_lock (&lock);
-    while (1) {    // repeat until the message is sent
-        seq = send_data_message(sock, contact, message, mlen);
-        if (seq != 0)
-            break;   // message sent
-    }
-    pthread_mutex_unlock (&lock);
-    free (contact);
-    free (message);
-    return (void *) seq;
-}
-
-static void send_message_in_separate_thread (int sock, char * contact, char * message, size_t mlen)
-{
-    struct data_to_send * d = malloc_or_fail(sizeof (struct data_to_send), "send_message_with_delay");
-    d->sock = sock;
-    d->contact = strcpy_malloc (contact, "send_message_with_delay contact");
-    d->message = memcpy_malloc(message, mlen, "send_message_with_delay message");
-    d->mlen = mlen;
-    pthread_t t;
-    if (pthread_create(&t, NULL, send_message_thread, (void *) d) != 0)
-        perror ("pthread_create for send_message_with_delay");
-}
-
 void packet_main_loop (void * arg)
 {
     int * socks = (int*)arg;
@@ -175,6 +121,59 @@ void packet_main_loop (void * arg)
     printf ("xchat_socket pipe closed, exiting\n");
 }
 
+static void * request_key (void * arg_void) {
+    // now save the result
+    struct request_key_arg * arg = (struct request_key_arg *) arg_void;
+    waiting_for_key = 1;
+    // next line will be slow if it has to generate the key from scratch
+    create_contact_send_key(arg->sock, arg->contact, arg->secret1, arg->secret2, arg->hops);
+    make_invisible(arg->contact);  // make sure the new contact is not (yet) visible
+    waiting_for_key = 0;
+    pthread_mutex_unlock(&key_generated_mutex);
+    free(arg->contact);
+    if (arg->secret1 != NULL)
+        free (arg->secret1);
+    if (arg->secret2 != NULL)
+        free (arg->secret2);
+    // NSLog(@"unlocked key generated mutex 2\n");
+    printf ("finished generating and sending key\n");
+    free (arg_void);  // we must free it
+    return NULL;
+}
+
+static void * send_message_thread (void * arg)
+{
+    struct data_to_send * d = (struct data_to_send *) arg;
+    int sock = d->sock;
+    char * contact = d->contact;
+    char * message = d->message;
+    int mlen = (int)(d->mlen);
+    free (arg);
+    uint64_t seq = 0;
+    pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+    pthread_mutex_lock (&lock);
+    while (1) {    // repeat until the message is sent
+        seq = send_data_message(sock, contact, message, mlen);
+        if (seq != 0)
+            break;   // message sent
+    }
+    pthread_mutex_unlock (&lock);
+    free (contact);
+    free (message);
+    return (void *) seq;
+}
+
+static void send_message_in_separate_thread (int sock, char * contact, char * message, size_t mlen)
+{
+    struct data_to_send * d = malloc_or_fail(sizeof (struct data_to_send), "send_message_with_delay");
+    d->sock = sock;
+    d->contact = strcpy_malloc (contact, "send_message_with_delay contact");
+    d->message = memcpy_malloc(message, mlen, "send_message_with_delay message");
+    d->mlen = mlen;
+    pthread_t t;
+    if (pthread_create(&t, NULL, send_message_thread, (void *) d) != 0)
+        perror ("pthread_create for send_message_with_delay");
+}
 
 JNIEnv *AttachJava() {
     JavaVMAttachArgs args = {JNI_VERSION_1_6,0, 0};
@@ -219,12 +218,12 @@ Java_org_alnet_allnet_1android_NetworkAPI_startAllnet(JNIEnv *env,
     sock = result;
 
     /* create the thread to handle messages from the GUI */
-//    void * args2 = malloc_or_fail (sizeof (int) * 2 , "gui_socket main");
-//    ((int *) args2) [0] = sock;
-//    ((pd *) args2) [1] = p;
-//
-//    pthread_t t;
-//    pthread_create (&t, NULL, packet_main_loop, args);
+    void * args2 = malloc_or_fail (sizeof (int) * 2 , "gui_socket main");
+    ((int *) args2) [0] = sock;
+    ((pd *) args2) [1] = p;
+
+    pthread_t t;
+    pthread_create (&t, NULL, packet_main_loop, args2);
 
     jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callback", "(I)V");
     if(!methodid) {

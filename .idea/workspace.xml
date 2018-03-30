@@ -11,6 +11,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a82c815b-52eb-4f8a-8b0d-ffc5cf0ea00e" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/msg_received_background.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/msg_sent_background.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.lock" afterPath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/fileHashes/resourceHashesCache.bin" afterPath="$PROJECT_DIR$/.gradle/4.1/fileHashes/resourceHashesCache.bin" />
@@ -18,9 +20,10 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.bin" afterPath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.lock" afterPath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/MessageActivity.kt" afterPath="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/MessageActivity.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/native/CHelper.c" afterPath="$PROJECT_DIR$/app/src/main/native/CHelper.c" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_message.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_message.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/message_item_received.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/message_item_received.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/message_item_send.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/message_item_send.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/build/classes/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -54,32 +57,12 @@
       <file leaf-file-name="CHelper.c" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/native/CHelper.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="928">
-              <caret line="78" column="0" lean-forward="false" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
+            <state relative-caret-position="-726">
+              <caret line="121" column="1" lean-forward="false" selection-start-line="121" selection-start-column="1" selection-end-line="121" selection-end-column="1" />
               <folding>
                 <element signature="e#49#65#0" expanded="true" />
-                <marker date="1522368228125" expanded="true" signature="7588:7721" ph="..." />
+                <marker date="1522442270593" expanded="true" signature="7585:7714" ph="..." />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="xcommon.c" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/cfiles/xchat/xcommon.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
-              <caret line="1463" column="0" lean-forward="false" selection-start-line="1463" selection-start-column="0" selection-end-line="1463" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="cutil.c" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/cfiles/xchat/cutil.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="372">
-              <caret line="207" column="0" lean-forward="false" selection-start-line="207" selection-start-column="0" selection-end-line="207" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -97,11 +80,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MessageActivity.kt" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MessageActivity.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/MessageActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="250">
-              <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+            <state relative-caret-position="120">
+              <caret line="8" column="55" lean-forward="true" selection-start-line="8" selection-start-column="55" selection-end-line="8" selection-end-column="55" />
               <folding>
                 <element signature="e#45#342#0" expanded="true" />
               </folding>
@@ -109,35 +92,29 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MessageAdapter.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/adapters/MessageAdapter.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="30" column="48" lean-forward="false" selection-start-line="30" selection-start-column="48" selection-end-line="30" selection-end-column="48" />
+      <file leaf-file-name="message_item_received.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/message_item_received.xml">
+          <provider editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="8" column="35" lean-forward="false" selection-start-line="8" selection-start-column="35" selection-end-line="8" selection-end-column="35" />
               <folding />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ContactNewFragment.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/fragments/ContactNewFragment.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="37" column="17" lean-forward="false" selection-start-line="37" selection-start-column="17" selection-end-line="37" selection-end-column="17" />
-              <folding />
-            </state>
+          <provider selected="true" editor-type-id="android-designer2">
+            <state />
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ContactListFragment.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/fragments/ContactListFragment.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="658">
-              <caret line="50" column="47" lean-forward="false" selection-start-line="50" selection-start-column="28" selection-end-line="50" selection-end-column="47" />
-              <folding>
-                <element signature="e#45#601#0" expanded="true" />
-              </folding>
+      <file leaf-file-name="message_item_send.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/message_item_send.xml">
+          <provider editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="8" column="35" lean-forward="false" selection-start-line="8" selection-start-column="35" selection-end-line="8" selection-end-column="35" />
+              <folding />
             </state>
+          </provider>
+          <provider selected="true" editor-type-id="android-designer2">
+            <state />
           </provider>
         </entry>
       </file>
@@ -149,6 +126,7 @@
         <option value="valueResourceFile" />
         <option value="layoutResourceFile" />
         <option value="Kotlin File" />
+        <option value="resourceFile" />
       </list>
     </option>
   </component>
@@ -2080,23 +2058,25 @@
         <option value="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/TabBarActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/contact_item.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_contact_list.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/message_item_send.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/message_item_received.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/adapters/MessageAdapter.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/fragments/ContactNewFragment.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/fragments/ContactListFragment.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/adapters/ContactAdapter.kt" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/native/CHelper.c" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_message.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/MessageActivity.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_message.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/drawable/msg_received_background.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/drawable/msg_sent_background.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/message_item_send.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/message_item_received.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/native/CHelper.c" />
       </list>
     </option>
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds">
     <option name="x" value="46" />
-    <option name="y" value="23" />
+    <option name="y" value="24" />
     <option name="width" value="1634" />
     <option name="height" value="995" />
   </component>
@@ -2368,7 +2348,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="layout" />
+              <option name="myItemId" value="drawable" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -2651,7 +2631,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522370091805" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522442311625" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
@@ -2699,7 +2679,7 @@
       </Profilers>
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522370091805" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522442311625" />
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -2731,6 +2711,27 @@
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
+      <method />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
       <method />
     </configuration>
     <configuration default="true" type="JarApplication" factoryName="JAR Application">
@@ -2861,7 +2862,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522370091806" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522442311626" />
       </method>
     </configuration>
     <list size="1">
@@ -2909,7 +2910,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="46" y="23" width="1634" height="995" extended-state="0" />
+    <frame x="46" y="24" width="1634" height="995" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32977587" sideWeight="0.49497488" order="0" side_tool="false" content_ui="tabs" />
@@ -2963,7 +2964,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/app/src/main/native/CHelper.c</url>
-          <line>293</line>
+          <line>292</line>
           <option name="timeStamp" value="177" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
@@ -3013,16 +3014,6 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/app/src/main/cfiles/xchat/cutil.c</url>
-          <line>318</line>
-          <option name="timeStamp" value="201" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/app/src/main/cfiles/xchat/cutil.c</url>
-          <line>322</line>
-          <option name="timeStamp" value="202" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/app/src/main/cfiles/xchat/cutil.c</url>
           <line>140</line>
           <option name="timeStamp" value="203" />
         </line-breakpoint>
@@ -3051,35 +3042,15 @@
           <line>207</line>
           <option name="timeStamp" value="208" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/MessageActivity.kt</url>
-          <line>40</line>
-          <properties />
-          <option name="timeStamp" value="178" />
-        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="209" />
+      <option name="time" value="222" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/native/android_xchat.c" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_tab_bar.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="56" lean-forward="false" selection-start-line="7" selection-start-column="56" selection-end-line="7" selection-end-column="56" />
-          <folding>
-            <element signature="e#636#676#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/ContactActivity.kt" />
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_more.xml">
       <provider selected="true" editor-type-id="text-editor">
@@ -3179,17 +3150,11 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/Client.kt" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/cfiles/lib/pipemsg.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="610">
-          <caret line="1006" column="49" lean-forward="false" selection-start-line="1006" selection-start-column="49" selection-end-line="1006" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/cfiles/lib/util.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="1081" column="3" lean-forward="false" selection-start-line="1081" selection-start-column="3" selection-end-line="1081" selection-end-column="3" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -3226,6 +3191,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="305">
           <caret line="33" column="36" lean-forward="false" selection-start-line="33" selection-start-column="36" selection-end-line="34" selection-end-column="9" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -3296,28 +3262,6 @@
         </state>
       </provider>
       <provider selected="true" editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/message_item_received.xml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="35" column="46" lean-forward="false" selection-start-line="35" selection-start-column="46" selection-end-line="35" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/message_item_send.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="35" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
         <state />
       </provider>
     </entry>
@@ -3403,7 +3347,7 @@
         <state relative-caret-position="658">
           <caret line="50" column="47" lean-forward="false" selection-start-line="50" selection-start-column="28" selection-end-line="50" selection-end-column="47" />
           <folding>
-            <element signature="e#45#601#0" expanded="true" />
+            <element signature="e#45#601#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3424,6 +3368,74 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/cfiles/lib/pipemsg.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="34" column="0" lean-forward="false" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/cfiles/xchat/xcommon.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-257">
+          <caret line="1368" column="4" lean-forward="false" selection-start-line="1368" selection-start-column="4" selection-end-line="1368" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/cfiles/xchat/cutil.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="322" column="0" lean-forward="false" selection-start-line="322" selection-start-column="0" selection-end-line="322" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/msg_sent_background.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="44" lean-forward="true" selection-start-line="12" selection-start-column="44" selection-end-line="12" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/msg_received_background.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="32" lean-forward="false" selection-start-line="9" selection-start-column="32" selection-end-line="9" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/message_item_send.xml">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="8" column="35" lean-forward="false" selection-start-line="8" selection-start-column="35" selection-end-line="8" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/message_item_received.xml">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="8" column="35" lean-forward="false" selection-start-line="8" selection-start-column="35" selection-end-line="8" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_message.xml">
       <provider editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -3435,40 +3447,24 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/native/CHelper.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-726">
+          <caret line="121" column="1" lean-forward="false" selection-start-line="121" selection-start-column="1" selection-end-line="121" selection-end-column="1" />
+          <folding>
+            <element signature="e#49#65#0" expanded="true" />
+            <marker date="1522442270593" expanded="true" signature="7585:7714" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/MessageActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+        <state relative-caret-position="120">
+          <caret line="8" column="55" lean-forward="true" selection-start-line="8" selection-start-column="55" selection-end-line="8" selection-end-column="55" />
           <folding>
             <element signature="e#45#342#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/native/CHelper.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="928">
-          <caret line="78" column="0" lean-forward="false" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
-          <folding>
-            <element signature="e#49#65#0" expanded="true" />
-            <marker date="1522368228125" expanded="true" signature="7588:7721" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/cfiles/xchat/xcommon.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="1463" column="0" lean-forward="false" selection-start-line="1463" selection-start-column="0" selection-end-line="1463" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/cfiles/xchat/cutil.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="372">
-          <caret line="207" column="0" lean-forward="false" selection-start-line="207" selection-start-column="0" selection-end-line="207" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
