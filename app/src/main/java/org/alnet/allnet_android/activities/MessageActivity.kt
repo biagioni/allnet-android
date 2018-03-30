@@ -3,6 +3,7 @@ package org.alnet.allnet_android.activities
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import kotlinx.android.synthetic.main.activity_message.*
 import org.alnet.allnet_android.R
 import org.alnet.allnet_android.adapters.MessageAdapter
@@ -10,13 +11,14 @@ import org.alnet.allnet_android.adapters.MessageAdapter
 class MessageActivity : AppCompatActivity() {
 
     var messages = ArrayList<String>()
+    lateinit var contact: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_message)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        var contact = intent.extras["contact"].toString()
+        contact = intent.extras["contact"].toString()
 
         supportActionBar!!.setTitle(contact)
         getMessages(contact)
@@ -30,9 +32,16 @@ class MessageActivity : AppCompatActivity() {
     }
 
     fun callbackMessages(message: String){
-        messages.add(toString())
+        messages.add(message)
         updateUI()
     }
 
+    fun sendMessage(v: View){
+        val msg = etText!!.text.toString()
+        sendMessage(msg,contact)
+        etText.text.clear()
+    }
+
     external fun getMessages(contact: String)
+    external fun sendMessage(message: String, contact: String)
 }

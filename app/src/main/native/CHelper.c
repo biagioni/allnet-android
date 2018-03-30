@@ -37,6 +37,13 @@ struct request_key_arg {
     int hops;
 };
 
+struct data_to_send {
+    int sock;
+    char * contact;
+    char * message;
+    size_t mlen;
+};
+
 static void * request_key (void * arg_void) {
     // now save the result
     struct request_key_arg * arg = (struct request_key_arg *) arg_void;
@@ -55,6 +62,40 @@ static void * request_key (void * arg_void) {
     printf ("finished generating and sending key\n");
     free (arg_void);  // we must free it
     return NULL;
+}
+
+static void * send_message_thread (void * arg)
+{
+    struct data_to_send * d = (struct data_to_send *) arg;
+    int sock = d->sock;
+    char * contact = d->contact;
+    char * message = d->message;
+    int mlen = (int)(d->mlen);
+    free (arg);
+    uint64_t seq = 0;
+    pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+    pthread_mutex_lock (&lock);
+    while (1) {    // repeat until the message is sent
+        seq = send_data_message(sock, contact, message, mlen);
+        if (seq != 0)
+            break;   // message sent
+    }
+    pthread_mutex_unlock (&lock);
+    free (contact);
+    free (message);
+    return (void *) seq;
+}
+
+static void send_message_in_separate_thread (int sock, char * contact, char * message, size_t mlen)
+{
+    struct data_to_send * d = malloc_or_fail(sizeof (struct data_to_send), "send_message_with_delay");
+    d->sock = sock;
+    d->contact = strcpy_malloc (contact, "send_message_with_delay contact");
+    d->message = memcpy_malloc(message, mlen, "send_message_with_delay message");
+    d->mlen = mlen;
+    pthread_t t;
+    if (pthread_create(&t, NULL, send_message_thread, (void *) d) != 0)
+        perror ("pthread_create for send_message_with_delay");
 }
 
 void packet_main_loop (void * arg)
@@ -211,8 +252,8 @@ Java_org_alnet_allnet_1android_NetworkAPI_getContacts(JNIEnv *env,
 
 JNIEXPORT void JNICALL
 Java_org_alnet_allnet_1android_activities_MessageActivity_getMessages(JNIEnv *env,
-                                                      jobject instance,
-                                                        jstring c) {
+                                                                      jobject instance,
+                                                                      jstring c) {
 
     const char * contact = strcpy_malloc((*env)->GetStringUTFChars( env, c , NULL ),"contact");
 
@@ -237,6 +278,22 @@ Java_org_alnet_allnet_1android_activities_MessageActivity_getMessages(JNIEnv *en
     }
     if (messages != NULL)
         free_all_messages(messages, messages_used);
+}
+
+JNIEXPORT void JNICALL
+Java_org_alnet_allnet_1android_activities_MessageActivity_sendMessage(JNIEnv *env,
+                                                                      jobject instance,
+                                                                      jstring message,
+                                                                      jstring contact) {
+
+
+    char *xcontact = strcpy_malloc((*env)->GetStringUTFChars(env, contact, NULL), "contact");
+    char *message_to_send = strcpy_malloc((*env)->GetStringUTFChars(env, message, NULL),
+                                          "messageEntered/to_save");
+
+    size_t length_to_send = strlen(message_to_send); // not textView.text.length
+
+    send_message_in_separate_thread(sock, xcontact, message_to_send, length_to_send);
 }
 
 
