@@ -13,22 +13,26 @@ import java.lang.Thread.sleep
  */
 
 interface INetwork {
-    fun listContacts(contact: String)
+    fun listContactsUpdated()
 }
 
-class NetworkAPI(){
+object NetworkAPI{
 
-    lateinit var listener: INetwork
-
+    var listener: INetwork? = null
     external fun startAllnet(path: String): Int
     external fun getContacts()
     external fun init()
 
     var socket: Int = 0
+    var contacts = ArrayList<String>()
+    var initialized = false
 
     fun initialize(path: String){
-        init()
-        startAllnet(path)
+        if (!initialized) {
+            initialized = true
+            init()
+            startAllnet(path)
+        }
     }
 
     fun callback(socket: Int) {
@@ -38,7 +42,8 @@ class NetworkAPI(){
     }
 
     fun callbackContacts(contact: String){
-        listener.listContacts(contact)
+        contacts.add(contact)
+        listener?.listContactsUpdated()
     }
 
 }

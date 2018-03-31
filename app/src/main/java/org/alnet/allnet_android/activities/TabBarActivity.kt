@@ -14,14 +14,7 @@ import org.alnet.allnet_android.fragments.ContactNewFragment
 import org.alnet.allnet_android.fragments.MoreFragment
 import kotlin.collections.ArrayList
 
-class TabBarActivity : AppCompatActivity(), INetwork {
-
-    var networkAPI: NetworkAPI? = null
-    lateinit var contacts: ArrayList<String>
-
-    override fun listContacts(contact: String) {
-        contacts.add(contact)
-    }
+class TabBarActivity : AppCompatActivity() {
 
     var toolBar: ActionBar? = null
 
@@ -56,14 +49,10 @@ class TabBarActivity : AppCompatActivity(), INetwork {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tab_bar)
 
-        contacts = ArrayList<String>()
-
         val file = filesDir
         val path = file.absolutePath
 
-        networkAPI = NetworkAPI()
-        networkAPI!!.listener = this
-        networkAPI!!.initialize(path)
+        NetworkAPI.initialize(path)
 
         toolBar = supportActionBar
         if (toolBar != null) {
