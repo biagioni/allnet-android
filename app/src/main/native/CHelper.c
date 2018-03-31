@@ -13,6 +13,7 @@
 #include <string.h>
 #include <xchat/gui_socket.h>
 #include <xchat/store.h>
+#include <fcntl.h>
 
 
 static pd p;
@@ -175,6 +176,61 @@ static void send_message_in_separate_thread (int sock, char * contact, char * me
         perror ("pthread_create for send_message_with_delay");
 }
 
+static char * string_replace (char * original, char * pattern, char * repl)
+{
+    char * p = strstr (original, pattern);
+    if (p == NULL) {
+        printf ("error: string %s does not contain '%s'\n", original, pattern);
+        /* this is a serious error -- need to figure out what is going on */
+        exit (1);
+    }
+    size_t olen = strlen (original);
+    size_t plen = strlen (pattern);
+    size_t rlen = strlen (repl);
+    size_t size = olen + 1 + rlen - plen;
+    char * result = malloc_or_fail (size, "string_replace");
+    size_t prelen = p - original;
+    memcpy (result, original, prelen);
+    memcpy (result + prelen, repl, rlen);
+    char * postpos = p + plen;
+    size_t postlen = olen - (postpos - original);
+    memcpy (result + prelen + rlen, postpos, postlen);
+    result [size - 1] = '\0';
+    /*  printf ("replacing %s with %s in %s gives %s\n",
+     pattern, repl, original, result); */
+    return result;
+}
+
+
+static char * contact_last_read_path (const char * contact, keyset k)
+{
+    char * directory = key_dir (k);
+    if (directory != NULL) {
+        directory = string_replace(directory, "contacts", "xchat");
+        char * path = strcat3_malloc(directory, "/", "last_read", "contact_last_read_path");
+        free (directory);
+        return path;
+    }
+    return NULL;
+}
+
+static void update_time_read (const char * contact)
+{
+    keyset *k;
+    int nkeys = all_keys(contact, &k);
+    for (int ikey = 0; ikey < nkeys; ikey++) {
+        char * path = contact_last_read_path(contact, k [ikey]);
+        if (path != NULL) {
+
+            int fd = open(path, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR);
+            write(fd, " ", 1);
+            close (fd);   /* all we are doing is setting the modification time */
+            free (path);
+        }
+    }
+    free (k);
+}
+
 JNIEnv *AttachJava() {
     JavaVMAttachArgs args = {JNI_VERSION_1_6,0, 0};
     (*g_vm)->AttachCurrentThread(g_vm, &g_env, &args);
@@ -256,6 +312,8 @@ Java_org_alnet_allnet_1android_activities_MessageActivity_getMessages(JNIEnv *en
 
     const char * contact = strcpy_malloc((*env)->GetStringUTFChars( env, c , NULL ),"contact");
 
+    update_time_read(contact);
+
     struct message_store_info * messages = NULL;
     int messages_used = 0;
     int messages_allocated = 0;
@@ -265,13 +323,14 @@ Java_org_alnet_allnet_1android_activities_MessageActivity_getMessages(JNIEnv *en
         for (int i = 0; i < messages_used; i++) {
             struct message_store_info mi = *(messages + (messages_used - i - 1));
 
-            jmethodID methodid = (*env)->GetMethodID(env, messageClass, "callbackMessages", "(Ljava/lang/String;)V");
+            jmethodID methodid = (*env)->GetMethodID(env, messageClass, "callbackMessages", "(Ljava/lang/String;IJ)V");
             if(!methodid) {
                 return;
             }
             g_obj = (jclass)((*env)->NewGlobalRef(env, instance));
             jstring string = (*env)->NewStringUTF(env, mi.message);
-            (*env)->CallVoidMethod(env, g_obj , methodid, string);
+            long time = mi.time;
+            (*env)->CallVoidMethod(env, g_obj , methodid, string, mi.msg_type, time);
 
         }
     }

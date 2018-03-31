@@ -40,6 +40,7 @@ class MessageAdapter(private val contacts: List<MessageModel>): RecyclerView.Ada
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(messageModel: MessageModel){
             itemView.tvMessage.text = messageModel.message
+            itemView.tvDate.text = messageModel.date
         }
     }
 }

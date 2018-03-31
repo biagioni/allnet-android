@@ -8,6 +8,11 @@ import kotlinx.android.synthetic.main.activity_message.*
 import org.alnet.allnet_android.R
 import org.alnet.allnet_android.adapters.MessageAdapter
 import org.alnet.allnet_android.model.MessageModel
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.*
 
 class MessageActivity : AppCompatActivity() {
 
@@ -32,8 +37,11 @@ class MessageActivity : AppCompatActivity() {
         rvMessage.adapter = adapter
     }
 
-    fun callbackMessages(message: String, type: Int){
-        messages.add(MessageModel(message,type))
+    fun callbackMessages(message: String, type: Int, time: Long){
+        val formatter = SimpleDateFormat("MMM dd, yyyy 'at' HH:mm:ss")
+        val current = Date(time*1000)
+        val formatted = formatter.format(current)
+        messages.add(MessageModel(message,type, formatted))
         updateUI()
     }
 
