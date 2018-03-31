@@ -7,10 +7,11 @@ import android.view.View
 import kotlinx.android.synthetic.main.activity_message.*
 import org.alnet.allnet_android.R
 import org.alnet.allnet_android.adapters.MessageAdapter
+import org.alnet.allnet_android.model.MessageModel
 
 class MessageActivity : AppCompatActivity() {
 
-    var messages = ArrayList<String>()
+    var messages = ArrayList<MessageModel>()
     lateinit var contact: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,8 +32,8 @@ class MessageActivity : AppCompatActivity() {
         rvMessage.adapter = adapter
     }
 
-    fun callbackMessages(message: String){
-        messages.add(message)
+    fun callbackMessages(message: String, type: Int){
+        messages.add(MessageModel(message,type))
         updateUI()
     }
 
