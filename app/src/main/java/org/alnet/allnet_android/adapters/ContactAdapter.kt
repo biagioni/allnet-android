@@ -6,14 +6,15 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.contact_item.view.*
 import org.alnet.allnet_android.R
 import org.alnet.allnet_android.inflate
+import org.alnet.allnet_android.model.ContactModel
 
 /**
  * Created by docouto on 3/26/18.
  */
-class ContactAdapter(private val contacts: List<String>, listener: ItemClickListener): RecyclerView.Adapter<ContactAdapter.ViewHolder>() {
+class ContactAdapter(private val contacts: List<ContactModel>, listener: ItemClickListener): RecyclerView.Adapter<ContactAdapter.ViewHolder>() {
 
     public interface ItemClickListener{
-        fun onclick(contact: String)
+        fun onclick(contact: ContactModel)
     }
 
     var listener: ItemClickListener
@@ -35,8 +36,9 @@ class ContactAdapter(private val contacts: List<String>, listener: ItemClickList
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(contact: String, listener: ItemClickListener){
-            itemView.tvName.text = contact
+        fun bind(contact: ContactModel, listener: ItemClickListener){
+            itemView.tvName.text = contact.name
+            itemView.tvDate.text = contact.lastMessage
 
             itemView.setOnClickListener(View.OnClickListener {
                 listener.onclick(contact)

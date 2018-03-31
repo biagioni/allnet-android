@@ -231,6 +231,25 @@ static void update_time_read (const char * contact)
     free (k);
 }
 
+int lastTime(char * contact)
+{
+    keyset * k;
+    int nk = all_keys (contact, &k);
+    uint64_t latest_time = 0;
+    for (int ik = 0; ik < nk; ik++) {
+        uint64_t seq;
+        uint64_t time = 0;
+        int tz_min;
+        char ack [MESSAGE_ID_SIZE];
+        int mtype = highest_seq_record(contact, k [ik], MSG_TYPE_RCVD, &seq, &time, &tz_min, NULL, ack, NULL, NULL);
+        if ((mtype != MSG_TYPE_DONE) && (time > latest_time))
+            latest_time = time;
+    }
+    if (nk > 0)
+        free (k);
+    return latest_time;
+}
+
 JNIEnv *AttachJava() {
     JavaVMAttachArgs args = {JNI_VERSION_1_6,0, 0};
     (*g_vm)->AttachCurrentThread(g_vm, &g_env, &args);
@@ -295,13 +314,14 @@ Java_org_alnet_allnet_1android_NetworkAPI_getContacts(JNIEnv *env,
     char ** contatcs;
     int nc = invisible_contacts(&contatcs);
     for (int i = 0; i < nc; i++){
-        jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callbackContacts", "(Ljava/lang/String;)V");
+        jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callbackContacts", "(Ljava/lang/String;J)V");
         if(!methodid) {
             return;
         }
+        long last = lastTime(contatcs[i]) + ALLNET_Y2K_SECONDS_IN_UNIX;
         g_obj = (jclass)((*env)->NewGlobalRef(env, instance));
         jstring string = (*env)->NewStringUTF(env, contatcs[i]);
-        (*env)->CallVoidMethod(env, g_obj , methodid, string);
+        (*env)->CallVoidMethod(env, g_obj , methodid, string, last);
     }
 }
 
@@ -329,7 +349,7 @@ Java_org_alnet_allnet_1android_activities_MessageActivity_getMessages(JNIEnv *en
             }
             g_obj = (jclass)((*env)->NewGlobalRef(env, instance));
             jstring string = (*env)->NewStringUTF(env, mi.message);
-            long time = mi.time;
+            long time = mi.time + ALLNET_Y2K_SECONDS_IN_UNIX;
             (*env)->CallVoidMethod(env, g_obj , methodid, string, mi.msg_type, time);
 
         }

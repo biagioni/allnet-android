@@ -38,6 +38,7 @@
             android:fontFamily="@font/roboto_medium"
             android:gravity="center_vertical"
             android:text="TextView"
+            android:textColor="@android:color/black"
             android:textSize="16sp" />
 
         <ImageView
@@ -58,12 +59,13 @@
         android:fontFamily="@font/roboto_medium"
         android:text="TextView"
         android:textAlignment="textEnd"
+        android:textColor="?android:attr/colorButtonNormal"
         android:textSize="10sp" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?attr/colorButtonNormal" />
+        android:background="#e6eaea" />
 
 </LinearLayout>

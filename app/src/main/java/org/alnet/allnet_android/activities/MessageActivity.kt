@@ -39,7 +39,7 @@ class MessageActivity : AppCompatActivity() {
 
     fun callbackMessages(message: String, type: Int, time: Long){
         val formatter = SimpleDateFormat("MMM dd, yyyy 'at' HH:mm:ss")
-        val current = Date(time*1000)
+        val current = Date(time)
         val formatted = formatter.format(current)
         messages.add(MessageModel(message,type, formatted))
         updateUI()
