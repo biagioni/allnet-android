@@ -326,7 +326,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_getContacts(JNIEnv *env,
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_activities_MessageActivity_getMessages(JNIEnv *env,
+Java_org_alnet_allnet_1android_NetworkAPI_getMessages(JNIEnv *env,
                                                                       jobject instance,
                                                                       jstring c) {
 
@@ -343,7 +343,7 @@ Java_org_alnet_allnet_1android_activities_MessageActivity_getMessages(JNIEnv *en
         for (int i = 0; i < messages_used; i++) {
             struct message_store_info mi = *(messages + (messages_used - i - 1));
 
-            jmethodID methodid = (*env)->GetMethodID(env, messageClass, "callbackMessages", "(Ljava/lang/String;IJ)V");
+            jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callbackMessages", "(Ljava/lang/String;IJ)V");
             if(!methodid) {
                 return;
             }
@@ -359,7 +359,7 @@ Java_org_alnet_allnet_1android_activities_MessageActivity_getMessages(JNIEnv *en
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_activities_MessageActivity_sendMessage(JNIEnv *env,
+Java_org_alnet_allnet_1android_NetworkAPI_sendMessage(JNIEnv *env,
                                                                       jobject instance,
                                                                       jstring message,
                                                                       jstring contact) {

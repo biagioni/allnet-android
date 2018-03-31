@@ -1,12 +1,8 @@
 package org.alnet.allnet_android
 
-import android.content.ContentValues.TAG
-import android.os.AsyncTask
-import android.system.Os.*
-import android.system.OsConstants.*
 import android.util.Log
 import org.alnet.allnet_android.model.ContactModel
-import java.lang.Thread.sleep
+import org.alnet.allnet_android.model.MessageModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -17,18 +13,17 @@ import java.util.*
 
 interface INetwork {
     fun listContactsUpdated()
+    fun listMsgUpdated()
 }
 
 object NetworkAPI{
 
     var listener: INetwork? = null
-    external fun startAllnet(path: String): Int
-    external fun getContacts()
-    external fun init()
-
     var socket: Int = 0
     var contacts = ArrayList<ContactModel>()
+    var messages = ArrayList<MessageModel>()
     var initialized = false
+    var contact: String? = null
 
     fun initialize(path: String){
         if (!initialized) {
@@ -38,19 +33,41 @@ object NetworkAPI{
         }
     }
 
+    fun listMessages(){
+        getMessages(this.contact!!)
+    }
+
+    fun clearMessages(){
+        messages.clear()
+    }
+
     fun callback(socket: Int) {
         this.socket = socket
-        Log.e("SOCKET: ", socket.toString())
         getContacts()
     }
 
     fun callbackContacts(contact: String, time: Long){
-        val formatter = SimpleDateFormat("MMM dd, yyyy 'at' HH:mm:ss")
-        val current = Date(time)
-        val formatted = formatter.format(current)
+        val formatted = formatDate(time)
         contacts.add(ContactModel(contact, formatted))
         contacts.sortByDescending { it.lastMessage }
         listener?.listContactsUpdated()
     }
 
+    fun callbackMessages(message: String, type: Int, time: Long){
+        val formatted = formatDate(time)
+        messages.add(MessageModel(message,type, formatted))
+        listener?.listMsgUpdated()
+    }
+
+    fun formatDate(time: Long): String{
+        val formatter = SimpleDateFormat("MMM dd, yyyy 'at' HH:mm:ss")
+        val current = Date(time)
+        return formatter.format(current)
+    }
+
+    external fun startAllnet(path: String): Int
+    external fun getContacts()
+    external fun init()
+    external fun getMessages(contact: String)
+    external fun sendMessage(message: String, contact: String)
 }

@@ -5,52 +5,46 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import kotlinx.android.synthetic.main.activity_message.*
+import org.alnet.allnet_android.INetwork
+import org.alnet.allnet_android.NetworkAPI
 import org.alnet.allnet_android.R
 import org.alnet.allnet_android.adapters.MessageAdapter
-import org.alnet.allnet_android.model.MessageModel
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
-import java.util.*
 
-class MessageActivity : AppCompatActivity() {
 
-    var messages = ArrayList<MessageModel>()
-    lateinit var contact: String
+class MessageActivity : AppCompatActivity(), INetwork {
+
+    //todo list updated
+    override fun listContactsUpdated() {
+    }
+
+    override fun listMsgUpdated() {
+        updateUI()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_message)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        contact = intent.extras["contact"].toString()
+        NetworkAPI.listener = this
 
-        supportActionBar!!.setTitle(contact)
-        getMessages(contact)
+        supportActionBar!!.setTitle(NetworkAPI.contact)
+        NetworkAPI.listMessages()
     }
 
     fun updateUI(){
         val layout = LinearLayoutManager(this)
         rvMessage.layoutManager = layout
-        val adapter = MessageAdapter(messages)
+        val adapter = MessageAdapter(NetworkAPI.messages)
         rvMessage.adapter = adapter
-    }
-
-    fun callbackMessages(message: String, type: Int, time: Long){
-        val formatter = SimpleDateFormat("MMM dd, yyyy 'at' HH:mm:ss")
-        val current = Date(time)
-        val formatted = formatter.format(current)
-        messages.add(MessageModel(message,type, formatted))
-        updateUI()
+        rvMessage.scrollToPosition(adapter.itemCount-1)
     }
 
     fun sendMessage(v: View){
         val msg = etText!!.text.toString()
-        sendMessage(msg,contact)
+        NetworkAPI.sendMessage(msg, NetworkAPI.contact!!)
         etText.text.clear()
+        NetworkAPI.listMessages()
     }
 
-    external fun getMessages(contact: String)
-    external fun sendMessage(message: String, contact: String)
 }

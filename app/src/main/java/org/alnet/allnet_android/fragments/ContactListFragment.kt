@@ -12,24 +12,24 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_contact_list.view.*
 import org.alnet.allnet_android.*
 import org.alnet.allnet_android.activities.MessageActivity
-import org.alnet.allnet_android.activities.TabBarActivity
 import org.alnet.allnet_android.adapters.ContactAdapter
 import org.alnet.allnet_android.model.ContactModel
 
 
-/**
- * A simple [Fragment] subclass.
- */
 class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListener {
     override fun onclick(contact: ContactModel) {
+        NetworkAPI.contact = contact.name
+        NetworkAPI.clearMessages()
         val intent = Intent(activity, MessageActivity::class.java)
-        intent.putExtra("contact", contact.name)
         startActivity(intent)
     }
 
     override fun listContactsUpdated() {
         updateUI()
     }
+
+    //TODO notifications for messages
+    override fun listMsgUpdated() {}
 
     var mRecyclerView: RecyclerView? = null
     lateinit var networkAPI: NetworkAPI
