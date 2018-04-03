@@ -14,6 +14,7 @@ import java.util.*
 interface INetwork {
     fun listContactsUpdated()
     fun listMsgUpdated()
+    fun keyGenerated(contact: String)
 }
 
 object NetworkAPI{
@@ -57,6 +58,10 @@ object NetworkAPI{
         val formatted = formatDate(time)
         messages.add(MessageModel(message,type, formatted))
         listener?.listMsgUpdated()
+    }
+
+    fun callbackKeyGenerated(contact: String){
+        listener?.keyGenerated(contact)
     }
 
     fun formatDate(time: Long): String{

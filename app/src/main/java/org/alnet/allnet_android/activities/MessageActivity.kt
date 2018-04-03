@@ -17,6 +17,10 @@ class MessageActivity : AppCompatActivity(), INetwork {
     override fun listContactsUpdated() {
     }
 
+    override fun keyGenerated(contact: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun listMsgUpdated() {
         updateUI()
     }

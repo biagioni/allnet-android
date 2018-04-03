@@ -27,6 +27,7 @@ jclass messageClass;
 int sock;
 static pthread_mutex_t key_generated_mutex;
 static int waiting_for_key = 0;
+static char * keyContact = NULL;
 
 extern int astart_main(int argc, char ** argv);
 
@@ -44,6 +45,27 @@ struct data_to_send {
     char * message;
     size_t mlen;
 };
+
+JNIEnv *AttachJava() {
+    JavaVMAttachArgs args = {JNI_VERSION_1_6,0, 0};
+    (*g_vm)->AttachCurrentThread(g_vm, &g_env, &args);
+    return g_env;
+}
+
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *jvm, void *reserved) {
+    g_vm = jvm;
+    JNIEnv *NewEnv = AttachJava();
+    jclass mActivityClass= (*NewEnv)->FindClass(NewEnv, "org/alnet/allnet_android/NetworkAPI");
+    netAPI = (jclass)((*NewEnv)->NewGlobalRef(NewEnv, mActivityClass));
+
+    jclass mKeyExchangeClass= (*NewEnv)->FindClass(NewEnv, "org/alnet/allnet_android/activities/KeyExchangeActivity");
+    keyExchange = (jclass)((*NewEnv)->NewGlobalRef(NewEnv, mKeyExchangeClass));
+
+    jclass mMessageClass= (*NewEnv)->FindClass(NewEnv, "org/alnet/allnet_android/activities/MessageActivity");
+    messageClass = (jclass)((*NewEnv)->NewGlobalRef(NewEnv, mMessageClass));
+
+    return JNI_VERSION_1_6;
+}
 
 void packet_main_loop (void * arg)
 {
@@ -69,6 +91,22 @@ void packet_main_loop (void * arg)
         struct allnet_ack_info acks;
         struct allnet_mgmt_trace_reply * trace = NULL;
         time_t mtime = 0;
+
+        //received key generated
+        pthread_mutex_lock(&key_generated_mutex);  // don't allow changes to keyContact until a key has been generated
+        if (! waiting_for_key)  {
+            JNIEnv *NewEnv = AttachJava();
+            jmethodID methodid = (*NewEnv)->GetMethodID(NewEnv, netAPI, "callbackKeyGenerated", "(Ljava/lang/String;J)V");
+            if(!methodid) {
+                return;
+            }
+            g_obj = (jclass)((*NewEnv)->NewGlobalRef(NewEnv, g_obj));
+            jstring string = (*NewEnv)->NewStringUTF(NewEnv, keyContact);
+            (*NewEnv)->CallVoidMethod(NewEnv, g_obj , methodid, string);
+        }
+
+        pthread_mutex_unlock(&key_generated_mutex);
+
         int mlen = handle_packet (allnet_sock, packet, rcvd, pri,
                                   &peer, &kset, &message, &desc,
                                   &verified, &seq, &mtime,
@@ -250,27 +288,6 @@ int lastTime(char * contact)
     return latest_time;
 }
 
-JNIEnv *AttachJava() {
-    JavaVMAttachArgs args = {JNI_VERSION_1_6,0, 0};
-    (*g_vm)->AttachCurrentThread(g_vm, &g_env, &args);
-    return g_env;
-}
-
-JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *jvm, void *reserved) {
-    g_vm = jvm;
-    JNIEnv *NewEnv = AttachJava();
-    jclass mActivityClass= (*NewEnv)->FindClass(NewEnv, "org/alnet/allnet_android/NetworkAPI");
-    netAPI = (jclass)((*NewEnv)->NewGlobalRef(NewEnv, mActivityClass));
-
-    jclass mKeyExchangeClass= (*NewEnv)->FindClass(NewEnv, "org/alnet/allnet_android/activities/KeyExchangeActivity");
-    keyExchange = (jclass)((*NewEnv)->NewGlobalRef(NewEnv, mKeyExchangeClass));
-
-    jclass mMessageClass= (*NewEnv)->FindClass(NewEnv, "org/alnet/allnet_android/activities/MessageActivity");
-    messageClass = (jclass)((*NewEnv)->NewGlobalRef(NewEnv, mMessageClass));
-
-    return JNI_VERSION_1_6;
-}
-
 JNIEXPORT void JNICALL
 Java_org_alnet_allnet_1android_NetworkAPI_init(JNIEnv *env, jobject instance) {
     g_obj = (jclass)((*env)->NewGlobalRef(env, instance));
@@ -289,6 +306,8 @@ Java_org_alnet_allnet_1android_NetworkAPI_startAllnet(JNIEnv *env,
     struct allnet_log * alog = init_log ("ios xchat");
     p = init_pipe_descriptor(alog);
     int result = xchat_init("xchat",dir, p);
+
+    waiting_for_key = 0;
 
     sock = result;
 
@@ -411,7 +430,8 @@ Java_org_alnet_allnet_1android_activities_KeyExchangeActivity_requestNewContact(
 
     const char * secret1 = strcpy_malloc((*env)->GetStringUTFChars( env, s1 , NULL ),"secret1");
     const char * secret2 = strcpy_malloc((*env)->GetStringUTFChars( env, s2 , NULL ),"secret2");
-    const char * keyContact = strcpy_malloc ((*env)->GetStringUTFChars( env, contact , NULL ), "requestNewContact contact");
+
+    keyContact = strcpy_malloc ((*env)->GetStringUTFChars( env, contact , NULL ), "requestNewContact contact");
 
     arg->contact = strcpy_malloc ((*env)->GetStringUTFChars( env, contact , NULL ), "requestNewContact contact");
     arg->secret1 = NULL;

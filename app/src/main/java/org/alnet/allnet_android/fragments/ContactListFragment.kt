@@ -28,6 +28,10 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
         updateUI()
     }
 
+    override fun keyGenerated(contact: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     //TODO notifications for messages
     override fun listMsgUpdated() {}
 
