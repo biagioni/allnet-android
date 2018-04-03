@@ -16,6 +16,9 @@ interface INetwork {
     fun listMsgUpdated()
     fun keyGenerated(contact: String)
     fun newMessageReceived(contact: String, message: String)
+    fun keyExchanged(contact: String)
+    fun msgTrace(msg: String)
+    fun ackedMessage(contact: String)
 }
 
 object NetworkAPI{
@@ -63,6 +66,18 @@ object NetworkAPI{
 
     fun callbackKeyGenerated(contact: String){
         listener?.keyGenerated(contact)
+    }
+
+    fun callbackKeyExchanged(contact: String){
+        listener?.keyExchanged(contact)
+    }
+
+    fun callbackTrace(msg: String){
+        listener?.msgTrace(msg)
+    }
+
+    fun callbackAckMessages(contact: String){
+        listener?.ackedMessage(contact)
     }
 
     fun callbackNewMessage(contact: String, message: String){

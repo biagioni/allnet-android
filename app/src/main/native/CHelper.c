@@ -29,7 +29,14 @@ static pthread_mutex_t key_generated_mutex;
 static int waiting_for_key = 0;
 static char * keyContact = NULL;
 
+static char expecting_trace [MESSAGE_ID_SIZE];
+static int trace_count = 0;
+static unsigned long long int trace_start_time = 0;
+
 extern int astart_main(int argc, char ** argv);
+extern void trace_to_string (char * string, size_t slen,
+                             struct allnet_mgmt_trace_reply * trace,
+                             int trace_count, unsigned long long int trace_start_time);
 
 struct request_key_arg {
     int sock;
@@ -126,44 +133,58 @@ void packet_main_loop (void * arg)
                 jstring smessage = (*NewEnv)->NewStringUTF(NewEnv, message);
                 (*NewEnv)->CallVoidMethod(NewEnv, g_obj , methodid, contact, smessage);
                 /////////////////////////////////////////
+            }
+        } else if (mlen == -1) {   /* confirm successful key exchange */
 
-                char **groups = NULL;
-                int ngroups = member_of_groups_recursive(peer, &groups);
-                int ig;
-                for (ig = 0; ig < ngroups; ig++) {
-//                    if (is_visible (groups [ig]))
-//                        gui_callback_message_received (groups [ig], message, desc, seq,
-//                                                       mtime, broadcast, gui_sock);
-                }
-                if (groups != NULL)
-                    free(groups);
+            waiting_for_key = !waiting_for_key;
+
+            //key exchanged
+            jmethodID methodid = (*NewEnv)->GetMethodID(NewEnv, netAPI, "callbackKeyExchanged", "(Ljava/lang/String;)V");
+            if(!methodid) {
+                return;
             }
-            if ((!broadcast) &&
-                ((old_contact == NULL) ||
-                 (strcmp(old_contact, peer) != 0) || (old_kset != kset))) {
-                request_and_resend(allnet_sock, peer, kset, 1);
-                if (old_contact != NULL)
-                    free(old_contact);
-                old_contact = peer;
-                old_kset = kset;
-            } else { /* same peer or broadcast, do nothing */
-                free(peer);
+            g_obj = (jclass)((*NewEnv)->NewGlobalRef(NewEnv, g_obj));
+            jstring string = (*NewEnv)->NewStringUTF(NewEnv, keyContact);
+            (*NewEnv)->CallVoidMethod(NewEnv, g_obj , methodid, string);
+            ///////////////////////////////////////
+
+            pthread_mutex_lock(&key_generated_mutex);  // changing globals, forbid access for others that may also change them
+            pthread_mutex_unlock(&key_generated_mutex);
+
+        } else if (mlen == -2) {   /* confirm successful subscription */
+            printf ("got subscription %s\n", peer);
+        } else if ((mlen == -4) && (trace != NULL) &&
+                   (memcmp (trace->trace_id, expecting_trace, MESSAGE_ID_SIZE) == 0)) {  // got trace result
+            printf("got trace result with %d entries\n", trace->num_entries);
+            char string [10000];
+
+            trace_to_string(string, sizeof (string), trace, trace_count, trace_start_time);
+
+            //tracing
+            jmethodID methodid = (*NewEnv)->GetMethodID(NewEnv, netAPI, "callbackTrace", "(Ljava/lang/String;)V");
+            if(!methodid) {
+                return;
             }
-            free(message);
-            if (!broadcast)
-                free(desc);
+            g_obj = (jclass)((*NewEnv)->NewGlobalRef(NewEnv, g_obj));
+            jstring msg = (*NewEnv)->NewStringUTF(NewEnv, string);
+            (*NewEnv)->CallVoidMethod(NewEnv, g_obj , methodid, msg);
+            /////////////////////////////////////
         }
-//        } else if (mlen == -1) {   /* confirm successful key exchange */
-//            gui_callback_created (GUI_CALLBACK_CONTACT_CREATED, peer, gui_sock);
-//        } else if (mlen == -2) {   /* confirm successful subscription */
-//            gui_callback_created (GUI_CALLBACK_SUBSCRIPTION_COMPLETE, peer, gui_sock);
-//        } else if (mlen == -4) {   /* got a trace reply */
-//            gui_callback_trace_response (trace, gui_sock);
-//        }
         /* handle_packet may have changed what has and has not been acked */
         int i;
         for (i = 0; i < acks.num_acks; i++) {
-            //gui_callback_message_acked (acks.peers [i], acks.acks [i], gui_sock);
+            printf ("displaying ack sequence number %lld for peer %s\n", acks.acks[i], acks.peers[i]);
+
+            //ack messages
+            jmethodID methodid = (*NewEnv)->GetMethodID(NewEnv, netAPI, "callbackAckMessages", "(Ljava/lang/String;)V");
+            if(!methodid) {
+                return;
+            }
+            g_obj = (jclass)((*NewEnv)->NewGlobalRef(NewEnv, g_obj));
+            jstring contact = (*NewEnv)->NewStringUTF(NewEnv, acks.peers[i]);
+            (*NewEnv)->CallVoidMethod(NewEnv, g_obj , methodid, contact);
+            ////////////////////////////////////
+
             free (acks.peers [i]);
         }
     }

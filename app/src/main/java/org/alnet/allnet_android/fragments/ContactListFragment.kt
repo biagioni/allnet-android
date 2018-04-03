@@ -17,6 +17,18 @@ import org.alnet.allnet_android.model.ContactModel
 
 
 class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListener {
+    override fun keyExchanged(contact: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun msgTrace(msg: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun ackedMessage(contact: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun onclick(contact: ContactModel) {
         NetworkAPI.contact = contact.name
         NetworkAPI.clearMessages()

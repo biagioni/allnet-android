@@ -12,6 +12,17 @@ import org.alnet.allnet_android.adapters.MessageAdapter
 
 
 class MessageActivity : AppCompatActivity(), INetwork {
+    override fun keyExchanged(contact: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun msgTrace(msg: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun ackedMessage(contact: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     //todo list updated
     override fun listContactsUpdated() {
