@@ -32,6 +32,10 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override fun newMessageReceived(contact: String, message: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     //TODO notifications for messages
     override fun listMsgUpdated() {}
 

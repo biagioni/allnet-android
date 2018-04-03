@@ -92,11 +92,12 @@ void packet_main_loop (void * arg)
         struct allnet_mgmt_trace_reply * trace = NULL;
         time_t mtime = 0;
 
+        JNIEnv *NewEnv = AttachJava();
+
         //received key generated
         pthread_mutex_lock(&key_generated_mutex);  // don't allow changes to keyContact until a key has been generated
-        if (! waiting_for_key)  {
-            JNIEnv *NewEnv = AttachJava();
-            jmethodID methodid = (*NewEnv)->GetMethodID(NewEnv, netAPI, "callbackKeyGenerated", "(Ljava/lang/String;J)V");
+        if ((! waiting_for_key) && keyContact != NULL)  {
+            jmethodID methodid = (*NewEnv)->GetMethodID(NewEnv, netAPI, "callbackKeyGenerated", "(Ljava/lang/String;)V");
             if(!methodid) {
                 return;
             }
@@ -104,8 +105,8 @@ void packet_main_loop (void * arg)
             jstring string = (*NewEnv)->NewStringUTF(NewEnv, keyContact);
             (*NewEnv)->CallVoidMethod(NewEnv, g_obj , methodid, string);
         }
-
         pthread_mutex_unlock(&key_generated_mutex);
+        ///////////////////////////////
 
         int mlen = handle_packet (allnet_sock, packet, rcvd, pri,
                                   &peer, &kset, &message, &desc,
@@ -114,9 +115,18 @@ void packet_main_loop (void * arg)
 
         if ((mlen > 0) && (verified) && (! duplicate)) {
             if (!duplicate) {
-                // if (is_visible (peer))
-                //gui_callback_message_received (peer, message, desc, seq,
-                //                             mtime, broadcast, gui_sock);
+
+                //new message
+                jmethodID methodid = (*NewEnv)->GetMethodID(NewEnv, netAPI, "callbackNewMessage", "(Ljava/lang/String;Ljava/lang/String;)V");
+                if(!methodid) {
+                    return;
+                }
+                g_obj = (jclass)((*NewEnv)->NewGlobalRef(NewEnv, g_obj));
+                jstring contact = (*NewEnv)->NewStringUTF(NewEnv, peer);
+                jstring smessage = (*NewEnv)->NewStringUTF(NewEnv, message);
+                (*NewEnv)->CallVoidMethod(NewEnv, g_obj , methodid, contact, smessage);
+                /////////////////////////////////////////
+
                 char **groups = NULL;
                 int ngroups = member_of_groups_recursive(peer, &groups);
                 int ig;

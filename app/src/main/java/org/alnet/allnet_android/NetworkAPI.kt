@@ -15,6 +15,7 @@ interface INetwork {
     fun listContactsUpdated()
     fun listMsgUpdated()
     fun keyGenerated(contact: String)
+    fun newMessageReceived(contact: String, message: String)
 }
 
 object NetworkAPI{
@@ -62,6 +63,10 @@ object NetworkAPI{
 
     fun callbackKeyGenerated(contact: String){
         listener?.keyGenerated(contact)
+    }
+
+    fun callbackNewMessage(contact: String, message: String){
+        listener?.newMessageReceived(contact,message)
     }
 
     fun formatDate(time: Long): String{
