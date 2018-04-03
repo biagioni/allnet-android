@@ -1,9 +1,8 @@
 
-package gui.allnetui;
+package allnetui;
 
 import java.awt.Color;
 import java.util.Arrays;
-
 import utils.StatusPanel;
 
 /**

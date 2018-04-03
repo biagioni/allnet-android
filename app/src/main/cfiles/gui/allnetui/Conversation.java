@@ -1,4 +1,4 @@
-package gui.allnetui;
+package allnetui;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -1,4 +1,4 @@
-package gui.allnetui;
+package allnetui;
 
 import java.awt.*;
 import java.awt.event.ActionListener;

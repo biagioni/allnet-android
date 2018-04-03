@@ -1,4 +1,4 @@
-package gui.allnetui;
+package allnetui;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,7 +47,7 @@ public class ContactData {
     public boolean isBroadcast(String contactName) {
         try {
             return (contacts.get(contactName).isBroadcast());
-        } catch (NullPointerException e) {
+        } catch (java.lang.NullPointerException e) {
             return false;
         }
     }
@@ -55,7 +55,7 @@ public class ContactData {
     public boolean isVisible(String contactName) {
         try {
             return (contacts.get(contactName).isVisible());
-        } catch (NullPointerException e) {
+        } catch (java.lang.NullPointerException e) {
             return false;
         }
     }
@@ -63,7 +63,7 @@ public class ContactData {
     public Conversation getConversation(String contactName) {
         try {
             return (contacts.get(contactName).getConversation());
-        } catch (NullPointerException e) {
+        } catch (java.lang.NullPointerException e) {
             return null;
         }
     }
@@ -73,7 +73,7 @@ public class ContactData {
     public Iterator<String> getContactIterator() {
         try {
             return (contacts.keySet().iterator());
-        } catch (NullPointerException e) {
+        } catch (java.lang.NullPointerException e) {
             return null;
         }
     }
@@ -81,7 +81,7 @@ public class ContactData {
     public Contact getContact(String contactName) {
         try {
             return (contacts.get(contactName));
-        } catch (NullPointerException e) {
+        } catch (java.lang.NullPointerException e) {
             return null;
         }
     }

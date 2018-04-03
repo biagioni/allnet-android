@@ -1,4 +1,4 @@
-package gui.allnetui;
+package allnetui;
 
 public class ContactComparator implements java.util.Comparator<String> {
 

@@ -1,4 +1,4 @@
-package gui.allnetui;
+package allnetui;
 
 import java.awt.Color;
 import java.awt.Insets;
@@ -107,7 +107,7 @@ class UI extends ApplicationFrame {
                                                        broadcastBackgroundColor,
                                                        ackedBackgroundColor);
                     ContactsPanel contactsPanel =
-                      new ContactsPanel(" contacts<br>panel ", bgndColor,
+                      new ContactsPanel("&nbsp;contacts panel <br>&nbsp;loading contacts...", bgndColor,
                                         otherColor, broadcastContactColor,
                                         contactData);
                     String p = " exchange a key with a new contact<br>&nbsp;";
@@ -151,11 +151,11 @@ class UI extends ApplicationFrame {
                         for (String contactName : debugContactNames) {
                             controller.contactCreated(contactName);
                         }
-                        CoreAPI coreAPI = new CoreDebug();
+                        CoreAPI coreAPI = new CoreDebug ();
                         controller.setCore (coreAPI);
                     }
                     else {
-                        CoreConnect coreAPI = new CoreConnect(controller);
+                        CoreConnect coreAPI = new CoreConnect (controller);
                         controller.setCore (coreAPI);
                         coreAPI.start ();
                     }
