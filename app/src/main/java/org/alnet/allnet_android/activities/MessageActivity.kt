@@ -12,6 +12,14 @@ import org.alnet.allnet_android.adapters.MessageAdapter
 
 
 class MessageActivity : AppCompatActivity(), INetwork {
+    override fun generatedRandomKey(key: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun groupCreated(result: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun keyExchanged(contact: String) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

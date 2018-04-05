@@ -2,6 +2,7 @@ package org.alnet.allnet_android.activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -11,6 +12,16 @@ import org.alnet.allnet_android.NetworkAPI
 import org.alnet.allnet_android.R
 
 class KeyExchangeActivity : AppCompatActivity(), INetwork {
+    override fun groupCreated(result: Int) {
+        if (result == 1) {
+            tvInfo.setTextColor(resources.getColor(R.color.colorPrimary))
+            tvInfo.text = "Created group with success!"
+        }else{
+            tvInfo.setTextColor(resources.getColor(R.color.colorAccent))
+            tvInfo.text = "It was not possible to create the group" + name!!
+        }
+    }
+
     override fun listContactsUpdated() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -21,11 +32,15 @@ class KeyExchangeActivity : AppCompatActivity(), INetwork {
 
     override fun generatedRandomKey(key: String) {
         tvSecret.text = key
+        //todo nearby wireless
         NetworkAPI.requestNewContact(name!!,6,key,secret)
     }
 
     override fun keyGenerated(contact: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (name == contact){
+            tvInfo.setTextColor(resources.getColor(R.color.colorAccent))
+            tvInfo.text = "Key was sent\nWaiting for key from:\n" + contact
+        }
     }
 
     override fun newMessageReceived(contact: String, message: String) {
@@ -33,7 +48,11 @@ class KeyExchangeActivity : AppCompatActivity(), INetwork {
     }
 
     override fun keyExchanged(contact: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (name == contact) {
+            tvInfo.setTextColor(resources.getColor(R.color.colorPrimary))
+            tvInfo.text = "Key was exchanged with SUCCESS!!!"
+        }
+        NetworkAPI.completeExchange(contact)
     }
 
     override fun msgTrace(msg: String) {
@@ -62,11 +81,19 @@ class KeyExchangeActivity : AppCompatActivity(), INetwork {
 
         NetworkAPI.listener = this
 
-        NetworkAPI.generateRandomKey()
-
-
-        tvInfo.text = "Key exchange in progress\nWaiting for key from:\n " + name.toString()
-        tvOptionalSecret.text  = secret.toString()
+        if (connectionType == 2) {
+            tvSecret.text = "None"
+            tvOptionalSecret.text = "None"
+            NetworkAPI.createGroup(name!!)
+        }else{
+            NetworkAPI.generateRandomKey()
+            tvInfo.text = "Key exchange in progress\nWaiting for key from:\n " + name.toString()
+            if (secret.isNullOrEmpty()){
+                tvOptionalSecret.text = "None"
+            }else{
+                tvOptionalSecret.text  = secret.toString()
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -77,8 +104,8 @@ class KeyExchangeActivity : AppCompatActivity(), INetwork {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.menu.menu_key_exchange -> {
-                NetworkAPI.removeNewContac(name!!)
+            R.id.btnCancel -> {
+                NetworkAPI.removeNewContact(name!!)
                 finish()
             }
         }

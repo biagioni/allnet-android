@@ -11,12 +11,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a82c815b-52eb-4f8a-8b0d-ffc5cf0ea00e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/menu/menu_key_exchange.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.lock" afterPath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.lock" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/fileHashes/resourceHashesCache.bin" afterPath="$PROJECT_DIR$/.gradle/4.1/fileHashes/resourceHashesCache.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/taskHistory/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/4.1/taskHistory/fileSnapshots.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.bin" afterPath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.lock" afterPath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.lock" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/NetworkAPI.kt" afterPath="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/NetworkAPI.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/KeyExchangeActivity.kt" afterPath="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/KeyExchangeActivity.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/MessageActivity.kt" afterPath="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/MessageActivity.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/fragments/ContactListFragment.kt" afterPath="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/fragments/ContactListFragment.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/native/CHelper.c" afterPath="$PROJECT_DIR$/app/src/main/native/CHelper.c" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_key_exchange.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_key_exchange.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/build/classes/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -50,11 +59,11 @@
       <file leaf-file-name="CHelper.c" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/native/CHelper.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="592">
-              <caret line="489" column="57" lean-forward="true" selection-start-line="489" selection-start-column="42" selection-end-line="489" selection-end-column="57" />
+            <state relative-caret-position="6600">
+              <caret line="494" column="25" lean-forward="true" selection-start-line="494" selection-start-column="25" selection-end-line="494" selection-end-column="25" />
               <folding>
                 <element signature="e#49#65#0" expanded="true" />
-                <marker date="1522892233851" expanded="true" signature="11849:11978" ph="..." />
+                <marker date="1522895929046" expanded="true" signature="11849:11978" ph="..." />
               </folding>
             </state>
           </provider>
@@ -63,8 +72,8 @@
       <file leaf-file-name="NetworkAPI.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/NetworkAPI.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="748">
-              <caret line="107" column="48" lean-forward="false" selection-start-line="107" selection-start-column="48" selection-end-line="107" selection-end-column="48" />
+            <state relative-caret-position="396">
+              <caret line="113" column="23" lean-forward="false" selection-start-line="113" selection-start-column="23" selection-end-line="113" selection-end-column="23" />
               <folding>
                 <element signature="e#34#274#0" expanded="true" />
               </folding>
@@ -75,10 +84,10 @@
       <file leaf-file-name="KeyExchangeActivity.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/KeyExchangeActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="583">
-              <caret line="81" column="24" lean-forward="false" selection-start-line="81" selection-start-column="24" selection-end-line="81" selection-end-column="24" />
+            <state relative-caret-position="253">
+              <caret line="86" column="23" lean-forward="false" selection-start-line="86" selection-start-column="23" selection-end-line="86" selection-end-column="23" />
               <folding>
-                <element signature="e#45#376#0" expanded="true" />
+                <element signature="e#45#400#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -88,7 +97,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_key_exchange.xml">
           <provider editor-type-id="text-editor">
             <state relative-caret-position="315">
-              <caret line="21" column="12" lean-forward="false" selection-start-line="21" selection-start-column="12" selection-end-line="21" selection-end-column="12" />
+              <caret line="23" column="12" lean-forward="false" selection-start-line="23" selection-start-column="12" selection-end-line="23" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -2033,7 +2042,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/MainActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/arrays.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_contact_new.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/Client.kt" />
         <option value="$PROJECT_DIR$/app/src/main/cfiles/lib/util.c" />
@@ -2057,13 +2065,14 @@
         <option value="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/adapters/ContactAdapter.kt" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/contact_item.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/TabBarActivity.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/MessageActivity.kt" />
         <option value="$PROJECT_DIR$/app/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/fragments/ContactListFragment.kt" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_key_exchange.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_key_exchange.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/MessageActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/native/CHelper.c" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_key_exchange.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/NetworkAPI.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/fragments/ContactListFragment.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/KeyExchangeActivity.kt" />
       </list>
     </option>
@@ -2314,6 +2323,36 @@
               <option name="myItemId" value="res" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="values" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="allnet-android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="allnet-android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -2341,7 +2380,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="menu" />
+              <option name="myItemId" value="layout" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -2626,7 +2665,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522892233883" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522896651136" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
@@ -2674,7 +2713,7 @@
       </Profilers>
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522892233883" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522896651136" />
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -2857,7 +2896,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522892233884" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522896651137" />
       </method>
     </configuration>
     <list size="1">
@@ -2908,8 +2947,9 @@
     <frame x="46" y="25" width="1634" height="995" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.32977587" sideWeight="0.49497488" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32977587" sideWeight="0.49497488" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32977587" sideWeight="0.49748743" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928178" sideWeight="0.5339196" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -2936,7 +2976,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928178" sideWeight="0.5339196" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32977587" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
@@ -3027,13 +3066,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="6" column="50" lean-forward="false" selection-start-line="6" selection-start-column="50" selection-end-line="6" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="44" lean-forward="false" selection-start-line="3" selection-start-column="44" selection-end-line="3" selection-end-column="44" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -3048,6 +3081,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="303">
           <caret line="378" column="18" lean-forward="false" selection-start-line="378" selection-start-column="18" selection-end-line="378" selection-end-column="18" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -3271,13 +3305,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
           <caret line="13" column="1" lean-forward="false" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/fragments/MoreFragment.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="14" column="6" lean-forward="false" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -3285,6 +3313,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
           <caret line="39" column="73" lean-forward="false" selection-start-line="39" selection-start-column="73" selection-end-line="39" selection-end-column="73" />
+          <folding>
+            <element signature="e#43#387#0" expanded="false" />
+            <element signature="e#631#958#0" expanded="false" />
+            <element signature="e#1013#1089#0" expanded="false" />
+            <element signature="e#1209#1286#0" expanded="false" />
+            <element signature="e#1361#1536#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3292,6 +3327,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
           <caret line="30" column="47" lean-forward="false" selection-start-line="30" selection-start-column="47" selection-end-line="30" selection-end-column="47" />
+          <folding>
+            <element signature="e#43#326#0" expanded="false" />
+            <element signature="e#554#604#0" expanded="false" />
+            <element signature="e#652#692#0" expanded="false" />
+            <element signature="e#776#895#0" expanded="false" />
+            <element signature="e#1015#1102#0" expanded="false" />
+            <element signature="e#1177#1488#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3313,6 +3356,42 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="193">
           <caret line="992" column="4" lean-forward="false" selection-start-line="992" selection-start-column="4" selection-end-line="992" selection-end-column="4" />
+          <folding>
+            <marker date="1521695914907" expanded="false" signature="11478:11669" ph="..." />
+            <marker date="1521695914907" expanded="false" signature="11725:17617" ph="..." />
+            <marker date="1521695914907" expanded="false" signature="17671:18075" ph="..." />
+            <marker date="1521695914907" expanded="true" signature="18242:19239" ph="{...}" />
+            <marker date="1521695914907" expanded="false" signature="18439:18559" ph="..." />
+            <marker date="1521695914907" expanded="false" signature="19104:19126" ph="..." />
+            <marker date="1521695914907" expanded="true" signature="19473:20032" ph="{...}" />
+            <marker date="1521695914907" expanded="false" signature="20086:20474" ph="..." />
+            <marker date="1521695914907" expanded="true" signature="20699:22893" ph="{...}" />
+            <marker date="1521695914907" expanded="false" signature="20735:21830" ph="..." />
+            <marker date="1521695914907" expanded="true" signature="23067:24114" ph="{...}" />
+            <marker date="1521695914907" expanded="false" signature="23094:23735" ph="..." />
+            <marker date="1521695914907" expanded="true" signature="24368:26021" ph="{...}" />
+            <marker date="1521695914907" expanded="false" signature="24395:25620" ph="..." />
+            <marker date="1521695914907" expanded="true" signature="26161:28525" ph="{...}" />
+            <marker date="1521695914907" expanded="false" signature="26197:27539" ph="..." />
+            <marker date="1521695914907" expanded="false" signature="28546:30581" ph="..." />
+            <marker date="1521695914907" expanded="false" signature="30631:33069" ph="..." />
+            <marker date="1521695914907" expanded="true" signature="33166:33343" ph="{...}" />
+            <marker date="1521695914907" expanded="true" signature="33396:33783" ph="{...}" />
+            <marker date="1521695914907" expanded="true" signature="33870:34458" ph="{...}" />
+            <marker date="1521695914907" expanded="true" signature="33970:34088" ph="/.../" />
+            <marker date="1521695914907" expanded="true" signature="34501:43227" ph="{...}" />
+            <marker date="1521695914907" expanded="false" signature="35080:35171" ph="..." />
+            <marker date="1521695914907" expanded="false" signature="35722:36170" ph="..." />
+            <marker date="1521695914907" expanded="false" signature="36368:36494" ph="..." />
+            <marker date="1521695914907" expanded="true" signature="37175:37303" ph="/.../" />
+            <marker date="1521695914907" expanded="false" signature="37714:37814" ph="..." />
+            <marker date="1521695914907" expanded="false" signature="38105:38397" ph="..." />
+            <marker date="1521695914907" expanded="false" signature="38517:38843" ph="..." />
+            <marker date="1521695914907" expanded="false" signature="40021:40989" ph="..." />
+            <marker date="1521695914907" expanded="false" signature="42418:42731" ph="..." />
+            <marker date="1521695914907" expanded="false" signature="42918:43102" ph="..." />
+            <marker date="1521695914907" expanded="false" signature="43253:43325" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3331,13 +3410,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/navigation.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="44" lean-forward="false" selection-start-line="3" selection-start-column="36" selection-end-line="3" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/MessageActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="36" column="5" lean-forward="false" selection-start-line="36" selection-start-column="5" selection-end-line="36" selection-end-column="5" />
-          <folding>
-            <element signature="e#45#426#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="105">
+          <caret line="15" column="8" lean-forward="false" selection-start-line="15" selection-start-column="8" selection-end-line="15" selection-end-column="107" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -3346,7 +3442,6 @@
         <state relative-caret-position="375">
           <caret line="60" column="46" lean-forward="false" selection-start-line="60" selection-start-column="46" selection-end-line="60" selection-end-column="46" />
           <folding>
-            <element signature="e#45#566#0" expanded="false" />
             <element signature="e#756#1658#2" expanded="false" />
             <element signature="e#2271#2476#0" expanded="false" />
             <element signature="e#2499#2576#0" expanded="false" />
@@ -3354,11 +3449,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/fragments/ContactListFragment.kt">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/fragments/MoreFragment.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="631">
-          <caret line="61" column="0" lean-forward="true" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="135">
+          <caret line="14" column="6" lean-forward="false" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
+          <folding>
+            <element signature="e#458#589#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3373,14 +3470,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/navigation.xml">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/fragments/ContactListFragment.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="313">
+          <caret line="53" column="0" lean-forward="true" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
           <folding />
         </state>
       </provider>
-      <provider editor-type-id="android-designer2">
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_key_exchange.xml">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="23" column="12" lean-forward="false" selection-start-line="23" selection-start-column="12" selection-end-line="23" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer2">
         <state />
       </provider>
     </entry>
@@ -3395,44 +3500,33 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/native/CHelper.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="592">
-          <caret line="489" column="57" lean-forward="true" selection-start-line="489" selection-start-column="42" selection-end-line="489" selection-end-column="57" />
-          <folding>
-            <element signature="e#49#65#0" expanded="true" />
-            <marker date="1522892233851" expanded="true" signature="11849:11978" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_key_exchange.xml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="12" lean-forward="false" selection-start-line="21" selection-start-column="12" selection-end-line="21" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/NetworkAPI.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="748">
-          <caret line="107" column="48" lean-forward="false" selection-start-line="107" selection-start-column="48" selection-end-line="107" selection-end-column="48" />
+        <state relative-caret-position="396">
+          <caret line="113" column="23" lean-forward="false" selection-start-line="113" selection-start-column="23" selection-end-line="113" selection-end-column="23" />
           <folding>
             <element signature="e#34#274#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/native/CHelper.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6600">
+          <caret line="494" column="25" lean-forward="true" selection-start-line="494" selection-start-column="25" selection-end-line="494" selection-end-column="25" />
+          <folding>
+            <element signature="e#49#65#0" expanded="true" />
+            <marker date="1522895929046" expanded="true" signature="11849:11978" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/KeyExchangeActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="583">
-          <caret line="81" column="24" lean-forward="false" selection-start-line="81" selection-start-column="24" selection-end-line="81" selection-end-column="24" />
+        <state relative-caret-position="253">
+          <caret line="86" column="23" lean-forward="false" selection-start-line="86" selection-start-column="23" selection-end-line="86" selection-end-column="23" />
           <folding>
-            <element signature="e#45#376#0" expanded="true" />
+            <element signature="e#45#400#0" expanded="true" />
           </folding>
         </state>
       </provider>

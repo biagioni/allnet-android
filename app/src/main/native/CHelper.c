@@ -350,6 +350,8 @@ Java_org_alnet_allnet_1android_NetworkAPI_startAllnet(JNIEnv *env,
     (*env)->CallVoidMethod(env, g_obj , methodid, result);
 }
 
+
+///////////////////////Contact/Messages functions///////////////////////////////////
 JNIEXPORT void JNICALL
 Java_org_alnet_allnet_1android_NetworkAPI_getContacts(JNIEnv *env,
                                                       jobject instance) {
@@ -416,9 +418,10 @@ Java_org_alnet_allnet_1android_NetworkAPI_sendMessage(JNIEnv *env,
     send_message_in_separate_thread(sock, xcontact, message_to_send, length_to_send);
 }
 
+
 ///////////////////////Key exchange functions///////////////////////////////////
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAP_generateRandomKey(JNIEnv *env,
+Java_org_alnet_allnet_1android_NetworkAPI_generateRandomKey(JNIEnv *env,
                                                       jobject instance) {
 #define MAX_RANDOM  15
     char randomString [MAX_RANDOM];
@@ -499,4 +502,34 @@ Java_org_alnet_allnet_1android_NetworkAPI_removeNewContact(
     } else {
         printf("resend key for new contact %@: still generating key\n", ccontact);
     }
+}
+
+JNIEXPORT void JNICALL
+Java_org_alnet_allnet_1android_NetworkAPI_createGroup(
+        JNIEnv *env,
+        jobject instance,
+        jstring contact) {
+    const char * ccontact = strcpy_malloc((*env)->GetStringUTFChars( env, contact , NULL ),"contact");
+    int result = create_group(ccontact);
+    jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callbackGroupCreated",
+                                             "(I)V");
+    if(!methodid) {
+        return;
+    }
+    g_obj = (jclass)((*env)->NewGlobalRef(env, instance));
+
+    (*env)->CallVoidMethod(env, g_obj , methodid, result);
+}
+
+JNIEXPORT void JNICALL
+Java_org_alnet_allnet_1android_NetworkAPI_completeExchange(
+        JNIEnv *env,
+        jobject instance,
+        jstring contact) {
+    const char * ccontact = strcpy_malloc((*env)->GetStringUTFChars( env, contact , NULL ),"contact");
+    keyset * keys = NULL;
+    int nk = all_keys (ccontact, &keys);
+    for (int ik = 0; ik < nk; ik++)   // delete the exchange file, if any
+        incomplete_exchange_file(ccontact, keys [ik], NULL, NULL);
+    make_visible(ccontact);
 }

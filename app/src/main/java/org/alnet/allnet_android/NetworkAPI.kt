@@ -21,6 +21,7 @@ interface INetwork {
     fun keyExchanged(contact: String)
     fun msgTrace(msg: String)
     fun ackedMessage(contact: String)
+    fun groupCreated(result: Int)
 }
 
 object NetworkAPI{
@@ -79,6 +80,10 @@ object NetworkAPI{
         listener?.keyExchanged(contact)
     }
 
+    fun callbackGroupCreated(result: Int){
+        listener?.groupCreated(result)
+    }
+
     fun callbackTrace(msg: String){
         listener?.msgTrace(msg)
     }
@@ -105,5 +110,7 @@ object NetworkAPI{
     external fun generateRandomKey()
     external fun requestNewContact(name: String, hops: Int, secret: String, optionalSecret: String?)
     external fun resendKeyForNewContact(contact: String)
-    external fun removeNewContac(contact: String)
+    external fun removeNewContact(contact: String)
+    external fun createGroup(name: String)
+    external fun completeExchange(contact: String)
 }
