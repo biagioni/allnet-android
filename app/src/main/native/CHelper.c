@@ -416,7 +416,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_sendMessage(JNIEnv *env,
     send_message_in_separate_thread(sock, xcontact, message_to_send, length_to_send);
 }
 
-
+///////////////////////Key exchange functions///////////////////////////////////
 JNIEXPORT void JNICALL
 Java_org_alnet_allnet_1android_NetworkAP_generateRandomKey(JNIEnv *env,
                                                       jobject instance) {
@@ -438,7 +438,7 @@ Java_org_alnet_allnet_1android_NetworkAP_generateRandomKey(JNIEnv *env,
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAP_requestNewContact(
+Java_org_alnet_allnet_1android_NetworkAPI_requestNewContact(
         JNIEnv *env,
         jobject instance,
         jstring contact,
@@ -477,3 +477,26 @@ Java_org_alnet_allnet_1android_NetworkAP_requestNewContact(
     pthread_create(&thread, NULL, request_key, (void *) arg);
 }
 
+JNIEXPORT void JNICALL
+Java_org_alnet_allnet_1android_NetworkAPI_resendKeyForNewContact(
+        JNIEnv *env,
+        jobject instance,
+        jstring contact) {
+    const char * ccontact = strcpy_malloc((*env)->GetStringUTFChars( env, contact , NULL ),"contact");
+    delete_contact (ccontact);
+}
+
+JNIEXPORT void JNICALL
+Java_org_alnet_allnet_1android_NetworkAPI_removeNewContact(
+        JNIEnv *env,
+        jobject instance,
+        jstring contact) {
+    const char * ccontact = strcpy_malloc((*env)->GetStringUTFChars( env, contact , NULL ),"contact");
+    if (! waiting_for_key) {
+        printf("resending key to %@\n", ccontact);
+        resend_contact_key (sock, ccontact);
+        printf("resent key to %@\n", ccontact);
+    } else {
+        printf("resend key for new contact %@: still generating key\n", ccontact);
+    }
+}

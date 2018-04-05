@@ -104,4 +104,6 @@ object NetworkAPI{
     external fun sendMessage(message: String, contact: String)
     external fun generateRandomKey()
     external fun requestNewContact(name: String, hops: Int, secret: String, optionalSecret: String?)
+    external fun resendKeyForNewContact(contact: String)
+    external fun removeNewContac(contact: String)
 }
