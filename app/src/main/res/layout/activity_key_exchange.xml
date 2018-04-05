@@ -33,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
                 android:text="-"
+                android:textColor="#19BB7B"
                 android:textSize="20sp" />
 
             <TextView
@@ -50,6 +51,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
                 android:text="-"
+                android:textColor="#19BB7B"
                 android:textSize="20sp" />
 
             <TextView
@@ -57,15 +59,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:background="#EBEBF1"
                 android:fontFamily="@font/roboto_medium"
                 android:text="-"
+                android:textColor="#A85363"
                 android:textSize="14sp" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/btnResendKey"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:onClick="resendKey"
                 android:text="Resend key" />
         </LinearLayout>
     </ScrollView>

@@ -2,6 +2,9 @@ package org.alnet.allnet_android.activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import kotlinx.android.synthetic.main.activity_key_exchange.*
 import org.alnet.allnet_android.INetwork
 import org.alnet.allnet_android.NetworkAPI
@@ -65,4 +68,26 @@ class KeyExchangeActivity : AppCompatActivity(), INetwork {
         tvInfo.text = "Key exchange in progress\nWaiting for key from:\n " + name.toString()
         tvOptionalSecret.text  = secret.toString()
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_key_exchange, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.menu.menu_key_exchange -> {
+                NetworkAPI.removeNewContac(name!!)
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    fun resendKey(v: View){
+        NetworkAPI.resendKeyForNewContact(name!!)
+    }
 }
+
+
