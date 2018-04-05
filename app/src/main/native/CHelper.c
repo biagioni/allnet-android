@@ -22,8 +22,6 @@ jobject g_obj;
 jmethodID g_mid;
 JNIEnv *g_env;
 jclass netAPI;
-jclass keyExchange;
-jclass messageClass;
 int sock;
 static pthread_mutex_t key_generated_mutex;
 static int waiting_for_key = 0;
@@ -64,12 +62,6 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *jvm, void *reserved) {
     JNIEnv *NewEnv = AttachJava();
     jclass mActivityClass= (*NewEnv)->FindClass(NewEnv, "org/alnet/allnet_android/NetworkAPI");
     netAPI = (jclass)((*NewEnv)->NewGlobalRef(NewEnv, mActivityClass));
-
-    jclass mKeyExchangeClass= (*NewEnv)->FindClass(NewEnv, "org/alnet/allnet_android/activities/KeyExchangeActivity");
-    keyExchange = (jclass)((*NewEnv)->NewGlobalRef(NewEnv, mKeyExchangeClass));
-
-    jclass mMessageClass= (*NewEnv)->FindClass(NewEnv, "org/alnet/allnet_android/activities/MessageActivity");
-    messageClass = (jclass)((*NewEnv)->NewGlobalRef(NewEnv, mMessageClass));
 
     return JNI_VERSION_1_6;
 }
@@ -426,14 +418,14 @@ Java_org_alnet_allnet_1android_NetworkAPI_sendMessage(JNIEnv *env,
 
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_activities_KeyExchangeActivity_generateRandomKey(JNIEnv *env,
+Java_org_alnet_allnet_1android_NetworkAP_generateRandomKey(JNIEnv *env,
                                                       jobject instance) {
 #define MAX_RANDOM  15
     char randomString [MAX_RANDOM];
     random_string(&randomString, MAX_RANDOM);
     normalize_secret(&randomString);
 
-    jmethodID methodid = (*env)->GetMethodID(env, keyExchange, "callbackRandomKey",
+    jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callbackRandomKey",
                                              "(Ljava/lang/String;)V");
     if(!methodid) {
         return;
@@ -446,7 +438,7 @@ Java_org_alnet_allnet_1android_activities_KeyExchangeActivity_generateRandomKey(
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_activities_KeyExchangeActivity_requestNewContact(
+Java_org_alnet_allnet_1android_NetworkAP_requestNewContact(
         JNIEnv *env,
         jobject instance,
         jstring contact,

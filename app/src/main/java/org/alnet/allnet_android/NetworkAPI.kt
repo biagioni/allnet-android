@@ -1,6 +1,7 @@
 package org.alnet.allnet_android
 
 import android.util.Log
+import kotlinx.android.synthetic.main.activity_key_exchange.*
 import org.alnet.allnet_android.model.ContactModel
 import org.alnet.allnet_android.model.MessageModel
 import java.text.SimpleDateFormat
@@ -14,6 +15,7 @@ import java.util.*
 interface INetwork {
     fun listContactsUpdated()
     fun listMsgUpdated()
+    fun generatedRandomKey(key: String)
     fun keyGenerated(contact: String)
     fun newMessageReceived(contact: String, message: String)
     fun keyExchanged(contact: String)
@@ -64,6 +66,11 @@ object NetworkAPI{
         listener?.listMsgUpdated()
     }
 
+
+    fun callbackRandomKey(key: String){
+        listener?.generatedRandomKey(key)
+    }
+
     fun callbackKeyGenerated(contact: String){
         listener?.keyGenerated(contact)
     }
@@ -95,4 +102,6 @@ object NetworkAPI{
     external fun init()
     external fun getMessages(contact: String)
     external fun sendMessage(message: String, contact: String)
+    external fun generateRandomKey()
+    external fun requestNewContact(name: String, hops: Int, secret: String, optionalSecret: String?)
 }
