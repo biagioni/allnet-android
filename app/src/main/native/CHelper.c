@@ -14,6 +14,7 @@
 #include <xchat/gui_socket.h>
 #include <xchat/store.h>
 #include <fcntl.h>
+#include <strings.h>
 
 
 static pd p;
@@ -532,4 +533,73 @@ Java_org_alnet_allnet_1android_NetworkAPI_completeExchange(
     for (int ik = 0; ik < nk; ik++)   // delete the exchange file, if any
         incomplete_exchange_file(ccontact, keys [ik], NULL, NULL);
     make_visible(ccontact);
+}
+
+JNIEXPORT void JNICALL
+Java_org_alnet_allnet_1android_NetworkAPI_fecthIncompletedKeys(
+        JNIEnv *env,
+        jobject instance) {
+
+    char ** contatcs;
+    int result = incomplete_key_exchanges(&contatcs, NULL, NULL);
+    for (int i = 0; i<result; i++){
+        jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callbackIncompleteContacts", "(Ljava/lang/String;)V");
+        if(!methodid) {
+            return;
+        }
+        g_obj = (jclass)((*env)->NewGlobalRef(env, instance));
+        jstring string = (*env)->NewStringUTF(env, contatcs[i]);
+        (*env)->CallVoidMethod(env, g_obj , methodid, string);
+    }
+}
+
+JNIEXPORT void JNICALL
+Java_org_alnet_allnet_1android_NetworkAPI_getKeyForContact(
+        JNIEnv *env,
+        jobject instance,
+        jstring cont) {
+    char * result = NULL;
+    const char * ccontact = strcpy_malloc((*env)->GetStringUTFChars( env, cont , NULL ),"contact");
+    keyset * keys = NULL;
+    int nk = all_keys (ccontact, &keys);
+    for (int ki = 0; ki < nk; ki++) {
+        char * s1 = NULL;
+        char * s2 = NULL;
+        char * content = NULL;
+        incomplete_exchange_file(ccontact, keys [ki], &content, NULL);
+        if (content != NULL) {
+
+            char * first = strchr (content, '\n');
+            if (first != NULL) {
+                *first = '\0';  // null terminate hops count
+                s1 = first + 1;
+                char * second = strchr (s1, '\n');
+                if (second != NULL) {
+                    *second = '\0';  // null terminate first secret
+                    s2 = second + 1;
+                    char * third = strchr (s2, '\n');
+                    if (third != NULL) // null terminate second secret
+                        *third = '\0';
+                    if (*s2 == '\0')
+                        s2 = NULL;
+                }
+                if (s1 != NULL)
+                    result = s1;
+                if (s2 != NULL)
+                    result = s2;
+                free (content);
+            }
+        }
+        if (keys != NULL)
+            free (keys);
+    }
+    if (result != NULL){
+        jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callbackKeyForContact", "(Ljava/lang/String;)V");
+        if(!methodid) {
+            return;
+        }
+        g_obj = (jclass)((*env)->NewGlobalRef(env, instance));
+        jstring string = (*env)->NewStringUTF(env, result);
+        (*env)->CallVoidMethod(env, g_obj , methodid, string);
+    }
 }

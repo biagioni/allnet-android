@@ -12,6 +12,10 @@ import org.alnet.allnet_android.NetworkAPI
 import org.alnet.allnet_android.R
 
 class KeyExchangeActivity : AppCompatActivity(), INetwork {
+    override fun incompletedContactsUpdated() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun groupCreated(result: Int) {
         if (result == 1) {
             tvInfo.setTextColor(resources.getColor(R.color.colorPrimary))

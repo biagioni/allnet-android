@@ -12,6 +12,10 @@ import org.alnet.allnet_android.adapters.MessageAdapter
 
 
 class MessageActivity : AppCompatActivity(), INetwork {
+    override fun incompletedContactsUpdated() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun generatedRandomKey(key: String) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

@@ -17,6 +17,10 @@ import org.alnet.allnet_android.model.ContactModel
 
 
 class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListener {
+    override fun incompletedContactsUpdated() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun generatedRandomKey(key: String) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -60,7 +64,6 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
     override fun listMsgUpdated() {}
 
     var mRecyclerView: RecyclerView? = null
-    lateinit var networkAPI: NetworkAPI
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

@@ -4,6 +4,8 @@ package org.alnet.allnet_android.fragments
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,14 +14,63 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import kotlinx.android.synthetic.main.fragment_contact_new.view.*
+import org.alnet.allnet_android.INetwork
+import org.alnet.allnet_android.NetworkAPI
 import org.alnet.allnet_android.activities.KeyExchangeActivity
+import org.alnet.allnet_android.adapters.ContactIncompleteAdapter
 
 
-class ContactNewFragment : Fragment() {
+class ContactNewFragment : Fragment(), INetwork, ContactIncompleteAdapter.ItemClickListener {
+    override fun onclick(contact: String) {
+        editTextName?.setText(contact)
+        NetworkAPI.getKeyForContact(contact)
+    }
+
+    override fun incompletedContactsUpdated() {
+        updateUI()
+    }
+
+    override fun listContactsUpdated() {
+
+    }
+
+    override fun listMsgUpdated() {
+
+    }
+
+    override fun generatedRandomKey(key: String) {
+        editTextSecret?.setText(key)
+        sendInfo()
+    }
+
+    override fun keyGenerated(contact: String) {
+
+    }
+
+    override fun newMessageReceived(contact: String, message: String) {
+
+    }
+
+    override fun keyExchanged(contact: String) {
+
+    }
+
+    override fun msgTrace(msg: String) {
+
+    }
+
+    override fun ackedMessage(contact: String) {
+
+    }
+
+    override fun groupCreated(result: Int) {
+
+    }
 
     var spinner: Spinner? = null
     var editTextName: EditText? = null
     var editTextSecret: EditText? = null
+    var mRecyclerView: RecyclerView? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -35,16 +86,17 @@ class ContactNewFragment : Fragment() {
         editTextSecret = view.etSecret
 
         view.buttonRequest.setOnClickListener {
-            val name = editTextName!!.text
-            val secret = editTextSecret!!.text
-            val index = spinner!!.selectedItemPosition
-
-            val intent = Intent(activity, KeyExchangeActivity::class.java)
-            intent.putExtra("name", name)
-            intent.putExtra("secret", secret)
-            intent.putExtra("type", index)
-            startActivity(intent)
+            sendInfo()
         }
+
+        mRecyclerView = view.rvIncompletes
+        NetworkAPI.listener = this
+
+        NetworkAPI.incompleteContacts.clear()
+
+        NetworkAPI.fecthIncompletedKeys()
+
+        updateUI()
 
         return view
     }
@@ -53,5 +105,23 @@ class ContactNewFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
+    fun updateUI(){
+        val layoutManager = LinearLayoutManager(activity)
+        mRecyclerView!!.layoutManager = layoutManager
+        val adapter = ContactIncompleteAdapter(NetworkAPI.incompleteContacts, this);
+        mRecyclerView!!.adapter = adapter
+    }
+
+    fun sendInfo(){
+        val name = editTextName!!.text
+        val secret = editTextSecret!!.text
+        val index = spinner!!.selectedItemPosition
+
+        val intent = Intent(activity, KeyExchangeActivity::class.java)
+        intent.putExtra("name", name)
+        intent.putExtra("secret", secret)
+        intent.putExtra("type", index)
+        startActivity(intent)
+    }
 
 }

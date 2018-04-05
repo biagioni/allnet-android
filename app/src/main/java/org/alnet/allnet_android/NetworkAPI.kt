@@ -19,6 +19,7 @@ interface INetwork {
     fun keyGenerated(contact: String)
     fun newMessageReceived(contact: String, message: String)
     fun keyExchanged(contact: String)
+    fun incompletedContactsUpdated()
     fun msgTrace(msg: String)
     fun ackedMessage(contact: String)
     fun groupCreated(result: Int)
@@ -29,6 +30,7 @@ object NetworkAPI{
     var listener: INetwork? = null
     var socket: Int = 0
     var contacts = ArrayList<ContactModel>()
+    var incompleteContacts = ArrayList<String>()
     var messages = ArrayList<MessageModel>()
     var initialized = false
     var contact: String? = null
@@ -84,6 +86,15 @@ object NetworkAPI{
         listener?.groupCreated(result)
     }
 
+    fun callbackIncompleteContacts(contact: String){
+        incompleteContacts.add(contact)
+        listener?.incompletedContactsUpdated()
+    }
+
+    fun callbackKeyForContact(key: String){
+        listener?.generatedRandomKey(key)
+    }
+
     fun callbackTrace(msg: String){
         listener?.msgTrace(msg)
     }
@@ -113,4 +124,6 @@ object NetworkAPI{
     external fun removeNewContact(contact: String)
     external fun createGroup(name: String)
     external fun completeExchange(contact: String)
+    external fun fecthIncompletedKeys()
+    external fun getKeyForContact(contact: String)
 }
