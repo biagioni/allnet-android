@@ -5,9 +5,98 @@
     tools:context="org.alnet.allnet_android.fragments.MoreFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:layout_weight="0"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:text="Hops"
+                android:textColor="@android:color/black"
+                android:textSize="17sp" />
+
+            <EditText
+                android:id="@+id/etHops"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="number"
+                android:text="5"
+                android:textAlignment="center"
+                android:textColor="#AAAAAA" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="#EEEEEE" />
+
+        <Switch
+            android:id="@+id/switchDetails"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Show Details" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="#EEEEEE" />
+
+        <Button
+            android:id="@+id/buttonTrace"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Trace"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#006dfb" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:layout_weight="0"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:text="Output"
+            android:textAlignment="textStart"
+            android:textColor="@android:color/black"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/tvOutput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#EEEEEE"
+            android:fontFamily="@font/roboto_medium"
+            android:padding="8dp"
+            android:textColor="@android:color/black" />
+
+    </LinearLayout>
 
 </FrameLayout>
