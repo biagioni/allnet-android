@@ -32,10 +32,6 @@ class MoreFragment : Fragment(), INetwork {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun newMessageReceived(contact: String, message: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun keyExchanged(contact: String) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

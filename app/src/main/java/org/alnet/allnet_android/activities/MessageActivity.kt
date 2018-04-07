@@ -33,7 +33,9 @@ class MessageActivity : AppCompatActivity(), INetwork {
     }
 
     override fun ackedMessage(contact: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (NetworkAPI.contact == contact) {
+            updateUI()
+        }
     }
 
     //todo list updated
@@ -41,10 +43,6 @@ class MessageActivity : AppCompatActivity(), INetwork {
     }
 
     override fun keyGenerated(contact: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun newMessageReceived(contact: String, message: String) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -59,23 +57,27 @@ class MessageActivity : AppCompatActivity(), INetwork {
 
         NetworkAPI.listener = this
 
+        val layout = LinearLayoutManager(this)
+        rvMessage.layoutManager = layout
+
         supportActionBar!!.setTitle(NetworkAPI.contact)
         NetworkAPI.listMessages()
     }
 
     fun updateUI(){
-        val layout = LinearLayoutManager(this)
-        rvMessage.layoutManager = layout
-        val adapter = MessageAdapter(NetworkAPI.messages)
-        rvMessage.adapter = adapter
-        rvMessage.scrollToPosition(adapter.itemCount-1)
+        runOnUiThread {
+            val adapter = MessageAdapter(NetworkAPI.messages)
+            rvMessage.adapter = adapter
+            rvMessage.scrollToPosition(adapter.itemCount-1)
+        }
+
     }
 
     fun sendMessage(v: View){
         val msg = etText!!.text.toString()
         NetworkAPI.sendMessage(msg, NetworkAPI.contact!!)
         etText.text.clear()
-        NetworkAPI.listMessages()
+        NetworkAPI.getLastMessage(NetworkAPI.contact!!,msg)
     }
 
 }

@@ -47,10 +47,6 @@ class KeyExchangeActivity : AppCompatActivity(), INetwork {
         }
     }
 
-    override fun newMessageReceived(contact: String, message: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun keyExchanged(contact: String) {
         if (name == contact) {
             tvInfo.setTextColor(resources.getColor(R.color.colorPrimary))

@@ -17,7 +17,6 @@ interface INetwork {
     fun listMsgUpdated()
     fun generatedRandomKey(key: String)
     fun keyGenerated(contact: String)
-    fun newMessageReceived(contact: String, message: String)
     fun keyExchanged(contact: String)
     fun incompletedContactsUpdated()
     fun msgTrace(msg: String)
@@ -44,11 +43,8 @@ object NetworkAPI{
     }
 
     fun listMessages(){
-        getMessages(this.contact!!)
-    }
-
-    fun clearMessages(){
         messages.clear()
+        getMessages(this.contact!!)
     }
 
     fun callback(socket: Int) {
@@ -104,7 +100,9 @@ object NetworkAPI{
     }
 
     fun callbackNewMessage(contact: String, message: String){
-        listener?.newMessageReceived(contact,message)
+        if (this.contact == contact) {
+            getLastMessage(contact, message)
+        }
     }
 
     fun formatDate(time: Long): String{
@@ -117,6 +115,7 @@ object NetworkAPI{
     external fun getContacts()
     external fun init()
     external fun getMessages(contact: String)
+    external fun getLastMessage(contact: String, message: String)
     external fun sendMessage(message: String, contact: String)
     external fun generateRandomKey()
     external fun requestNewContact(name: String, hops: Int, secret: String, optionalSecret: String?)

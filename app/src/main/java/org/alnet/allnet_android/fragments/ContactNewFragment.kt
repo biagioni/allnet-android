@@ -47,10 +47,6 @@ class ContactNewFragment : Fragment(), INetwork, ContactIncompleteAdapter.ItemCl
 
     }
 
-    override fun newMessageReceived(contact: String, message: String) {
-
-    }
-
     override fun keyExchanged(contact: String) {
 
     }

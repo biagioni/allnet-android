@@ -38,12 +38,11 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
     }
 
     override fun ackedMessage(contact: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun onclick(contact: ContactModel) {
         NetworkAPI.contact = contact.name
-        NetworkAPI.clearMessages()
         val intent = Intent(activity, MessageActivity::class.java)
         startActivity(intent)
     }
@@ -54,10 +53,6 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
 
     override fun keyGenerated(contact: String) {
 
-    }
-
-    override fun newMessageReceived(contact: String, message: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     //TODO notifications for messages
