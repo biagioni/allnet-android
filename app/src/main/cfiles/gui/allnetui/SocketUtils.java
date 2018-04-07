@@ -1,7 +1,5 @@
-  package allnetui;
-  
-  import java.net.*;
-  
+  package gui.allnetui;
+
   /**
    *
    * @author Edoardo Biagioni, esb@hawaii.edu
@@ -251,23 +249,12 @@ System.out.println("hex for " + b + "/" + i + " is " + result);
         String codedReplacement = "&" + replacement + ";";
         return match.replaceAll(codedReplacement);
     }
-
+  
     public static String sanitizeForHtml (String message) {
         assert (htmlReplacements.length == htmlPatterns.length);
         for (int i = 0; i < htmlPatterns.length; i++) {
             message = sanitizeOnePattern(message,
                                          htmlPatterns[i], htmlReplacements[i]);
-        }
-        return message;
-    }
-
-    public static String makeFirstLineSmall (String message) {
-        String eol = System.getProperty("line.separator");
-        String[] lines = message.split(eol);
-        if (lines.length > 0) {
-            String first = "<small>" + lines[0] + "</small>";
-            String rest = message.substring(lines[0].length());
-            message = first + rest;
         }
         return message;
     }

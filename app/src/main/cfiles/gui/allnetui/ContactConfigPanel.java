@@ -1,10 +1,10 @@
-package allnetui;
+package gui.allnetui;
 
-import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.Border;
+
 import utils.CheckBoxPanel;
 import utils.ComboBoxPanel;
 import utils.ContactButtonPanel;

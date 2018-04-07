@@ -1,12 +1,12 @@
-package allnetui;
+package gui.allnetui;
 
-import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+
 import utils.HtmlLabel;
 import utils.ScrollPaneResizeAdapter;
 

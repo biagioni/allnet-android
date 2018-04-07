@@ -1,4 +1,4 @@
-package allnetui;
+package gui.allnetui;
 
 
 /**

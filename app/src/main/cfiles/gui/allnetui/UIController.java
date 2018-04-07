@@ -1,4 +1,4 @@
-package allnetui;
+package gui.allnetui;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import javax.swing.SwingUtilities;
+
 import utils.ApplicationFrame;
 import utils.ControllerInterface;
 import utils.tabbedpane.MyTabbedPane;
@@ -705,11 +706,11 @@ System.out.println("got secret " + secret + " for " + contactName);
             // no such tab, so make the conversation panel
             // (the contact's name is also the command prefix)
             if (!contactData.isBroadcast(contactName)) {
-                cp = new ConversationPanel(" conversation with " + contactName, 
+                cp = new ConversationPanel(" conversation with " + contactName,
                     contactName, contactName, true, myTabbedPane);
             }
             else {
-                cp = new ConversationPanel(" broadcast from " + contactName, 
+                cp = new ConversationPanel(" broadcast from " + contactName,
                     contactName, contactName, false, myTabbedPane);
             }
             cp.setName(contactName);
@@ -921,7 +922,7 @@ System.out.println("got secret " + secret + " for " + contactName);
                 String peer = cp.getContactName();
                 long seq = coreAPI.sendMessage(peer, msgText);
                 if (seq > 0) {
-                    long sentTime = new java.util.Date().getTime();
+                    long sentTime = new Date().getTime();
                     messageSent(peer, sentTime, seq, msgText);
 //                  System.out.println("UIController.java: sent to " + peer +
 //                                     ": " + msgText);
@@ -1085,9 +1086,7 @@ System.out.println("got secret " + secret + " for " + contactName);
         StringBuilder sb = new StringBuilder(timeText);
         sb.append("\n");
         sb.append(msg.text);
-        String html = SocketUtils.sanitizeForHtml(sb.toString());
-        // return (SocketUtils.makeFirstLineSmall(html));
-        return (html);
+        return (SocketUtils.sanitizeForHtml(sb.toString()));
     }
 
     // chop a line up into pieces <= max length

@@ -1,6 +1,5 @@
-package allnetui;
+package gui.allnetui;
 
-import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -8,6 +7,7 @@ import javax.swing.border.Border;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
+
 import utils.HtmlLabel;
 import utils.MessageBubble;
 import utils.RoundedBorder;
@@ -406,9 +406,8 @@ class ConversationPanel extends JPanel implements ComponentListener {
                 return;
             }
             lastResizingWidth = width;
+            // scrollPane.setViewportView(null);
             messagePanel = makeMessagePanel();
-            // force it to recalc chars per line
-            MessageBubble.setEstimatedCharsPerLine(0);
             for (MessageBubble<Message> b : bubbles) {
                 b.resizeBubble(width);
                 addBubble(b, false);

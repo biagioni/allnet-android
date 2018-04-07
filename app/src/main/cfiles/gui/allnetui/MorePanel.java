@@ -1,10 +1,10 @@
-package allnetui;
+package gui.allnetui;
 
-import java.awt.*;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
+
 import utils.HtmlLabel;
 
 /**

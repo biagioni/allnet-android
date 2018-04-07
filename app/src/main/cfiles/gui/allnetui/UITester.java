@@ -1,4 +1,4 @@
-package allnetui;
+package gui.allnetui;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
