@@ -15,6 +15,7 @@
 #include <xchat/store.h>
 #include <fcntl.h>
 #include <strings.h>
+#include <lib/trace_util.h>
 
 
 static pd p;
@@ -602,4 +603,22 @@ Java_org_alnet_allnet_1android_NetworkAPI_getKeyForContact(
         jstring string = (*env)->NewStringUTF(env, result);
         (*env)->CallVoidMethod(env, g_obj , methodid, string);
     }
+}
+
+///////////////////////more functions//////////////////////////
+
+JNIEXPORT void JNICALL
+Java_org_alnet_allnet_1android_NetworkAPI_startTrace(
+        JNIEnv *env,
+        jobject instance,
+        jint hops) {
+    int chops = (int)hops;
+    unsigned char addr [MESSAGE_ID_SIZE];
+    memset (&addr, 0, MESSAGE_ID_SIZE);
+    trace_count++;
+    trace_start_time = allnet_time_ms();
+    if (! start_trace(sock, addr , 0, chops, 0, expecting_trace)) {
+        printf("unable to start trace\n");
+    }
+
 }

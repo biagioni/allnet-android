@@ -126,4 +126,5 @@ object NetworkAPI{
     external fun completeExchange(contact: String)
     external fun fecthIncompletedKeys()
     external fun getKeyForContact(contact: String)
+    external fun startTrace(hops: Int)
 }
