@@ -41,7 +41,13 @@ class MoreFragment : Fragment(), INetwork {
     }
 
     override fun msgTrace(msg: String) {
-        tvOutput?.text = tvOutput?.text.toString() + "\n" + msg
+        activity.runOnUiThread {
+            if (tvOutput?.text?.count()!! > 0){
+                tvOutput?.text = tvOutput?.text.toString() + msg
+            }else {
+                tvOutput?.text =  msg
+            }
+        }
     }
 
     override fun ackedMessage(contact: String) {
@@ -62,6 +68,7 @@ class MoreFragment : Fragment(), INetwork {
         NetworkAPI.listener = this
 
         view.buttonTrace.setOnClickListener {
+            tvOutput?.text = ""
             val hops = view.etHops.text.toString().toInt()
             if (hops != null) {
                 NetworkAPI.startTrace(hops)
