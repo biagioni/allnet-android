@@ -1,11 +1,11 @@
 
-package gui.allnetui;
+package allnetui;
 
 /**
  *
  * @author Henry
  */
-public class Message implements Comparable<Message> {
+public class Message implements java.lang.Comparable<Message> {
 
     static final String SELF = "self-internal-unlikely-as-a-real-persons-name";
 

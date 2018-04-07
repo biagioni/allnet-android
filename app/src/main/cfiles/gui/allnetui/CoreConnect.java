@@ -1,5 +1,5 @@
 
-package gui.allnetui;
+package allnetui;
 
 /**
  * This class implements the AllNet API methods for the UI client by 
@@ -88,7 +88,7 @@ public class CoreConnect extends Thread implements CoreAPI {
                 new java.io.DataInputStream(this.sock.getInputStream());
             this.sockOut =
                 new java.io.DataOutputStream(this.sock.getOutputStream());
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             System.out.println("exception " + e + " creating socket");
         }
     }
@@ -107,7 +107,7 @@ public class CoreConnect extends Thread implements CoreAPI {
         String desc = SocketUtils.bString(value, messageEnd);
         int descEnd = messageEnd + desc.length() + 1;
         assert(descEnd == value.length);
-        String dm = desc + "\n" + message;
+        String dm = ((desc.length() > 0) ? (desc + "\n" + message) : message);
         if (incompletes.contains(peer)) {   // complete the exchange
             setComplete(peer);
             setVisible(peer);
@@ -218,7 +218,7 @@ public class CoreConnect extends Thread implements CoreAPI {
         try {
             this.sockOut.writeLong(arg.length);
             this.sockOut.write(arg);
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             System.out.println("exception " + e + " writing to socket");
             System.exit(0);
         }
@@ -241,7 +241,7 @@ public class CoreConnect extends Thread implements CoreAPI {
         } catch (java.io.EOFException e) {
             System.out.println("exception " + e + " reading from socket");
             System.exit(1);  // the socket is closed
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             System.out.println("exception " + e + " reading from socket");
             e.printStackTrace();
             System.exit(1);
@@ -302,7 +302,7 @@ public class CoreConnect extends Thread implements CoreAPI {
             byte[] request = new byte[1];
             request[0] = guiContacts;
             byte[] response = doRPC(request);
-            long count = SocketUtils.b64(response, 1);
+            long count = SocketUtils.b64(response, 1); 
             result = SocketUtils.bStringArray(response, 9, count);
             cachedContacts = new java.util.HashSet<String>();
             for (String contact: result) {
@@ -321,7 +321,7 @@ public class CoreConnect extends Thread implements CoreAPI {
             byte[] request = new byte[1];
             request[0] = guiSubscriptions;
             byte[] response = doRPC(request);
-            long count = SocketUtils.b64(response, 1);
+            long count = SocketUtils.b64(response, 1); 
             result = SocketUtils.bStringArray(response, 9, count);
             cachedSubscriptions = new java.util.HashSet<String>();
             for (String sub: result) {
@@ -373,7 +373,7 @@ public class CoreConnect extends Thread implements CoreAPI {
     private byte[] doRPCWithCode(byte code, String contact) {
         byte[] request = new byte[1 + SocketUtils.numBytes(contact) + 1];
         request[0] = code;
-        SocketUtils.wString(request, 1, contact);
+        SocketUtils.wString(request, 1, contact); 
         return doRPC(request);
     }
 
@@ -389,7 +389,7 @@ public class CoreConnect extends Thread implements CoreAPI {
         byte[] request = new byte[1 + 1 + SocketUtils.numBytes(contact) + 1];
         request[0] = code;
         request[1] = op;
-        SocketUtils.wString(request, 2, contact);
+        SocketUtils.wString(request, 2, contact); 
         return doRPC(request);
     }
 
@@ -451,8 +451,8 @@ public class CoreConnect extends Thread implements CoreAPI {
         byte[] request = new byte[1 + 1 + SocketUtils.numBytes(oldName) +
                                   SocketUtils.numBytes(newName) + 2];
         request[0] = guiRenameContact;
-        int index = SocketUtils.wString(request, 1, oldName);
-        SocketUtils.wString(request, index, newName);
+        int index = SocketUtils.wString(request, 1, oldName); 
+        SocketUtils.wString(request, index, newName); 
         byte[] response = doRPC(request);
         return (response [1] != 0);
     }
@@ -562,10 +562,10 @@ public class CoreConnect extends Thread implements CoreAPI {
             max = 0;  /* in gui_get_messages, 0 means all */
         byte[] request = new byte[9 + SocketUtils.numBytes(contact) + 1];
         request[0] = guiGetMessages;
-        SocketUtils.w64(request, 1, max);
-        SocketUtils.wString(request, 9, contact);
+        SocketUtils.w64(request, 1, max); 
+        SocketUtils.wString(request, 9, contact); 
         byte[] response = doRPC(request);
-        long count = SocketUtils.b64(response, 1);
+        long count = SocketUtils.b64(response, 1); 
         result = SocketUtils.bMessages(response, 9, count, contact, false);
         return result;
     }

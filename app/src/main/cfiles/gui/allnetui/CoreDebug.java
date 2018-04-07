@@ -1,4 +1,4 @@
-package gui.allnetui;
+package allnetui;
 
 /**
  * Implement the CoreAPI in a dummy class for use in debug mode

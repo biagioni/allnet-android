@@ -6,7 +6,7 @@
  *
  * @author Henry
  */
-package gui.utils.tabbedpane;
+package utils.tabbedpane;
 
 import java.awt.Dimension;
 import java.awt.Graphics;

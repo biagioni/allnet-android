@@ -41,7 +41,7 @@ extern void aip_main (int pipe1, int pipe2, char * fname);
 extern void abc_main (int pipe1, int pipe2, const char * ifopts);
 extern void adht_main (char * pname);
 extern void acache_main (char * pname);
-extern void acache_save_data(void);
+extern void acache_save_data (void);
 extern void traced_main (char * pname);
 extern void keyd_main (char * pname);
 extern void keyd_generate (char * pname);
@@ -337,7 +337,7 @@ static void print_pid (int fd, int pid)
 }
 #endif /* ALLNET_USE_FORK */
 
-static void replace_command (char * old, int olen, char * newTODO)
+static void replace_command (char * old, int olen, char * new)
 {
 #ifdef ALLNET_USE_FORK
   /* printf ("replacing %s ", old); */

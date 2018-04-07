@@ -33,9 +33,10 @@ extern void wp_to_bytes (int nbits, const uint64_t * n,
                          int dsize, char * data);
 
 /* only works if new_bits > old_bits */
-extern void wp_extend (int new_bits, uint64_t * newTODO, int old_bits, const uint64_t * old);
+extern void wp_extend (int new_bits, uint64_t * new,
+                       int old_bits, const uint64_t * old);
 /* only works if new_bits < old_bits */
-extern void wp_shrink (int new_bits, uint64_t * newTODO,
+extern void wp_shrink (int new_bits, uint64_t * new,
                        int old_bits, const uint64_t * old);
 
 extern int wp_is_zero (int nbits, const uint64_t * n);

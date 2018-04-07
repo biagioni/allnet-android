@@ -1,4 +1,4 @@
-package gui.utils;
+package utils;
 
 import java.awt.*;
 import java.awt.geom.Area;
