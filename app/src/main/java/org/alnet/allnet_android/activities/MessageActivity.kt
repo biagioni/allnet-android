@@ -14,40 +14,11 @@ import org.alnet.allnet_android.model.MessageModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-
+//todo color aging
 class MessageActivity : AppCompatActivity(), INetwork {
-    override fun incompletedContactsUpdated() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun generatedRandomKey(key: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun groupCreated(result: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun keyExchanged(contact: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun msgTrace(msg: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
     override fun ackedMessage(contact: String) {
-        if (NetworkAPI.contact == contact) {
-            updateUI()
-        }
-    }
-
-    //todo list updated
-    override fun listContactsUpdated() {
-    }
-
-    override fun keyGenerated(contact: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        updateUI()
     }
 
     override fun listMsgUpdated() {
@@ -66,6 +37,11 @@ class MessageActivity : AppCompatActivity(), INetwork {
 
         supportActionBar!!.setTitle(NetworkAPI.contact)
         NetworkAPI.listMessages()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        NetworkAPI.listener = null
     }
 
     fun updateUI(){

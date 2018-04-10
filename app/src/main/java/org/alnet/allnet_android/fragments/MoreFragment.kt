@@ -16,29 +16,6 @@ import org.alnet.allnet_android.R
 
 
 class MoreFragment : Fragment(), INetwork {
-    override fun listContactsUpdated() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun listMsgUpdated() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun generatedRandomKey(key: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun keyGenerated(contact: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun keyExchanged(contact: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun incompletedContactsUpdated() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
     override fun msgTrace(msg: String) {
         activity.runOnUiThread {
@@ -48,14 +25,6 @@ class MoreFragment : Fragment(), INetwork {
                 tvOutput?.text =  msg
             }
         }
-    }
-
-    override fun ackedMessage(contact: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun groupCreated(result: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     var tvOutput: TextView? = null

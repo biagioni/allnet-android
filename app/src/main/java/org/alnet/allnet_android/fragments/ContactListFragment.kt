@@ -17,29 +17,6 @@ import org.alnet.allnet_android.model.ContactModel
 
 
 class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListener {
-    override fun incompletedContactsUpdated() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun generatedRandomKey(key: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun groupCreated(result: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun keyExchanged(contact: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun msgTrace(msg: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun ackedMessage(contact: String) {
-
-    }
 
     override fun onclick(contact: ContactModel) {
         NetworkAPI.contact = contact.name
@@ -51,12 +28,10 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
         updateUI()
     }
 
-    override fun keyGenerated(contact: String) {
+    //TODO notifications for messages
+    override fun listMsgUpdated() {
 
     }
-
-    //TODO notifications for messages
-    override fun listMsgUpdated() {}
 
     var mRecyclerView: RecyclerView? = null
 
@@ -68,6 +43,11 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
 
         updateUI()
         return view
+    }
+
+    override fun onPause() {
+        super.onPause()
+        NetworkAPI.listener = null
     }
 
 

@@ -21,6 +21,7 @@ import org.alnet.allnet_android.adapters.ContactIncompleteAdapter
 
 
 class ContactNewFragment : Fragment(), INetwork, ContactIncompleteAdapter.ItemClickListener {
+
     override fun onclick(contact: String) {
         editTextName?.setText(contact)
         NetworkAPI.getKeyForContact(contact)
@@ -30,37 +31,9 @@ class ContactNewFragment : Fragment(), INetwork, ContactIncompleteAdapter.ItemCl
         updateUI()
     }
 
-    override fun listContactsUpdated() {
-
-    }
-
-    override fun listMsgUpdated() {
-
-    }
-
     override fun generatedRandomKey(key: String) {
         editTextSecret?.setText(key)
         sendInfo()
-    }
-
-    override fun keyGenerated(contact: String) {
-
-    }
-
-    override fun keyExchanged(contact: String) {
-
-    }
-
-    override fun msgTrace(msg: String) {
-
-    }
-
-    override fun ackedMessage(contact: String) {
-
-    }
-
-    override fun groupCreated(result: Int) {
-
     }
 
     var spinner: Spinner? = null

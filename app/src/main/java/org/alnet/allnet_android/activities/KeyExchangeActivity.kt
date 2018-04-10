@@ -12,9 +12,6 @@ import org.alnet.allnet_android.NetworkAPI
 import org.alnet.allnet_android.R
 
 class KeyExchangeActivity : AppCompatActivity(), INetwork {
-    override fun incompletedContactsUpdated() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
     override fun groupCreated(result: Int) {
         if (result == 1) {
@@ -24,14 +21,6 @@ class KeyExchangeActivity : AppCompatActivity(), INetwork {
             tvInfo.setTextColor(resources.getColor(R.color.colorAccent))
             tvInfo.text = "It was not possible to create the group" + name!!
         }
-    }
-
-    override fun listContactsUpdated() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun listMsgUpdated() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun generatedRandomKey(key: String) {
@@ -53,14 +42,6 @@ class KeyExchangeActivity : AppCompatActivity(), INetwork {
             tvInfo.text = "Key was exchanged with SUCCESS!!!"
         }
         NetworkAPI.completeExchange(contact)
-    }
-
-    override fun msgTrace(msg: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun ackedMessage(contact: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     var name: String? = null

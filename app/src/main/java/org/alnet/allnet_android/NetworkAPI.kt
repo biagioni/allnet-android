@@ -13,15 +13,15 @@ import java.util.*
  */
 
 interface INetwork {
-    fun listContactsUpdated()
-    fun listMsgUpdated()
-    fun generatedRandomKey(key: String)
-    fun keyGenerated(contact: String)
-    fun keyExchanged(contact: String)
-    fun incompletedContactsUpdated()
-    fun msgTrace(msg: String)
-    fun ackedMessage(contact: String)
-    fun groupCreated(result: Int)
+    fun listContactsUpdated(){}
+    fun listMsgUpdated(){}
+    fun generatedRandomKey(key: String){}
+    fun keyGenerated(contact: String){}
+    fun keyExchanged(contact: String){}
+    fun incompletedContactsUpdated(){}
+    fun msgTrace(msg: String){}
+    fun ackedMessage(contact: String){}
+    fun groupCreated(result: Int){}
 }
 
 object NetworkAPI{
@@ -96,13 +96,20 @@ object NetworkAPI{
     }
 
     fun callbackAckMessages(contact: String){
-        listener?.ackedMessage(contact)
+        if (!this.contact.isNullOrBlank()) {
+            if (this.contact == contact) {
+                listener?.ackedMessage(contact)
+            }
+        }
     }
 
     fun callbackNewMessage(contact: String, message: String){
-        if (this.contact == contact) {
-            listMessages()
+        if (!this.contact.isNullOrBlank()){
+            if (this.contact == contact) {
+                listMessages()
+            }
         }
+
     }
 
     fun formatDate(time: Long): String{
