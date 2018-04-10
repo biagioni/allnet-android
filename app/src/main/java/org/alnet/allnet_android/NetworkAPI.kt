@@ -59,9 +59,9 @@ object NetworkAPI{
         listener?.listContactsUpdated()
     }
 
-    fun callbackMessages(message: String, type: Int, time: Long){
+    fun callbackMessages(message: String, type: Int, time: Long, acked: Int){
         val formatted = formatDate(time)
-        messages.add(MessageModel(message,type, formatted))
+        messages.add(MessageModel(message,type, formatted, acked))
         listener?.listMsgUpdated()
     }
 
@@ -101,7 +101,7 @@ object NetworkAPI{
 
     fun callbackNewMessage(contact: String, message: String){
         if (this.contact == contact) {
-            getLastMessage(contact, message)
+            listMessages()
         }
     }
 
@@ -115,7 +115,6 @@ object NetworkAPI{
     external fun getContacts()
     external fun init()
     external fun getMessages(contact: String)
-    external fun getLastMessage(contact: String, message: String)
     external fun sendMessage(message: String, contact: String)
     external fun generateRandomKey()
     external fun requestNewContact(name: String, hops: Int, secret: String, optionalSecret: String?)

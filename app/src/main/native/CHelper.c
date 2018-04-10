@@ -388,50 +388,14 @@ Java_org_alnet_allnet_1android_NetworkAPI_getMessages(JNIEnv *env,
         for (int i = 0; i < messages_used; i++) {
             struct message_store_info mi = *(messages + (messages_used - i - 1));
 
-            jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callbackMessages", "(Ljava/lang/String;IJ)V");
+            jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callbackMessages", "(Ljava/lang/String;IJI)V");
             if(!methodid) {
                 return;
             }
             g_obj = (jclass)((*env)->NewGlobalRef(env, instance));
             jstring string = (*env)->NewStringUTF(env, mi.message);
             long time = mi.time + ALLNET_Y2K_SECONDS_IN_UNIX;
-            (*env)->CallVoidMethod(env, g_obj , methodid, string, mi.msg_type, time);
-
-        }
-    }
-    if (messages != NULL)
-        free_all_messages(messages, messages_used);
-}
-
-JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_getLastMessage(JNIEnv *env,
-                                                      jobject instance,
-                                                      jstring c,
-                                                        jstring msg) {
-
-    const char * contact = strcpy_malloc((*env)->GetStringUTFChars( env, c , NULL ),"contact");
-    const char * message = strcpy_malloc((*env)->GetStringUTFChars( env, msg , NULL ),"message");
-    update_time_read(contact);
-
-    struct message_store_info * messages = NULL;
-    int messages_used = 0;
-    int messages_allocated = 0;
-    list_all_messages (contact, &messages, &messages_allocated, &messages_used);
-
-    if (messages_used > 0) {
-        for (int i = messages_used-1; i > -1; i--) {
-            struct message_store_info mi = *(messages + (messages_used - i - 1));
-            int result = strcmp(message, mi.message);
-            if (result == 0){
-                jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callbackMessages", "(Ljava/lang/String;IJ)V");
-                if(!methodid) {
-                    return;
-                }
-                g_obj = (jclass)((*env)->NewGlobalRef(env, instance));
-                jstring string = (*env)->NewStringUTF(env, mi.message);
-                long time = mi.time + ALLNET_Y2K_SECONDS_IN_UNIX;
-                (*env)->CallVoidMethod(env, g_obj , methodid, string, mi.msg_type, time);
-            }
+            (*env)->CallVoidMethod(env, g_obj , methodid, string, mi.msg_type, time, mi.message_has_been_acked);
 
         }
     }

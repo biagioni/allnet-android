@@ -3,10 +3,11 @@ package org.alnet.allnet_android.adapters
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.message_item_received.view.*
+import kotlinx.android.synthetic.main.message_item_send.view.*
 import org.alnet.allnet_android.R
 import org.alnet.allnet_android.inflate
 import org.alnet.allnet_android.model.MSG_TYPE_RCVD
+import org.alnet.allnet_android.model.MSG_TYPE_SENT
 import org.alnet.allnet_android.model.MessageModel
 
 /**
@@ -41,6 +42,14 @@ class MessageAdapter(private val contacts: List<MessageModel>): RecyclerView.Ada
         fun bind(messageModel: MessageModel){
             itemView.tvMessage.text = messageModel.message
             itemView.tvDate.text = messageModel.date
+            if (messageModel.type == MSG_TYPE_SENT){
+                if (messageModel.message_has_been_acked == 0){
+                    itemView.layoutMsg.background = itemView.resources.getDrawable(R.drawable.msg_sent_background)
+                }else {
+                    itemView.layoutMsg.background = itemView.resources.getDrawable(R.drawable.msg_sent_acked_background)
+                }
+            }
+
         }
     }
 }

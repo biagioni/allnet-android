@@ -7,14 +7,9 @@ package org.alnet.allnet_android.model
 val MSG_TYPE_RCVD = 1
 val MSG_TYPE_SENT = 2
 
-class MessageModel(message: String, type: Int, date: String) {
-    var message: String
-    var type: Int
-    var date: String
-
-    init {
-        this.message = message
-        this.type = type
-        this.date = date
-    }
-}
+class MessageModel(
+    var message: String,
+    var type: Int,
+    var date: String,
+    var message_has_been_acked: Int
+)
