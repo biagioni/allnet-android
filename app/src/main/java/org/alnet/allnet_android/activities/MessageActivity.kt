@@ -18,7 +18,7 @@ import java.util.*
 class MessageActivity : AppCompatActivity(), INetwork {
 
     override fun ackedMessage(contact: String) {
-        updateUI()
+        NetworkAPI.listMessages()
     }
 
     override fun listMsgUpdated() {

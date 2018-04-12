@@ -6,6 +6,7 @@ package org.alnet.allnet_android.model
 
 val MSG_TYPE_RCVD = 1
 val MSG_TYPE_SENT = 2
+val MSG_TYPE_SENT_ACKED = 3
 
 class MessageModel(
     var message: String,

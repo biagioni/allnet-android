@@ -8,6 +8,7 @@ import org.alnet.allnet_android.R
 import org.alnet.allnet_android.inflate
 import org.alnet.allnet_android.model.MSG_TYPE_RCVD
 import org.alnet.allnet_android.model.MSG_TYPE_SENT
+import org.alnet.allnet_android.model.MSG_TYPE_SENT_ACKED
 import org.alnet.allnet_android.model.MessageModel
 
 /**
@@ -20,14 +21,22 @@ class MessageAdapter(private val messages: List<MessageModel>): RecyclerView.Ada
         if (viewType == MSG_TYPE_RCVD){
             val inflatedView = parent.inflate(R.layout.message_item_received, false)
             return ViewHolder(inflatedView)
-        }else {
+        }else if (viewType == MSG_TYPE_SENT){
             val inflatedView = parent.inflate(R.layout.message_item_send, false)
+            return ViewHolder(inflatedView)
+        }else{
+            val inflatedView = parent.inflate(R.layout.message_item_sent_acked, false)
             return ViewHolder(inflatedView)
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         val message = messages[position]
+        if (message.type == MSG_TYPE_SENT){
+            if (message.message_has_been_acked != 0) {
+                return MSG_TYPE_SENT_ACKED
+            }
+        }
         return message.type
     }
 
@@ -42,14 +51,6 @@ class MessageAdapter(private val messages: List<MessageModel>): RecyclerView.Ada
         fun bind(messageModel: MessageModel){
             itemView.tvMessage.text = messageModel.message
             itemView.tvDate.text = messageModel.date
-            if (messageModel.type == MSG_TYPE_SENT){
-                if (messageModel.message_has_been_acked == 0){
-                    itemView.layoutMsg.background = itemView.resources.getDrawable(R.drawable.msg_sent_background)
-                }else {
-                    itemView.layoutMsg.background = itemView.resources.getDrawable(R.drawable.msg_sent_acked_background)
-                }
-            }
-
         }
     }
 }
