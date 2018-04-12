@@ -374,7 +374,7 @@ JNIEXPORT void JNICALL
 Java_org_alnet_allnet_1android_NetworkAPI_getHiddenContacts(JNIEnv *env,
                                                       jobject instance) {
     char ** contatcs;
-    int nc = all_contacts(&contatcs);
+    int nc = invisible_contacts(&contatcs);
     for (int i = 0; i < nc; i++){
         jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callbackHiddenContacts", "(Ljava/lang/String;)V");
         if(!methodid) {
@@ -387,9 +387,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_getHiddenContacts(JNIEnv *env,
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_getMessages(JNIEnv *env,
-                                                                      jobject instance,
-                                                                      jstring c) {
+Java_org_alnet_allnet_1android_NetworkAPI_getMessages(JNIEnv *env, jobject instance, jstring c) {
 
     const char * contact = strcpy_malloc((*env)->GetStringUTFChars( env, c , NULL ),"contact");
 

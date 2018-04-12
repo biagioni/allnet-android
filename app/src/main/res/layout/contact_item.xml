@@ -8,11 +8,14 @@
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
     android:layout_marginStart="8dp"
+    android:foregroundGravity="center_vertical"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:foregroundGravity="center_vertical"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -28,7 +31,13 @@
             android:id="@+id/tvNotification"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_weight="0" />
+            android:layout_gravity="center"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="0"
+            android:background="@drawable/notification_rounded"
+            android:gravity="center"
+            android:textColor="@android:color/background_light" />
 
         <TextView
             android:id="@+id/tvName"

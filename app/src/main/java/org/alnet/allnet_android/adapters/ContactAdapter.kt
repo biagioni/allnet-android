@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.contact_item.view.*
+import org.alnet.allnet_android.NetworkAPI
 import org.alnet.allnet_android.R
 import org.alnet.allnet_android.inflate
 import org.alnet.allnet_android.model.ContactModel
@@ -11,7 +12,7 @@ import org.alnet.allnet_android.model.ContactModel
 /**
  * Created by docouto on 3/26/18.
  */
-class ContactAdapter(private val contacts: List<ContactModel>, listener: ItemClickListener): RecyclerView.Adapter<ContactAdapter.ViewHolder>() {
+class ContactAdapter(private val contacts: List<ContactModel>, val sets: Boolean, listener: ItemClickListener): RecyclerView.Adapter<ContactAdapter.ViewHolder>() {
 
     public interface ItemClickListener{
         fun onclick(contact: ContactModel)
@@ -42,12 +43,25 @@ class ContactAdapter(private val contacts: List<ContactModel>, listener: ItemCli
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val contact = contacts[position]
         if (contact.type != 2) {
-            holder.bind(contact, listener)
+            holder.bind(contact, listener, sets)
         }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(contact: ContactModel, listener: ItemClickListener){
+        fun bind(contact: ContactModel, listener: ItemClickListener, sets: Boolean){
+            if (NetworkAPI.unreadMessages.contains(contact.name)){
+                itemView.tvNotification.visibility = View.VISIBLE
+                val count = NetworkAPI.unreadMessages.filter { it == contact.name }.count()
+                itemView.tvNotification.setText(count.toString())
+            }else{
+                itemView.tvNotification.visibility = View.INVISIBLE
+            }
+            if (sets){
+                itemView.ivSettings.visibility = View.VISIBLE
+            }else{
+                itemView.ivSettings.visibility = View.INVISIBLE
+            }
+
             itemView.tvName.text = contact.name
             itemView.tvDate.text = contact.lastMessage
 

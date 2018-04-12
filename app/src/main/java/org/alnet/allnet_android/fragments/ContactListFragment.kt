@@ -20,11 +20,16 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
 
     override fun onclick(contact: ContactModel) {
         NetworkAPI.contact = contact.name
+        NetworkAPI.unreadMessages.removeAll { it == contact.name }
         val intent = Intent(activity, MessageActivity::class.java)
         startActivity(intent)
     }
 
     override fun listContactsUpdated() {
+        updateUI(NetworkAPI.contacts)
+    }
+
+    override fun newMsgReceived(contact: String) {
         updateUI(NetworkAPI.contacts)
     }
 
@@ -52,7 +57,6 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
         val view  = inflater!!.inflate(R.layout.fragment_contact_list, container, false)
         mRecyclerView = view.recyclerView
         NetworkAPI.listener = this
-
         updateUI(NetworkAPI.contacts)
         return view
     }
@@ -70,9 +74,9 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
         when (item?.itemId) {
             R.id.menuEdit -> {
                 if (!settings){
+                    settings = true
                     NetworkAPI.hiddencontacts.clear()
                     NetworkAPI.getHiddenContacts()
-                    settings = true
                 }else {
                     settings = false
                     updateUI(NetworkAPI.contacts)
@@ -84,10 +88,12 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
 
 
     fun updateUI(contacts: ArrayList<ContactModel>){
-        val layoutManager = LinearLayoutManager(activity)
-        mRecyclerView!!.layoutManager = layoutManager
-        val adapter = ContactAdapter(contacts, this);
-        mRecyclerView!!.adapter = adapter
+        activity.runOnUiThread {
+            val layoutManager = LinearLayoutManager(activity)
+            mRecyclerView!!.layoutManager = layoutManager
+            val adapter = ContactAdapter(contacts, settings, this);
+            mRecyclerView!!.adapter = adapter
+        }
     }
 
 }

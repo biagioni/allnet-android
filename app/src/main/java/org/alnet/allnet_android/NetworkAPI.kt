@@ -16,6 +16,7 @@ interface INetwork {
     fun listContactsUpdated(){}
     fun listHiddenContactsUpdated(){}
     fun listMsgUpdated(){}
+    fun newMsgReceived(contact: String){}
     fun generatedRandomKey(key: String){}
     fun keyGenerated(contact: String){}
     fun keyExchanged(contact: String){}
@@ -33,6 +34,7 @@ object NetworkAPI{
     var hiddencontacts = ArrayList<ContactModel>()
     var incompleteContacts = ArrayList<String>()
     var messages = ArrayList<MessageModel>()
+    var unreadMessages = ArrayList<String>()
     var initialized = false
     var contact: String? = null
 
@@ -102,15 +104,11 @@ object NetworkAPI{
         listener?.msgTrace(msg)
     }
 
-    fun callbackAckMessages(contact: String){
+    fun callbackAckMessages(contact: String) {
         if (!this.contact.isNullOrBlank()) {
             if (this.contact == contact) {
                 listener?.ackedMessage(contact)
-            } else {
-                //todo notification
             }
-        }else{
-            //todo notification
         }
     }
 
@@ -118,9 +116,15 @@ object NetworkAPI{
         if (!this.contact.isNullOrBlank()){
             if (this.contact == contact) {
                 listMessages()
+            }else {
+                unreadMessages.add(contact)
+                listener?.newMsgReceived(contact)
             }
+        }else{
+            unreadMessages.add(contact)
+            listener?.newMsgReceived(contact)
+            //todo notification
         }
-
     }
 
     fun formatDate(time: Long): String{
