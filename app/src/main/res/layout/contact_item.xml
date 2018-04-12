@@ -47,6 +47,7 @@
             android:layout_height="25dp"
             android:layout_weight="0"
             android:scaleType="fitCenter"
+            android:visibility="invisible"
             app:srcCompat="@drawable/settings" />
     </LinearLayout>
 
