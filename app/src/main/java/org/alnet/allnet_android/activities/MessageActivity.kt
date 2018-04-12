@@ -41,7 +41,7 @@ class MessageActivity : AppCompatActivity(), INetwork {
 
     override fun onStop() {
         super.onStop()
-        NetworkAPI.listener = null
+        NetworkAPI.contact = null
     }
 
     fun updateUI(){

@@ -5,6 +5,8 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_tab_bar.*
 import org.alnet.allnet_android.NetworkAPI
 import org.alnet.allnet_android.R

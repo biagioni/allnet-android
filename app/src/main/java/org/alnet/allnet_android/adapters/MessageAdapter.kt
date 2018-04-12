@@ -14,7 +14,7 @@ import org.alnet.allnet_android.model.MessageModel
  * Created by docouto on 3/26/18.
  */
 
-class MessageAdapter(private val contacts: List<MessageModel>): RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
+class MessageAdapter(private val messages: List<MessageModel>): RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         if (viewType == MSG_TYPE_RCVD){
@@ -27,15 +27,15 @@ class MessageAdapter(private val contacts: List<MessageModel>): RecyclerView.Ada
     }
 
     override fun getItemViewType(position: Int): Int {
-        val contact = contacts[position]
-        return contact.type
+        val message = messages[position]
+        return message.type
     }
 
-    override fun getItemCount() = contacts.size
+    override fun getItemCount() = messages.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val contact = contacts[position]
-        holder.bind(contact)
+        val message = messages[position]
+        holder.bind(message)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

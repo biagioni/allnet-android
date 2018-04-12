@@ -24,15 +24,26 @@ class ContactAdapter(private val contacts: List<ContactModel>, listener: ItemCli
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val inflatedView = parent.inflate(R.layout.contact_item, false)
-        return ViewHolder(inflatedView)
+        if (viewType == 2){
+            val inflatedView = parent.inflate(R.layout.item_header_hidden, false)
+            return ViewHolder(inflatedView)
+        }else {
+            val inflatedView = parent.inflate(R.layout.contact_item, false)
+            return ViewHolder(inflatedView)
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return contacts[position].type
     }
 
     override fun getItemCount() = contacts.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val contact = contacts[position]
-        holder.bind(contact, listener)
+        if (contact.type != 2) {
+            holder.bind(contact, listener)
+        }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
