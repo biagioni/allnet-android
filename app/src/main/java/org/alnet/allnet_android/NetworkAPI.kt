@@ -14,6 +14,7 @@ import java.util.*
 
 interface INetwork {
     fun listContactsUpdated(){}
+    fun listHiddenContactsUpdated(){}
     fun listMsgUpdated(){}
     fun generatedRandomKey(key: String){}
     fun keyGenerated(contact: String){}
@@ -29,6 +30,7 @@ object NetworkAPI{
     var listener: INetwork? = null
     var socket: Int = 0
     var contacts = ArrayList<ContactModel>()
+    var hiddencontacts = ArrayList<ContactModel>()
     var incompleteContacts = ArrayList<String>()
     var messages = ArrayList<MessageModel>()
     var initialized = false
@@ -54,9 +56,14 @@ object NetworkAPI{
 
     fun callbackContacts(contact: String, time: Long){
         val formatted = formatDate(time)
-        contacts.add(ContactModel(contact, formatted))
+        contacts.add(ContactModel(contact, formatted, 1))
         contacts.sortByDescending { it.lastMessage }
         listener?.listContactsUpdated()
+    }
+
+    fun callbackHiddenContacts(contact: String){
+        hiddencontacts.add(ContactModel(contact, "", 0))
+        listener?.listHiddenContactsUpdated()
     }
 
     fun callbackMessages(message: String, type: Int, time: Long, acked: Int){
@@ -99,7 +106,11 @@ object NetworkAPI{
         if (!this.contact.isNullOrBlank()) {
             if (this.contact == contact) {
                 listener?.ackedMessage(contact)
+            } else {
+                //todo notification
             }
+        }else{
+            //todo notification
         }
     }
 
@@ -120,6 +131,7 @@ object NetworkAPI{
 
     external fun startAllnet(path: String): Int
     external fun getContacts()
+    external fun getHiddenContacts()
     external fun init()
     external fun getMessages(contact: String)
     external fun sendMessage(message: String, contact: String)

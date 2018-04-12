@@ -371,6 +371,22 @@ Java_org_alnet_allnet_1android_NetworkAPI_getContacts(JNIEnv *env,
 }
 
 JNIEXPORT void JNICALL
+Java_org_alnet_allnet_1android_NetworkAPI_getHiddenContacts(JNIEnv *env,
+                                                      jobject instance) {
+    char ** contatcs;
+    int nc = all_contacts(&contatcs);
+    for (int i = 0; i < nc; i++){
+        jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callbackHiddenContacts", "(Ljava/lang/String;)V");
+        if(!methodid) {
+            return;
+        }
+        g_obj = (jclass)((*env)->NewGlobalRef(env, instance));
+        jstring string = (*env)->NewStringUTF(env, contatcs[i]);
+        (*env)->CallVoidMethod(env, g_obj , methodid, string);
+    }
+}
+
+JNIEXPORT void JNICALL
 Java_org_alnet_allnet_1android_NetworkAPI_getMessages(JNIEnv *env,
                                                                       jobject instance,
                                                                       jstring c) {
