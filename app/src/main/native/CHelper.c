@@ -635,3 +635,14 @@ Java_org_alnet_allnet_1android_NetworkAPI_startTrace(
     }
 
 }
+
+///////////////////////////settings functions /////////////////////////////
+JNIEXPORT jint JNICALL
+Java_org_alnet_allnet_1android_NetworkAPI_isGroup(
+        JNIEnv *env,
+        jobject instance,
+        jstring contact) {
+    const char * ccontact = strcpy_malloc((*env)->GetStringUTFChars( env, contact , NULL ),"contact");
+    int result = is_group(ccontact);
+    return result;
+}

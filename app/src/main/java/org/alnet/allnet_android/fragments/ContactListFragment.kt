@@ -10,6 +10,7 @@ import android.view.*
 import kotlinx.android.synthetic.main.fragment_contact_list.view.*
 import org.alnet.allnet_android.*
 import org.alnet.allnet_android.activities.MessageActivity
+import org.alnet.allnet_android.activities.SettingsActivity
 import org.alnet.allnet_android.adapters.ContactAdapter
 import org.alnet.allnet_android.model.ContactModel
 
@@ -20,9 +21,15 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
 
     override fun onclick(contact: ContactModel) {
         NetworkAPI.contact = contact.name
-        NetworkAPI.unreadMessages.removeAll { it == contact.name }
-        val intent = Intent(activity, MessageActivity::class.java)
-        startActivity(intent)
+        if (settings){
+            val intent = Intent(activity, SettingsActivity::class.java)
+            startActivity(intent)
+        }else{
+            NetworkAPI.unreadMessages.removeAll { it == contact.name }
+            val intent = Intent(activity, MessageActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     override fun listContactsUpdated() {
