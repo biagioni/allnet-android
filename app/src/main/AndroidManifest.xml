@@ -46,7 +46,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.alnet.allnet_android.activities.TabBarActivity" />
         </activity>
-
+        <activity android:name=".activities.SettingsActivity"></activity>
     </application>
 
 </manifest>
