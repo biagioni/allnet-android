@@ -501,7 +501,9 @@ Java_org_alnet_allnet_1android_NetworkAPI_resendKeyForNewContact(
         jobject instance,
         jstring contact) {
     const char * ccontact = strcpy_malloc((*env)->GetStringUTFChars( env, contact , NULL ),"contact");
-    delete_contact (ccontact);
+    if (! waiting_for_key) {
+        resend_contact_key (sock, ccontact);
+    }
 }
 
 JNIEXPORT void JNICALL

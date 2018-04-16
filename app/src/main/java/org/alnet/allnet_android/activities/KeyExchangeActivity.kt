@@ -70,25 +70,31 @@ class KeyExchangeActivity : AppCompatActivity(), INetwork {
     //-----------NetworkAPI delegation----------------------
 
     override fun groupCreated(result: Int) {
-        if (result == 1) {
-            tvInfo.setTextColor(resources.getColor(R.color.colorPrimary))
-            tvInfo.text = "Created group with success!"
-        }else{
-            tvInfo.setTextColor(resources.getColor(R.color.colorAccent))
-            tvInfo.text = "It was not possible to create the group" + name!!
+        runOnUiThread {
+            if (result == 1) {
+                tvInfo.setTextColor(resources.getColor(R.color.colorPrimary))
+                tvInfo.text = "Created group with success!"
+            } else {
+                tvInfo.setTextColor(resources.getColor(R.color.colorAccent))
+                tvInfo.text = "It was not possible to create the group" + name!!
+            }
         }
     }
 
     override fun generatedRandomKey(key: String) {
-        tvSecret.text = key
-        //todo nearby wireless
-        NetworkAPI.requestNewContact(name!!,6,key,secret)
+        runOnUiThread {
+            tvSecret.text = key
+            //todo nearby wireless
+            NetworkAPI.requestNewContact(name!!, 6, key, secret)
+        }
     }
 
     override fun keyGenerated(contact: String) {
         if (name == contact){
-            tvInfo.setTextColor(resources.getColor(R.color.colorAccent))
-            tvInfo.text = "Key was sent\nWaiting for key from:\n" + contact
+            runOnUiThread {
+                tvInfo.setTextColor(resources.getColor(R.color.colorAccent))
+                tvInfo.text = "Key was sent\nWaiting for key from:\n" + contact
+            }
         }
     }
 
