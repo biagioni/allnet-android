@@ -73,6 +73,14 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
         NetworkAPI.listener = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        settings = false
+        NetworkAPI.listener = this
+        NetworkAPI.contacts.clear()
+        NetworkAPI.getContacts()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater!!.inflate(R.menu.menu_contacts, menu)
         super.onCreateOptionsMenu(menu, inflater)

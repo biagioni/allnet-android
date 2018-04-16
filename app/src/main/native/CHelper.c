@@ -646,3 +646,82 @@ Java_org_alnet_allnet_1android_NetworkAPI_isGroup(
     int result = is_group(ccontact);
     return result;
 }
+
+JNIEXPORT jstring JNICALL
+Java_org_alnet_allnet_1android_NetworkAPI_conversationSize(
+        JNIEnv *env,
+        jobject instance,
+        jstring contact) {
+
+    const char * ccontact = strcpy_malloc((*env)->GetStringUTFChars( env, contact , NULL ),"contact");
+    int64_t sizeInBytes = conversation_size (ccontact);
+    int64_t sizeInMegabytes = sizeInBytes / (1000 * 1000);
+    char sizeBuf [100];
+    if (sizeInMegabytes >= 10)
+        snprintf (sizeBuf, sizeof (sizeBuf), "%" PRId64 "", sizeInMegabytes);
+    else
+        snprintf (sizeBuf, sizeof (sizeBuf), "%" PRId64 ".%02" PRId64 "", sizeInMegabytes, (sizeInBytes / 10000) % 100);
+    jstring string = (*env)->NewStringUTF(env, sizeBuf);
+    return string;
+}
+
+JNIEXPORT jint JNICALL
+Java_org_alnet_allnet_1android_NetworkAPI_isInvisible(
+        JNIEnv *env,
+        jobject instance,
+        jstring contact) {
+    const char * ccontact = strcpy_malloc((*env)->GetStringUTFChars( env, contact , NULL ),"contact");
+    int result = is_invisible(ccontact);
+    return result;
+}
+
+JNIEXPORT jint JNICALL
+Java_org_alnet_allnet_1android_NetworkAPI_deleteConversation(
+        JNIEnv *env,
+        jobject instance,
+        jstring contact) {
+    const char * ccontact = strcpy_malloc((*env)->GetStringUTFChars( env, contact , NULL ),"contact");
+    int result = delete_conversation(ccontact);
+    return result;
+}
+
+JNIEXPORT jint JNICALL
+Java_org_alnet_allnet_1android_NetworkAPI_deleteUser(
+        JNIEnv *env,
+        jobject instance,
+        jstring contact) {
+    const char * ccontact = strcpy_malloc((*env)->GetStringUTFChars( env, contact , NULL ),"contact");
+    make_invisible(ccontact);
+    delete_conversation(ccontact);
+    int result = delete_contact(ccontact);
+    return result;
+}
+
+JNIEXPORT void JNICALL
+Java_org_alnet_allnet_1android_NetworkAPI_makeVisible(
+        JNIEnv *env,
+        jobject instance,
+        jstring contact) {
+    const char * ccontact = strcpy_malloc((*env)->GetStringUTFChars( env, contact , NULL ),"contact");
+    make_visible(ccontact);
+}
+
+JNIEXPORT void JNICALL
+Java_org_alnet_allnet_1android_NetworkAPI_makeInvisible(
+        JNIEnv *env,
+        jobject instance,
+        jstring contact) {
+    const char * ccontact = strcpy_malloc((*env)->GetStringUTFChars( env, contact , NULL ),"contact");
+    make_invisible(ccontact);
+}
+
+JNIEXPORT void JNICALL
+Java_org_alnet_allnet_1android_NetworkAPI_renameContact(
+        JNIEnv *env,
+        jobject instance,
+        jstring contact,
+        jstring newName) {
+    const char * ccontact = strcpy_malloc((*env)->GetStringUTFChars( env, contact , NULL ),"contact");
+    const char * newn = strcpy_malloc((*env)->GetStringUTFChars( env, newName , NULL ),"new name");
+    rename_contact(ccontact, newn);
+}

@@ -117,6 +117,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="8dp"
                     android:layout_weight="0"
+                    android:checked="true"
                     android:drawablePadding="4dp"
                     android:fontFamily="@font/roboto_medium"
                     android:text="Notifications" />
@@ -155,6 +156,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="8dp"
                     android:layout_weight="0"
+                    android:checked="true"
                     android:drawablePadding="4dp"
                     android:fontFamily="@font/roboto_medium"
                     android:text="Save messages" />
@@ -215,6 +217,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="left|center_vertical"
+                    android:onClick="deleteConversation"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:text="Delete  conversation"
@@ -258,6 +261,7 @@
                     android:layout_weight="0"
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="left|center_vertical"
+                    android:onClick="deleteUser"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:text="Delete user"
