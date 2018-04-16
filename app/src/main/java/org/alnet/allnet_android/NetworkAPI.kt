@@ -149,4 +149,11 @@ object NetworkAPI{
     external fun getKeyForContact(contact: String)
     external fun startTrace(hops: Int)
     external fun isGroup(contact: String): Int
+    external fun conversationSize(contact: String): String
+    external fun isInvisible(contact: String): Int
+    external fun deleteConversation(contact: String): Int
+    external fun deleteUser(contact: String): Int
+    external fun makeVisible(contact: String)
+    external fun makeInvisible(contact: String)
+    external fun renameContact(contact: String, newName: String)
 }
