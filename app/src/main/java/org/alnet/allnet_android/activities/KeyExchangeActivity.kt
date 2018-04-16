@@ -94,8 +94,10 @@ class KeyExchangeActivity : AppCompatActivity(), INetwork {
 
     override fun keyExchanged(contact: String) {
         if (name == contact) {
-            tvInfo.setTextColor(resources.getColor(R.color.colorPrimary))
-            tvInfo.text = "Key was exchanged with SUCCESS!!!"
+            runOnUiThread {
+                tvInfo.setTextColor(resources.getColor(R.color.colorPrimary))
+                tvInfo.text = "Key was exchanged with SUCCESS!!!"
+            }
         }
         NetworkAPI.completeExchange(contact)
     }
