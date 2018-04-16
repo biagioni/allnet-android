@@ -17,18 +17,7 @@ import org.alnet.allnet_android.R
 
 class MoreFragment : Fragment(), INetwork {
 
-    override fun msgTrace(msg: String) {
-        activity.runOnUiThread {
-            if (tvOutput?.text?.count()!! > 0){
-                tvOutput?.text = tvOutput?.text.toString() + msg
-            }else {
-                tvOutput?.text =  msg
-            }
-        }
-    }
-
     var tvOutput: TextView? = null
-
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -46,6 +35,18 @@ class MoreFragment : Fragment(), INetwork {
             }
         }
         return view
+    }
+
+    //-----------NetworkAPI delegation----------------------
+
+    override fun msgTrace(msg: String) {
+        activity.runOnUiThread {
+            if (tvOutput?.text?.count()!! > 0){
+                tvOutput?.text = tvOutput?.text.toString() + msg
+            }else {
+                tvOutput?.text =  msg
+            }
+        }
     }
 
 }

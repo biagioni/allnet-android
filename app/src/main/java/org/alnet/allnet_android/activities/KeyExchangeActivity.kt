@@ -13,37 +13,6 @@ import org.alnet.allnet_android.R
 
 class KeyExchangeActivity : AppCompatActivity(), INetwork {
 
-    override fun groupCreated(result: Int) {
-        if (result == 1) {
-            tvInfo.setTextColor(resources.getColor(R.color.colorPrimary))
-            tvInfo.text = "Created group with success!"
-        }else{
-            tvInfo.setTextColor(resources.getColor(R.color.colorAccent))
-            tvInfo.text = "It was not possible to create the group" + name!!
-        }
-    }
-
-    override fun generatedRandomKey(key: String) {
-        tvSecret.text = key
-        //todo nearby wireless
-        NetworkAPI.requestNewContact(name!!,6,key,secret)
-    }
-
-    override fun keyGenerated(contact: String) {
-        if (name == contact){
-            tvInfo.setTextColor(resources.getColor(R.color.colorAccent))
-            tvInfo.text = "Key was sent\nWaiting for key from:\n" + contact
-        }
-    }
-
-    override fun keyExchanged(contact: String) {
-        if (name == contact) {
-            tvInfo.setTextColor(resources.getColor(R.color.colorPrimary))
-            tvInfo.text = "Key was exchanged with SUCCESS!!!"
-        }
-        NetworkAPI.completeExchange(contact)
-    }
-
     var name: String? = null
     var secret: String? = null
     var connectionType: Int? = null
@@ -95,6 +64,40 @@ class KeyExchangeActivity : AppCompatActivity(), INetwork {
 
     fun resendKey(v: View){
         NetworkAPI.resendKeyForNewContact(name!!)
+    }
+
+
+    //-----------NetworkAPI delegation----------------------
+
+    override fun groupCreated(result: Int) {
+        if (result == 1) {
+            tvInfo.setTextColor(resources.getColor(R.color.colorPrimary))
+            tvInfo.text = "Created group with success!"
+        }else{
+            tvInfo.setTextColor(resources.getColor(R.color.colorAccent))
+            tvInfo.text = "It was not possible to create the group" + name!!
+        }
+    }
+
+    override fun generatedRandomKey(key: String) {
+        tvSecret.text = key
+        //todo nearby wireless
+        NetworkAPI.requestNewContact(name!!,6,key,secret)
+    }
+
+    override fun keyGenerated(contact: String) {
+        if (name == contact){
+            tvInfo.setTextColor(resources.getColor(R.color.colorAccent))
+            tvInfo.text = "Key was sent\nWaiting for key from:\n" + contact
+        }
+    }
+
+    override fun keyExchanged(contact: String) {
+        if (name == contact) {
+            tvInfo.setTextColor(resources.getColor(R.color.colorPrimary))
+            tvInfo.text = "Key was exchanged with SUCCESS!!!"
+        }
+        NetworkAPI.completeExchange(contact)
     }
 }
 

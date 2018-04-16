@@ -14,16 +14,7 @@ import org.alnet.allnet_android.model.MessageModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-//todo color aging
 class MessageActivity : AppCompatActivity(), INetwork {
-
-    override fun ackedMessage(contact: String) {
-        NetworkAPI.listMessages()
-    }
-
-    override fun listMsgUpdated() {
-        updateUI()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +35,16 @@ class MessageActivity : AppCompatActivity(), INetwork {
         NetworkAPI.contact = null
     }
 
+    fun sendMessage(v: View){
+        val msg = etText!!.text.toString()
+        NetworkAPI.sendMessage(msg, NetworkAPI.contact!!)
+        etText.text.clear()
+        val formatter = SimpleDateFormat("MMM dd, yyyy 'at' HH:mm:ss")
+        val current = Date()
+        NetworkAPI.messages.add(MessageModel(msg, MSG_TYPE_SENT, formatter.format(current), 0))
+        updateUI()
+    }
+
     fun updateUI(){
         runOnUiThread {
             val adapter = MessageAdapter(NetworkAPI.messages)
@@ -53,13 +54,13 @@ class MessageActivity : AppCompatActivity(), INetwork {
 
     }
 
-    fun sendMessage(v: View){
-        val msg = etText!!.text.toString()
-        NetworkAPI.sendMessage(msg, NetworkAPI.contact!!)
-        etText.text.clear()
-        val formatter = SimpleDateFormat("MMM dd, yyyy 'at' HH:mm:ss")
-        val current = Date()
-        NetworkAPI.messages.add(MessageModel(msg, MSG_TYPE_SENT, formatter.format(current), 0))
+    //-----------NetworkAPI delegation----------------------
+
+    override fun ackedMessage(contact: String) {
+        NetworkAPI.listMessages()
+    }
+
+    override fun listMsgUpdated() {
         updateUI()
     }
 

@@ -18,40 +18,6 @@ import org.alnet.allnet_android.model.ContactModel
 class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListener {
 
     var settings = false
-
-    override fun onclick(contact: ContactModel) {
-        NetworkAPI.contact = contact.name
-        if (settings){
-            val intent = Intent(activity, SettingsActivity::class.java)
-            startActivity(intent)
-        }else{
-            NetworkAPI.unreadMessages.removeAll { it == contact.name }
-            val intent = Intent(activity, MessageActivity::class.java)
-            startActivity(intent)
-        }
-
-    }
-
-    override fun listContactsUpdated() {
-        updateUI(NetworkAPI.contacts)
-    }
-
-    override fun newMsgReceived(contact: String) {
-        updateUI(NetworkAPI.contacts)
-    }
-
-    override fun listHiddenContactsUpdated() {
-        val contacts = ArrayList<ContactModel>()
-        NetworkAPI.contacts.forEach {
-            contacts.add(it)
-        }
-        contacts.add(ContactModel("","",2))
-        NetworkAPI.hiddencontacts.forEach {
-            contacts.add(it)
-        }
-        updateUI(contacts)
-    }
-
     var mRecyclerView: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,6 +75,43 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
             val adapter = ContactAdapter(contacts, settings, this);
             mRecyclerView!!.adapter = adapter
         }
+    }
+
+    //-----------Adapter delegation----------------------
+
+    override fun onclick(contact: ContactModel) {
+        NetworkAPI.contact = contact.name
+        if (settings){
+            val intent = Intent(activity, SettingsActivity::class.java)
+            startActivity(intent)
+        }else{
+            NetworkAPI.unreadMessages.removeAll { it == contact.name }
+            val intent = Intent(activity, MessageActivity::class.java)
+            startActivity(intent)
+        }
+
+    }
+
+    //-----------NetworkAPI delegation----------------------
+
+    override fun listContactsUpdated() {
+        updateUI(NetworkAPI.contacts)
+    }
+
+    override fun newMsgReceived(contact: String) {
+        updateUI(NetworkAPI.contacts)
+    }
+
+    override fun listHiddenContactsUpdated() {
+        val contacts = ArrayList<ContactModel>()
+        NetworkAPI.contacts.forEach {
+            contacts.add(it)
+        }
+        contacts.add(ContactModel("","",2))
+        NetworkAPI.hiddencontacts.forEach {
+            contacts.add(it)
+        }
+        updateUI(contacts)
     }
 
 }

@@ -22,20 +22,6 @@ import org.alnet.allnet_android.adapters.ContactIncompleteAdapter
 
 class ContactNewFragment : Fragment(), INetwork, ContactIncompleteAdapter.ItemClickListener {
 
-    override fun onclick(contact: String) {
-        editTextName?.setText(contact)
-        NetworkAPI.getKeyForContact(contact)
-    }
-
-    override fun incompletedContactsUpdated() {
-        updateUI()
-    }
-
-    override fun generatedRandomKey(key: String) {
-        editTextSecret?.setText(key)
-        sendInfo()
-    }
-
     var spinner: Spinner? = null
     var editTextName: EditText? = null
     var editTextSecret: EditText? = null
@@ -70,10 +56,6 @@ class ContactNewFragment : Fragment(), INetwork, ContactIncompleteAdapter.ItemCl
         return view
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     fun updateUI(){
         val layoutManager = LinearLayoutManager(activity)
         mRecyclerView!!.layoutManager = layoutManager
@@ -91,6 +73,24 @@ class ContactNewFragment : Fragment(), INetwork, ContactIncompleteAdapter.ItemCl
         intent.putExtra("secret", secret)
         intent.putExtra("type", index)
         startActivity(intent)
+    }
+
+    //-----------Adapter delegation----------------------
+
+    override fun onclick(contact: String) {
+        editTextName?.setText(contact)
+        NetworkAPI.getKeyForContact(contact)
+    }
+
+    //-----------NetworkAPI delegation----------------------
+
+    override fun incompletedContactsUpdated() {
+        updateUI()
+    }
+
+    override fun generatedRandomKey(key: String) {
+        editTextSecret?.setText(key)
+        sendInfo()
     }
 
 }

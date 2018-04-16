@@ -18,33 +18,6 @@ class TabBarActivity : AppCompatActivity() {
 
     var toolBar: ActionBar? = null
 
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            R.id.navigation_contacts -> {
-                if (toolBar != null) {
-                    toolBar!!.setTitle(R.string.contacts)
-                }
-                loadFragment(ContactListFragment())
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_new -> {
-                if (toolBar != null) {
-                    toolBar!!.setTitle(R.string.new_contact)
-                }
-                loadFragment(ContactNewFragment())
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_more -> {
-                if (toolBar != null) {
-                    toolBar!!.setTitle(R.string.more)
-                }
-                loadFragment(MoreFragment())
-                return@OnNavigationItemSelectedListener true
-            }
-        }
-        false
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tab_bar)
@@ -76,5 +49,32 @@ class TabBarActivity : AppCompatActivity() {
         init {
             System.loadLibrary("native-lib")
         }
+    }
+
+    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        when (item.itemId) {
+            R.id.navigation_contacts -> {
+                if (toolBar != null) {
+                    toolBar!!.setTitle(R.string.contacts)
+                }
+                loadFragment(ContactListFragment())
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_new -> {
+                if (toolBar != null) {
+                    toolBar!!.setTitle(R.string.new_contact)
+                }
+                loadFragment(ContactNewFragment())
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_more -> {
+                if (toolBar != null) {
+                    toolBar!!.setTitle(R.string.more)
+                }
+                loadFragment(MoreFragment())
+                return@OnNavigationItemSelectedListener true
+            }
+        }
+        false
     }
 }
