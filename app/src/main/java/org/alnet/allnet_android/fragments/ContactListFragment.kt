@@ -56,6 +56,7 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
             R.id.menuEdit -> {
                 if (!settings){
                     settings = true
+                    updateUI(NetworkAPI.contacts)
                     NetworkAPI.hiddencontacts.clear()
                     NetworkAPI.getHiddenContacts()
                 }else {

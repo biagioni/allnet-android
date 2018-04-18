@@ -1,6 +1,7 @@
 package org.alnet.allnet_android.activities
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
@@ -90,6 +91,11 @@ class SettingsActivity : AppCompatActivity() {
         })
         val alert  = builder.create()
         alert.show()
+    }
+
+    fun manageGroups(view: View){
+        val intent = Intent(this, GroupsActivity::class.java)
+        startActivity(intent)
     }
 
     fun updateUI(){
