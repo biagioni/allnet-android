@@ -91,6 +91,7 @@ object NetworkAPI{
 
     fun callbackMembers(contact: String){
         groupMembers.add(contact)
+
         members = contacts.filter { it.name != this.contact }
                 .map { Pair(it.name, groupMembers
                         .contains(it.name))} as ArrayList<Pair<String, Boolean>>
@@ -156,6 +157,8 @@ object NetworkAPI{
     }
 
 
+    external fun addToGroup(group: String, contact: String)
+    external fun removeFromGroup(group: String, contact: String)
     external fun loadGroups(contact: String)
     external fun loadMembers(Contact: String)
     external fun startAllnet(path: String): Int

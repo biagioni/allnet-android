@@ -36,7 +36,8 @@ class GroupAdapter(private val contacts: List<Pair<String, Boolean>>, listener: 
             itemView.tvGroup.setText(contact.first)
             itemView.checkBox.isChecked = contact.second
             itemView.setOnClickListener(View.OnClickListener {
-                listener.onclick(contact.first, !contact.second)
+                itemView.checkBox.isChecked = !itemView.checkBox.isChecked
+                listener.onclick(contact.first, itemView.checkBox.isChecked)
             })
         }
     }

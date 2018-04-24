@@ -186,6 +186,7 @@
                     android:layout_weight="0"
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="left|center_vertical"
+                    android:onClick="manageGroups"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:text="Manage participants"

@@ -23,11 +23,11 @@ class SettingsActivity : AppCompatActivity() {
         if (NetworkAPI.isGroup(NetworkAPI.contact!!) == 1){
             tvManageParticipants.setText("Manage participants")
             tvDeleteUser.setText("Delete group")
-            isGroup = false
+            isGroup = true
         }else{
             tvManageParticipants.setText("Manage groups")
             tvDeleteUser.setText("Delete user")
-            isGroup = true
+            isGroup = false
         }
 
         supportActionBar!!.setTitle(NetworkAPI.contact)
