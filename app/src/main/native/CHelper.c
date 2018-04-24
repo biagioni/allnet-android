@@ -736,16 +736,25 @@ Java_org_alnet_allnet_1android_NetworkAPI_loadMembers(
 
     const char * ccontact = strcpy_malloc((*env)->GetStringUTFChars( env, contact , NULL ),"contact");
 
-
     char ** contatcs;
     int nc = group_membership(ccontact, &contatcs);
-    for (int i = 0; i < nc; i++){
+    if (nc>0){
+        for (int i = 0; i < nc; i++){
+            jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callbackMembers", "(Ljava/lang/String;)V");
+            if(!methodid) {
+                return;
+            }
+            g_obj = (jclass)((*env)->NewGlobalRef(env, instance));
+            jstring string = (*env)->NewStringUTF(env, contatcs[i]);
+            (*env)->CallVoidMethod(env, g_obj , methodid, string);
+        }
+    }else{
         jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callbackMembers", "(Ljava/lang/String;)V");
         if(!methodid) {
             return;
         }
         g_obj = (jclass)((*env)->NewGlobalRef(env, instance));
-        jstring string = (*env)->NewStringUTF(env, contatcs[i]);
+        jstring string = (*env)->NewStringUTF(env, "empty");
         (*env)->CallVoidMethod(env, g_obj , methodid, string);
     }
 
@@ -760,17 +769,48 @@ Java_org_alnet_allnet_1android_NetworkAPI_loadGroups(
 
     const char * ccontact = strcpy_malloc((*env)->GetStringUTFChars( env, contact , NULL ),"contact");
 
-
     char ** contatcs;
     int nc = member_of_groups(ccontact, &contatcs);
-    for (int i = 0; i < nc; i++){
-        jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callbackGroups", "(Ljava/lang/String;)V");
+    if (nc>0){
+        for (int i = 0; i < nc; i++){
+            jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callbackGroups", "(Ljava/lang/String;)V");
+            if(!methodid) {
+                return;
+            }
+            g_obj = (jclass)((*env)->NewGlobalRef(env, instance));
+            jstring string = (*env)->NewStringUTF(env, contatcs[i]);
+            (*env)->CallVoidMethod(env, g_obj , methodid, string);
+        }
+    }else{
+        jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callbackMembers", "(Ljava/lang/String;)V");
         if(!methodid) {
             return;
         }
         g_obj = (jclass)((*env)->NewGlobalRef(env, instance));
-        jstring string = (*env)->NewStringUTF(env, contatcs[i]);
+        jstring string = (*env)->NewStringUTF(env, "empty");
         (*env)->CallVoidMethod(env, g_obj , methodid, string);
     }
 
+}
+
+JNIEXPORT void JNICALL
+Java_org_alnet_allnet_1android_NetworkAPI_addToGroup(
+        JNIEnv *env,
+        jobject instance,
+        jstring group,
+        jstring contact) {
+    const char * ccontact = strcpy_malloc((*env)->GetStringUTFChars( env, contact , NULL ),"contact");
+    const char * cgroup = strcpy_malloc((*env)->GetStringUTFChars( env, group , NULL ),"group");
+    add_to_group(cgroup, ccontact);
+}
+
+JNIEXPORT void JNICALL
+Java_org_alnet_allnet_1android_NetworkAPI_removeFromGroup(
+        JNIEnv *env,
+        jobject instance,
+        jstring group,
+        jstring contact) {
+    const char * ccontact = strcpy_malloc((*env)->GetStringUTFChars( env, contact , NULL ),"contact");
+    const char * cgroup = strcpy_malloc((*env)->GetStringUTFChars( env, group , NULL ),"group");
+    remove_from_group(cgroup, ccontact);
 }
