@@ -22,7 +22,7 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,

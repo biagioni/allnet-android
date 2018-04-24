@@ -14,6 +14,8 @@ import org.alnet.allnet_android.R
 
 class SettingsActivity : AppCompatActivity() {
 
+    var isGroup = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -21,9 +23,11 @@ class SettingsActivity : AppCompatActivity() {
         if (NetworkAPI.isGroup(NetworkAPI.contact!!) == 1){
             tvManageParticipants.setText("Manage participants")
             tvDeleteUser.setText("Delete group")
+            isGroup = false
         }else{
             tvManageParticipants.setText("Manage groups")
             tvDeleteUser.setText("Delete user")
+            isGroup = true
         }
 
         supportActionBar!!.setTitle(NetworkAPI.contact)
@@ -95,6 +99,7 @@ class SettingsActivity : AppCompatActivity() {
 
     fun manageGroups(view: View){
         val intent = Intent(this, GroupsActivity::class.java)
+        intent.putExtra("isGroup", isGroup)
         startActivity(intent)
     }
 
