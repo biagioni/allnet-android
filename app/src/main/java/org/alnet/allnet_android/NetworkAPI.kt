@@ -6,6 +6,7 @@ import org.alnet.allnet_android.model.ContactModel
 import org.alnet.allnet_android.model.MessageModel
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -16,6 +17,9 @@ interface INetwork {
     fun listContactsUpdated(){}
     fun listHiddenContactsUpdated(){}
     fun listMsgUpdated(){}
+    fun listGroupUpdated(){}
+    fun listMemberUpdated(){}
+
     fun newMsgReceived(contact: String){}
     fun generatedRandomKey(key: String){}
     fun keyGenerated(contact: String){}
@@ -35,6 +39,11 @@ object NetworkAPI{
     var incompleteContacts = ArrayList<String>()
     var messages = ArrayList<MessageModel>()
     var unreadMessages = ArrayList<String>()
+
+    var groups = ArrayList<Pair<String, Boolean>>()
+    var members = ArrayList<Pair<String, Boolean>>()
+    var groupMembers = ArrayList<String>()
+
     var initialized = false
     var contact: String? = null
 
@@ -74,6 +83,19 @@ object NetworkAPI{
         listener?.listMsgUpdated()
     }
 
+    fun callbackGroups(contact: String){
+        var allGroups = contacts.filter { isGroup(it.name) == 1 }.map { it.name }
+        groups.add(Pair(contact, allGroups.contains(contact)))
+        listener?.listGroupUpdated()
+    }
+
+    fun callbackMembers(contact: String){
+        groupMembers.add(contact)
+        members = contacts.filter { it.name != this.contact }
+                .map { Pair(it.name, groupMembers
+                        .contains(it.name))} as ArrayList<Pair<String, Boolean>>
+        listener?.listMemberUpdated()
+    }
 
     fun callbackRandomKey(key: String){
         listener?.generatedRandomKey(key)
@@ -133,6 +155,9 @@ object NetworkAPI{
         return formatter.format(current)
     }
 
+
+    external fun loadGroups(contact: String)
+    external fun loadMembers(Contact: String)
     external fun startAllnet(path: String): Int
     external fun getContacts()
     external fun getHiddenContacts()
