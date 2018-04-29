@@ -329,7 +329,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_startAllnet(JNIEnv *env,
 
     struct allnet_log * alog = init_log ("ios xchat");
     p = init_pipe_descriptor(alog);
-    int result = xchat_init("xchat",dir, p);
+    int result = xchat_init("xchat",dir);
 
     waiting_for_key = 0;
 

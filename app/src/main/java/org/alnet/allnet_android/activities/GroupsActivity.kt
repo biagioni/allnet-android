@@ -36,8 +36,12 @@ class GroupsActivity : AppCompatActivity(), INetwork, GroupAdapter.ItemClickList
 
 
     override fun listGroupUpdated() {
-        val adapter = GroupAdapter(NetworkAPI.groups, this)
-        rvGroups.adapter = adapter
+
+        runOnUiThread{
+            val adapter = GroupAdapter(NetworkAPI.groups, this)
+            rvGroups.adapter = adapter
+        }
+
     }
 
     override fun listMemberUpdated() {

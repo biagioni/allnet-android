@@ -12,11 +12,14 @@ libincludes = \
 	media.h \
 	mgmt.h \
 	packet.h \
+        pcache.h \
+        pid_bloom.h \
 	pipemsg.h \
 	pqueue.h \
 	priority.h \
 	routing.h \
 	sha.h \
+	sockets.h \
 	stream.h \
 	table.h \
 	trace_util.h \
@@ -26,6 +29,7 @@ libincludes = \
 	wp_rsa.h
 
 libsrc = \
+        adht.c \
 	ai.c \
 	allnet_queue.c \
 	app_util.c \
@@ -36,11 +40,14 @@ libsrc = \
 	keys.c \
 	allnet_log.c \
 	mapchar.c \
+        pcache.c \
+        pid_bloom.c \
 	pipemsg.c \
 	pqueue.c \
 	priority.c \
 	routing.c \
 	sha.c \
+	sockets.c \
 	stream.c \
 	table.c \
 	trace_util.c \

@@ -19,15 +19,12 @@ add_library( # Sets the name of the library.
              # Provides a relative path to your source file(s).
               src/main/native/CHelper.c
               src/main/cfiles/astart.c
-              src/main/cfiles/adht.c
-              src/main/cfiles/acache.c
-              src/main/cfiles/alocal.c
+              src/main/cfiles/lib/adht.c
               src/main/cfiles/track.c
               src/main/cfiles/listen.c
               src/main/cfiles/record.c
               src/main/cfiles/ad.c
               src/main/cfiles/social.c
-              src/main/cfiles/aip.c
               src/main/cfiles/lib/util.c
               src/main/cfiles/xchat/xcommon.c
               src/main/cfiles/xchat/store.c
@@ -57,6 +54,9 @@ add_library( # Sets the name of the library.
               src/main/cfiles/lib/stream.c
               src/main/cfiles/lib/wp_aes.c
               src/main/cfiles/lib/dcache.c
+              src/main/cfiles/lib/pcache.c
+              src/main/cfiles/lib/pid_bloom.c
+              src/main/cfiles/lib/app_util.c
               src/main/cfiles/mgmt/traced.c
               src/main/cfiles/mgmt/keyd.c
               src/main/cfiles/mgmt/trace.c

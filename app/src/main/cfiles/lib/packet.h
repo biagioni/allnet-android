@@ -15,6 +15,10 @@
 /* protocol number used when sending/receiving over 802.11, WiFi */
 #define ALLNET_WIFI_PROTOCOL 0xa119  /* ALLNet, 41241 */
 
+/* multicast link-local address used for IPv6:
+ * the hex spells out "ALLNet LOCAL BroadCAST" twice in a row */
+#define ALLNET_IPV6_MCAST  "ff02:a119:10ca:1bca:59a1:1910:ca1b:ca59"
+
 /* for receiving allnet messages, the receiver must know in advance what the
  * maximum packet size will be.  So allnet defines a maximum size, which
  * includes all headers.  This number is 12345 rounded down to the nearest
@@ -370,6 +374,8 @@ struct allnet_app_media_header {
  * Similarly for the source bits.
  * messages are sent back only if they match ALL the requested constraints.
  * a zero-bit bitmap will match all packets, as will a 0 time "since".
+ * note that _power_two of 0 would normally imply a 1-bit bitmap, which
+ * is not useful.  Therefore, a _power_two of 0 means no bits.
  *
  * mid stands for message id, and can be used to request acks for message
  * IDs known to be missing. 
