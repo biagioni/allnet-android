@@ -11,53 +11,33 @@
   <component name="ChangeListManager">
     <list default="true" id="5ccd89a1-29df-40c3-b5bf-814f26e7654a" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/app/CMakeLists.txt" afterPath="$PROJECT_DIR$/app/CMakeLists.txt" />
       <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/Makefile.am" afterPath="$PROJECT_DIR$/app/src/main/cfiles/Makefile.am" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/acache.c" afterPath="" />
       <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/ad.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/ad.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/adht.c" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/ahra/subscribe.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/ahra/subscribe.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/aip.c" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/alocal.c" afterPath="" />
       <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/astart.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/astart.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/gui/allnetui/CoreConnect.java" afterPath="$PROJECT_DIR$/app/src/main/cfiles/gui/allnetui/CoreConnect.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/gui/utils/MessageBubble.java" afterPath="$PROJECT_DIR$/app/src/main/cfiles/gui/utils/MessageBubble.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/Makefile.am" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/Makefile.am" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/adht.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/adht.c" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/adht.h" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/adht.h" />
       <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/ai.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/ai.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/ai.h" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/ai.h" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/allnet_log.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/allnet_log.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/allnet_log.h" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/allnet_log.h" />
       <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/app_util.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/app_util.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/app_util.h" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/app_util.h" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/mgmt.h" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/mgmt.h" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/packet.h" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/packet.h" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/pcache.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/pcache.c" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/pcache.h" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/pcache.h" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/pid_bloom.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/pid_bloom.c" />
       <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/routing.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/routing.c" />
       <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/routing.h" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/routing.h" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/sockets.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/sockets.c" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/sockets.h" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/sockets.h" />
       <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/trace_util.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/trace_util.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/trace_util.h" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/trace_util.h" />
       <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/util.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/util.c" />
       <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/util.h" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/util.h" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/listen.c" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/listen.h" afterPath="" />
       <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/mgmt/keyd.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/mgmt/keyd.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/mgmt/sniffer.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/mgmt/sniffer.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/mgmt/trace.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/mgmt/trace.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/print_caches.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/print_caches.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/xchat/cutil.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/xchat/cutil.c" />
       <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/xchat/gui_callback.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/xchat/gui_callback.c" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/xchat/gui_respond.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/xchat/gui_respond.c" />
       <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/xchat/gui_socket.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/xchat/gui_socket.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/xchat/xchat_term.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/xchat/xchat_term.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/xchat/xchat_test.c" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/xchat/xchatr.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/xchat/xchatr.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/xchat/xchats.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/xchat/xchats.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/xchat/xcommon.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/xchat/xcommon.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/xchat/xcommon.h" afterPath="$PROJECT_DIR$/app/src/main/cfiles/xchat/xcommon.h" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/xtime/allnet_radio.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/xtime/allnet_radio.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/xtime/broadcast.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/xtime/broadcast.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/xtime/xtime.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/xtime/xtime.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/GroupsActivity.kt" afterPath="$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/GroupsActivity.kt" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/xchat/gui_socket.h" afterPath="$PROJECT_DIR$/app/src/main/cfiles/xchat/gui_socket.h" />
       <change beforePath="$PROJECT_DIR$/app/src/main/native/CHelper.c" afterPath="$PROJECT_DIR$/app/src/main/native/CHelper.c" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" afterPath="$PROJECT_DIR$/build.gradle" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -80,11 +60,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/CMakeLists.txt">
+      <file leaf-file-name="KeyExchangeActivity.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/KeyExchangeActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="26" column="38" lean-forward="false" selection-start-line="26" selection-start-column="38" selection-end-line="26" selection-end-column="38" />
+            <state relative-caret-position="379">
+              <caret line="87" column="40" lean-forward="false" selection-start-line="87" selection-start-column="23" selection-end-line="87" selection-end-column="40" />
               <folding />
             </state>
           </provider>
@@ -93,8 +73,28 @@
       <file leaf-file-name="CHelper.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/native/CHelper.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="380">
-              <caret line="331" column="39" lean-forward="false" selection-start-line="331" selection-start-column="39" selection-end-line="331" selection-end-column="39" />
+            <state relative-caret-position="55">
+              <caret line="186" column="14" lean-forward="false" selection-start-line="186" selection-start-column="14" selection-end-line="186" selection-end-column="14" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NetworkAPI.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/NetworkAPI.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="514">
+              <caret line="170" column="25" lean-forward="false" selection-start-line="170" selection-start-column="25" selection-end-line="170" selection-end-column="25" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ContactNewFragment.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/fragments/ContactNewFragment.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="605">
+              <caret line="65" column="8" lean-forward="false" selection-start-line="65" selection-start-column="8" selection-end-line="65" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -116,15 +116,22 @@
       <find>wpipes</find>
       <find>num_pipes</find>
       <find>struct thread_arg</find>
-      <find>rpipe</find>
-      <find>wpipe</find>
       <find>CALL_AIP</find>
       <find>CALL_AD</find>
-      <find>aip_main</find>
       <find>thread_arg</find>
       <find>acache</find>
       <find>alocal</find>
       <find>aip</find>
+      <find>allnet_daemon_main</find>
+      <find>\</find>
+      <find>rpipe</find>
+      <find>wpipe</find>
+      <find>abc</find>
+      <find>aip_main</find>
+      <find>socket_address_add</find>
+      <find>abc_iface_ip</find>
+      <find>getifaddrs</find>
+      <find>requestNewContact</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/app/src/main/cfiles</dir>
@@ -2291,7 +2298,7 @@
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds">
     <option name="x" value="46" />
-    <option name="y" value="23" />
+    <option name="y" value="28" />
     <option name="width" value="1634" />
     <option name="height" value="989" />
   </component>
@@ -2310,9 +2317,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="AndroidView" />
+      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -2344,16 +2351,7 @@
               <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="cfiles" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="allnet-android" type="b2602c69:ProjectViewProjectNode" />
-              <item name="allnet-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="cfiles" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="allnet-android" type="b2602c69:ProjectViewProjectNode" />
@@ -2362,6 +2360,27 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="allnet_android" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="allnet-android" type="b2602c69:ProjectViewProjectNode" />
+              <item name="allnet-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="allnet_android" type="462c0819:PsiDirectoryNode" />
+              <item name="activities" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="allnet-android" type="b2602c69:ProjectViewProjectNode" />
+              <item name="allnet-android" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="allnet_android" type="462c0819:PsiDirectoryNode" />
+              <item name="fragments" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="allnet-android" type="b2602c69:ProjectViewProjectNode" />
@@ -2574,10 +2593,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="46" y="23" width="1634" height="989" extended-state="0" />
+    <frame x="46" y="28" width="1634" height="989" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32997763" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -2585,14 +2604,14 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32997763" sideWeight="0.50502515" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32997763" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32997763" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32997763" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4082774" sideWeight="0.49497488" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4966443" sideWeight="0.49497488" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -2630,60 +2649,22 @@
           <line>1472</line>
           <option name="timeStamp" value="57" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/KeyExchangeActivity.kt</url>
+          <line>87</line>
+          <properties />
+          <option name="timeStamp" value="59" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="59" />
+      <option name="time" value="62" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/KeyExchangeActivity.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="945">
-          <caret line="72" column="8" lean-forward="false" selection-start-line="72" selection-start-column="8" selection-end-line="80" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/MessageActivity.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="16" column="6" lean-forward="false" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/Library/Android/sdk/platforms/android-26/android.jar!/android/app/Activity.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9795">
-          <caret line="988" column="35" lean-forward="false" selection-start-line="988" selection-start-column="22" selection-end-line="988" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/SettingsActivity.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="960">
-          <caret line="74" column="20" lean-forward="true" selection-start-line="60" selection-start-column="7" selection-end-line="74" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/GroupsActivity.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="6" column="6" lean-forward="false" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
-          <folding>
-            <element signature="e#45#398#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/adapters/GroupAdapter.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-          <folding>
-            <element signature="e#43#273#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2705,7 +2686,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="945">
           <caret line="72" column="8" lean-forward="false" selection-start-line="72" selection-start-column="8" selection-end-line="80" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2713,9 +2693,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="6" column="6" lean-forward="false" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
-          <folding>
-            <element signature="e#45#398#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2723,9 +2700,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-          <folding>
-            <element signature="e#43#273#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2740,9 +2714,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="6" column="6" lean-forward="false" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
-          <folding>
-            <element signature="e#45#398#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2750,9 +2721,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
           <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-          <folding>
-            <element signature="e#43#273#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2767,9 +2735,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="6" column="6" lean-forward="false" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
-          <folding>
-            <element signature="e#45#398#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2777,9 +2742,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-          <folding>
-            <element signature="e#43#273#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2794,9 +2756,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="6" column="6" lean-forward="false" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
-          <folding>
-            <element signature="e#45#398#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2804,9 +2763,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-          <folding>
-            <element signature="e#43#273#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2821,43 +2777,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/adapters/ContactIncompleteAdapter.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="48" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/adapters/MessageAdapter.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="17" column="6" lean-forward="false" selection-start-line="17" selection-start-column="6" selection-end-line="17" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/fragments/ContactNewFragment.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="22" column="6" lean-forward="false" selection-start-line="22" selection-start-column="6" selection-end-line="22" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider editor-type-id="android-manifest">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/TabBarActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="16" column="6" lean-forward="false" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2893,7 +2816,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="16" column="6" lean-forward="false" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2908,14 +2830,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/SettingsActivity.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="28" column="47" lean-forward="true" selection-start-line="28" selection-start-column="47" selection-end-line="28" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_groups.xml">
       <provider selected="true" editor-type-id="android-designer2">
         <state />
@@ -2924,16 +2838,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/adapters/GroupAdapter.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="38" column="0" lean-forward="false" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-          <folding>
-            <element signature="e#43#273#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2963,37 +2867,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/NetworkAPI.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="382">
-          <caret line="93" column="0" lean-forward="false" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/GroupsActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="585">
           <caret line="39" column="18" lean-forward="false" selection-start-line="39" selection-start-column="18" selection-end-line="39" selection-end-column="18" />
-          <folding>
-            <element signature="e#45#398#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/cfiles/adht.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="240" column="27" lean-forward="true" selection-start-line="240" selection-start-column="27" selection-end-line="240" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/cfiles/adht.c" />
     <entry file="file://$USER_HOME$/Library/Android/sdk/ndk-bundle/sysroot/usr/include/pthread.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="167">
           <caret line="130" column="0" lean-forward="false" selection-start-line="130" selection-start-column="0" selection-end-line="130" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3001,7 +2886,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3009,10 +2893,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="94">
           <caret line="66" column="0" lean-forward="false" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
-          <folding>
-            <element signature="e#3383#3402#0" expanded="false" />
-            <element signature="e#40275#40696#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3020,23 +2900,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/cfiles/astart.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="875">
-          <caret line="863" column="4" lean-forward="false" selection-start-line="863" selection-start-column="4" selection-end-line="863" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/KeyExchangeActivity.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="77" column="46" lean-forward="false" selection-start-line="77" selection-start-column="46" selection-end-line="77" selection-end-column="46" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3044,7 +2907,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="167">
           <caret line="128" column="0" lean-forward="false" selection-start-line="128" selection-start-column="0" selection-end-line="128" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3052,30 +2914,146 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
           <caret line="34" column="5" lean-forward="false" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/adapters/GroupAdapter.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="38" column="0" lean-forward="false" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/adapters/ContactIncompleteAdapter.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="48" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider editor-type-id="android-manifest">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/cfiles/lib/routing.c">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/adapters/MessageAdapter.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="840" column="5" lean-forward="false" selection-start-line="840" selection-start-column="5" selection-end-line="840" selection-end-column="5" />
+        <state relative-caret-position="255">
+          <caret line="17" column="6" lean-forward="false" selection-start-line="17" selection-start-column="6" selection-end-line="17" selection-end-column="6" />
+          <folding>
+            <element signature="e#43#493#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/cfiles/astart.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="118" column="40" lean-forward="false" selection-start-line="118" selection-start-column="40" selection-end-line="118" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/cfiles/abc/abc-ip.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="65">
+          <caret line="65" column="16" lean-forward="true" selection-start-line="65" selection-start-column="16" selection-end-line="65" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/cfiles/abc/abc-wifi.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="180" column="16" lean-forward="false" selection-start-line="180" selection-start-column="6" selection-end-line="180" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/cfiles/lib/adht.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="129" column="18" lean-forward="false" selection-start-line="129" selection-start-column="18" selection-end-line="129" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/cfiles/lib/ai.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="800" column="35" lean-forward="false" selection-start-line="800" selection-start-column="35" selection-end-line="800" selection-end-column="35" />
+          <folding>
+            <element signature="e#11845#18486#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/cfiles/lib/sockets.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="176" column="13" lean-forward="false" selection-start-line="176" selection-start-column="13" selection-end-line="176" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="38" lean-forward="false" selection-start-line="26" selection-start-column="38" selection-end-line="26" selection-end-column="38" />
+        <state relative-caret-position="92">
+          <caret line="18" column="63" lean-forward="false" selection-start-line="18" selection-start-column="63" selection-end-line="18" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/SettingsActivity.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="28" column="47" lean-forward="true" selection-start-line="28" selection-start-column="47" selection-end-line="28" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/fragments/ContactNewFragment.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="605">
+          <caret line="65" column="8" lean-forward="false" selection-start-line="65" selection-start-column="8" selection-end-line="65" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/NetworkAPI.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="514">
+          <caret line="170" column="25" lean-forward="false" selection-start-line="170" selection-start-column="25" selection-end-line="170" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnet_android/activities/KeyExchangeActivity.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="379">
+          <caret line="87" column="40" lean-forward="false" selection-start-line="87" selection-start-column="23" selection-end-line="87" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/cfiles/lib/routing.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="379">
+          <caret line="1134" column="13" lean-forward="true" selection-start-line="1134" selection-start-column="13" selection-end-line="1134" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/native/CHelper.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="331" column="39" lean-forward="false" selection-start-line="331" selection-start-column="39" selection-end-line="331" selection-end-column="39" />
+        <state relative-caret-position="55">
+          <caret line="186" column="14" lean-forward="false" selection-start-line="186" selection-start-column="14" selection-end-line="186" selection-end-column="14" />
           <folding />
         </state>
       </provider>

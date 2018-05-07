@@ -140,16 +140,18 @@ extern int socket_send_keepalives (struct socket_set * s,
 
 /* create a socket and bind it as appropriate for the given address
  * and add it to the given socket set
- * return 1 for success, 0 otherwise */
+ * return the sockfd for success, -1 otherwise */
 extern int socket_create_bind (struct socket_set * s, int is_local,
                                struct sockaddr_storage addr, socklen_t alen,
                                int quiet);
 
 /* create a socket and connect it as appropriate for the given address
  * and add it to the given socket set
- * return 1 for success, 0 otherwise */
+ * return the sockfd for success, -1 otherwise */
 extern int socket_create_connect (struct socket_set * s, int is_local,
                                   struct sockaddr_storage addr, socklen_t alen,
                                   int quiet);
+
+extern void print_socket_set (struct socket_set * s);
 
 #endif /* ALLNET_SOCKETS_H */

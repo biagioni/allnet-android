@@ -21,10 +21,11 @@ extern int ping_exact_match (const unsigned char * addr,
 
 /* fills in an array of sockaddr_storage to the top internet addresses
  * (up to max_matches) for the given AllNet address.
+ * returns the number of matches
  * returns zero if there are no matches */
-extern int routing_top_dht_matches (unsigned char * dest, int nbits,
+extern int routing_top_dht_matches (const unsigned char * dest, int nbits,
                                     struct sockaddr_storage * result,
-                                    int max_matches);
+                                    socklen_t * alen, int max_matches);
 
 /* either adds or refreshes a DHT entry.
  * returns 1 for a new entry, 0 for an existing entry, -1 for errors */
@@ -38,6 +39,9 @@ extern void routing_expire_dht (struct socket_set * s);
  * with data to send.
  * returns the actual number of entries, which may be less than num_entries */
 extern int routing_table (struct addr_info * data, int num_entries);
+
+/* returns 1 if the address is in the routing table, 0 otherwise */
+extern int is_in_routing_table (const struct sockaddr * addr, socklen_t alen);
 
 /* as well as the DHT info, we also keep a list of nodes that we ping from
  * time to time, to see if we can add them to the DHT */

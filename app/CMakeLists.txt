@@ -21,7 +21,6 @@ add_library( # Sets the name of the library.
               src/main/cfiles/astart.c
               src/main/cfiles/lib/adht.c
               src/main/cfiles/track.c
-              src/main/cfiles/listen.c
               src/main/cfiles/record.c
               src/main/cfiles/ad.c
               src/main/cfiles/social.c
@@ -57,6 +56,7 @@ add_library( # Sets the name of the library.
               src/main/cfiles/lib/pcache.c
               src/main/cfiles/lib/pid_bloom.c
               src/main/cfiles/lib/app_util.c
+              src/main/cfiles/lib/sockets.c
               src/main/cfiles/mgmt/traced.c
               src/main/cfiles/mgmt/keyd.c
               src/main/cfiles/mgmt/trace.c

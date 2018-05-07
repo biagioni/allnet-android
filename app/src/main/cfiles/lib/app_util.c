@@ -88,7 +88,7 @@ static void exec_allnet (const char * arg, const char * config_path)
       exit (1);   /* only exits the child */
     }
     /* put extra spaces in "default" so we can see more of the arguments */
-#define DEFAULT_STRING	"default        "
+#define DEFAULT_STRING	"default                     "
     char * args [] = { astart, "-d", NULL, DEFAULT_STRING, NULL };
     if (config_path == NULL) {
       args [1] = DEFAULT_STRING;  /* replace "-d" */
@@ -112,7 +112,6 @@ static void exec_allnet (const char * arg, const char * config_path)
     exit (1);
   }
   setpgid (child, 0);  /* put the child process in its own process group */
-  waitpid (child, NULL, 0);
 }
 
 #else /* ALLNET_USE_FORK */
@@ -121,13 +120,7 @@ extern int astart_main (int, char **);
 
 static void * call_allnet_main (void * path)
 {
-  if (path == NULL) {
-    char * args [] = { "allnet", NULL };
-    astart_main (1, args);
-  } else {
-    char * args [] = { "allnet", "-d", path, NULL };
-    astart_main (3, args);
-  }
+  allnet_daemon_main ();
   return NULL;
 }
 
@@ -150,24 +143,11 @@ static struct socket_set socket_set = { .num_sockets = 0, .sockets = NULL };
 static struct socket_address_set * socket_sas = NULL;
 static struct socket_address_validity * socket_sav = NULL;
 
-/* create an all-zero ack in the given buffer (of size ALLNET_MTU),
- * returning the size to send */
-static int init_zero_ack (char * buffer)
-{
-  unsigned int msize = ALLNET_HEADER_SIZE + MESSAGE_ID_SIZE;
-  init_packet (buffer, msize, ALLNET_TYPE_ACK, 1, ALLNET_SIGTYPE_NONE,
-               NULL, 0, NULL, 0, NULL, NULL);
-  memset (buffer + ALLNET_HEADER_SIZE, 0, MESSAGE_ID_SIZE);
-  return msize;
-}
-
 void local_send_keepalive ()
 {
-  static char zero_ack [ALLNET_MTU];
-  static int msize = 0;
-  if (msize == 0)
-    msize = init_zero_ack (zero_ack);
-  socket_send_to (zero_ack, msize, ALLNET_PRIORITY_EPSILON, 1,
+  unsigned int msize;
+  const char * message = keepalive_packet (&msize);
+  socket_send_to (message, msize, ALLNET_PRIORITY_EPSILON, 1,
                   &socket_set, socket_sas, socket_sav);
 }
 
@@ -180,7 +160,7 @@ static int connect_once (int print_error)
   sin->sin_addr.s_addr = allnet_htonl (INADDR_LOOPBACK);
   sin->sin_port = allnet_htons (ALLNET_LOCAL_PORT);
   socklen_t alen = sizeof (struct sockaddr_in);
-  if (socket_create_connect (&socket_set, 1, sas, alen, ! print_error)) {
+  if (socket_create_connect (&socket_set, 1, sas, alen, ! print_error) >= 0) {
     /* send a keepalive to start the flow of data */
     socket_sas = socket_set.sockets + 0;
     struct socket_address_validity new_sav =
@@ -195,11 +175,14 @@ static int connect_once (int print_error)
       struct socket_read_result r;
       r = socket_read (&socket_set, 2000, 1);
       if (r.success)
+      if (r.success > 0)
         return socket_sas->sockfd;
     }
   }
-  if (print_error)
+  if (print_error && (errno != 0))
     perror ("connect to alocal");
+  else if (print_error)
+    printf ("no response after connecting to allnet\n");
   close (sock);
   return -1;
 }
@@ -309,8 +292,8 @@ int connect_to_local (const char * program_name, const char * arg0,
 #endif /* ANDROID */
   int sock = connect_once (0);
   if (sock < 0) {
-    /* printf ("%s(%s) unable to connect to alocal, starting allnet\n",
-            program_name, arg0); */
+    printf ("%s(%s) unable to connect, starting allnet\n",
+            program_name, arg0);
     exec_allnet (strcpy_malloc (arg0, "connect_to_local exec_allnet"),
                  path);
     sleep (1);
@@ -351,13 +334,16 @@ int local_receive (unsigned int timeout,
 /* printf ("local_receive socket_read (%u)\n", timeout); */
   struct socket_read_result r = socket_read (&socket_set, timeout, 1);
   if (r.success > 0) {
-/* printf ("local_receive socket_read (%u) => %d\n", timeout, r.msize); */
+/* if (r.msize > 2)
+printf ("local_receive socket_read (%u) => %d, type %d\n", timeout, r.msize,
+r.message [1] & 0xff);
+else printf ("local_receive socket_read (%u) => %d\n", timeout, r.msize); */
     *message = r.message;
     *priority = r.priority;
     return r.msize;
   }
   if (r.success < 0) { /* there was an error, probably because allnet exited */
-    printf ("allnetd has exited\n");
+    printf ("the local allnet is no longer responding\n");
     exit (0);
   }
   return 0;

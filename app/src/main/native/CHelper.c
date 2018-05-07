@@ -32,7 +32,7 @@ static char expecting_trace [MESSAGE_ID_SIZE];
 static int trace_count = 0;
 static unsigned long long int trace_start_time = 0;
 
-extern int astart_main(int argc, char ** argv);
+extern void allnet_daemon_main();
 extern void trace_to_string (char * string, size_t slen,
                              struct allnet_mgmt_trace_reply * trace,
                              int trace_count, unsigned long long int trace_start_time);
@@ -325,7 +325,10 @@ Java_org_alnet_allnet_1android_NetworkAPI_startAllnet(JNIEnv *env,
     const char * dir=strcpy_malloc((*env)->GetStringUTFChars( env, path_ , NULL ),"startAllnetDeamon") ;
     syslog (LOG_DAEMON | LOG_WARNING, " directoryC : %s\n",dir);
     char * args [] = { "allnet", "-v","-d",dir, NULL };
-    astart_main(4, args);
+    //astart_main(4, args);
+
+    pthread_t t2;
+    pthread_create (&t2, NULL, allnet_daemon_main, NULL);
 
     struct allnet_log * alog = init_log ("ios xchat");
     p = init_pipe_descriptor(alog);

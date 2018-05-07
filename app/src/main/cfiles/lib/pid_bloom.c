@@ -27,9 +27,12 @@ static char bloom_filter [PID_FILTER_SELECTORS] [NUM_FILTERS]
                          [FILTER_DEPTH] [FILTER_WIDTH / 8];
 #define BLOOM_SIZE	(sizeof (bloom_filter))
 
-static void init_bloom ()
+/* if do_init is true, initialize if necessary, otherwise just return status */
+static int bloom_init (int do_init)
 {
   static int initialized = 0;
+  if (! do_init)
+    return initialized;
   if (! initialized) {
     memset (bloom_filter, 0, BLOOM_SIZE);  /* default of all zeroes */
     char * fname = NULL;
@@ -43,8 +46,8 @@ static void init_bloom ()
                 (int) BLOOM_SIZE, size, fname);
         unlink (fname);
       } else {   /* from_file is NULL, the file does not exist */
-#ifdef DEBUG_PRINT
         printf ("error reading %s: no such file\n", fname);
+#ifdef DEBUG_PRINT
 #endif /* DEBUG_PRINT */
       }
       if (from_file != NULL) free (from_file);
@@ -52,6 +55,7 @@ static void init_bloom ()
     if (fname != NULL) free (fname);
     initialized = 1;
   }
+  return 1;
 }
 
 /* id should refer to at least 16 bytes, and PID_SIZE should be 16 or more
@@ -69,10 +73,10 @@ int pid_is_in_bloom (const char * id, int filter_selector)
   assert(filter_selector >= 0);
   assert(BLOOM_SIZE == (PID_FILTER_SELECTORS *
                         NUM_FILTERS * FILTER_DEPTH * FILTER_WIDTH / 8));
-  init_bloom ();
+  bloom_init (1);
   int filter_num;
   for (filter_num = 0; filter_num < NUM_FILTERS; filter_num++) {
-    int found = 1;
+    int is_in_all = 1;
     int filter_depth;
     for (filter_depth = 0; filter_depth < FILTER_DEPTH; filter_depth++) {
       uint16_t pos = readb16 ((char *) id + filter_depth * 2);
@@ -83,19 +87,19 @@ int pid_is_in_bloom (const char * id, int filter_selector)
         bloom_filter [filter_selector] [filter_num] [filter_depth] [index];
       int bit = byte & (1 << offset);
       if (bit == 0) {  /* the ID is not in this filter */
-        found = 0;
-        break;
+        is_in_all = 0;
+        break;         /* break out of the inner loop within one filter */
       }
     }
-    if (found && (filter_num > 0))  /* also add into the top-level filter */
+    if (is_in_all && (filter_num > 0))  /* also add into the top-level filter */
       pid_add_to_bloom (id, filter_selector);
-    if (found)
+    if (is_in_all)
       return 1;
   }
   return 0;
 }
 
-/* add this id/ack to filter 0 */
+/* add this id to filter 0 */
 void pid_add_to_bloom (const char * id, int filter_selector)
 {
   assert(FILTER_WIDTH == 65536);
@@ -107,7 +111,7 @@ void pid_add_to_bloom (const char * id, int filter_selector)
   assert(filter_selector >= 0);
   assert(BLOOM_SIZE == (PID_FILTER_SELECTORS *
                         NUM_FILTERS * FILTER_DEPTH * FILTER_WIDTH / 8));
-  init_bloom ();
+  bloom_init (1);
   int filter_depth;
   for (filter_depth = 0; filter_depth < FILTER_DEPTH; filter_depth++) {
     uint16_t pos = readb16 ((char *) id + filter_depth * 2);
@@ -120,8 +124,9 @@ void pid_add_to_bloom (const char * id, int filter_selector)
 
 void pid_save_bloom ()
 {
-  init_bloom ();
-  int fd = open_write_config ("acache", "bloom", 0);
+  if (! bloom_init (0))   /* nothing to save */
+    return;
+  int fd = open_write_config ("acache", "bloom", 1);
   if (fd >= 0) {
     ssize_t write_size = BLOOM_SIZE;
     ssize_t written = write (fd, bloom_filter, BLOOM_SIZE);
@@ -138,7 +143,8 @@ void pid_save_bloom ()
 
 void pid_advance_bloom ()
 {
-  init_bloom ();
+  if (! bloom_init (0))   /* nothing to advance */
+    return;
   int sel;
   for (sel = 0; sel < PID_FILTER_SELECTORS; sel++) {
     int index;

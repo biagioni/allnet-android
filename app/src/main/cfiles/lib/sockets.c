@@ -1,4 +1,4 @@
-/* manage sockets, mostly for use by ad */
+/* manage sockets, mostly for use by ad and app_util */
 
 #include <stdio.h>
 #include <unistd.h>
@@ -37,7 +37,7 @@ static void debug_crash ()
 
 static void print_sav (struct socket_address_validity * sav)
 {
-   int limit = (sav->alen == 16 ? 8 : 16);
+   int limit = (sav->alen == 16 ? 8 : 24);
    print_buffer ((char *) (&sav->addr), sav->alen, NULL, limit, 0);
    printf (", %lld/%lld, %lld, %d, %d/%d\n",
            sav->alive_rcvd, sav->alive_sent,
@@ -45,14 +45,16 @@ static void print_sav (struct socket_address_validity * sav)
            sav->send_limit, sav->send_limit_on_recv); 
 }
 
-static void print_socket_set (struct socket_set * s)
+void print_socket_set (struct socket_set * s)
 {
   int si;
   for (si = 0; si < s->num_sockets; si++) {
     struct socket_address_set * sas = &(s->sockets [si]);
-    printf ("socket %d/%d: sockfd %d, %s%d addrs\n",
+    printf ("socket %d/%d: sockfd %d, %s%s%s%d addrs\n",
             si, s->num_sockets, sas->sockfd,
-            ((sas->is_local) ? "local, " : ""), sas->num_addrs);
+            ((sas->is_local) ? "local, " : ""),
+            ((sas->is_global_v6) ? "globalv6, " : ""),
+            ((sas->is_global_v4) ? "globalv4, " : ""), sas->num_addrs);
     int ai;
     for (ai = 0; ai < sas->num_addrs; ai++) {
       struct socket_address_validity * sav = &(sas->send_addrs [ai]);
@@ -121,7 +123,6 @@ static int socket_addr_loop_locked (struct socket_set * s,
       struct socket_address_validity * sav = sas->send_addrs + ai;
 check_sav (sav, "socket_addr_loop");
       if (! f (sas, sav, ref)) {  /* delete this element */
-print_buffer ((char *)&(sav->addr), sav->alen, "sal deleting", sav->alen, 1);
         count++;
         /* compress the array to replace the deleted element */
         int aim;
@@ -160,7 +161,6 @@ static int socket_add_locked (struct socket_set * s, int sockfd, int is_local,
   s->sockets [index].is_global_v4 = is_global_v4;
   s->sockets [index].num_addrs = 0;
   s->sockets [index].send_addrs = NULL;
-printf ("added %ssocket with fd %d, %d total sockets\n", (is_local ? "local " : ""), sockfd, s->num_sockets);
   return 1;
 }
 /* returns a pointer to the new sav, or NULL in case of errors (e.g.
@@ -242,6 +242,12 @@ int socket_update_recv_limit (int new_recv_limit, struct socket_set * s,
     printf ("error: update_recv_limit deleted %d addrs\n", del);
     exit (1);
   }
+  if (! rld.updated) {   /* likely error -- report for now */
+    char st [1000];
+    print_sockaddr_str ((struct sockaddr *) &addr, alen, 0, st, sizeof (st));
+    printf ("warning: update_recv_limit %s did not update any addresses\n", st);
+    print_socket_set (s);
+  }
   return rld.updated;
 }
 
@@ -249,12 +255,16 @@ static int update_time_fun (struct socket_address_set * sock,
                             struct socket_address_validity * sav,
                             void * ref)
 {
-  long long int * new_time = (long long int *) ref;
+  long long int new_time = * ((long long int *) ref);
 check_sav (sav, "update_time_fun");
-if (! ((sav->time_limit == 0) || (sav->time_limit >= *new_time)))
-printf ("update_time_fun deleting record, time_limit %lld >=? %lld\n",
-sav->time_limit, *new_time);
-  return ((sav->time_limit == 0) || (sav->time_limit >= *new_time));
+#ifdef DEBUG_PRINT
+  char timestring [ALLNET_TIME_STRING_SIZE];
+  allnet_localtime_string (allnet_time (), timestring);
+  if (! ((sav->time_limit == 0) || (sav->time_limit >= new_time)))
+    printf ("%s: update_time_fun deleting record, time_limit %lld <? %lld\n",
+            timestring, sav->time_limit, new_time);
+#endif /* DEBUG_PRINT */
+  return ((sav->time_limit == 0) || (sav->time_limit >= new_time));
 }
 
 /* remove all socket addresses whose time is less than new_time.
@@ -267,7 +277,7 @@ int socket_update_time (struct socket_set * s, long long int new_time)
 static void add_fd_to_bitset (fd_set * set, int fd, int * max)
 {
   FD_SET (fd, set);
-  if (fd > *max)
+  if (fd >= *max)
     *max = fd + 1;
 }
 /* returns the max parameter to pass to select */
@@ -399,7 +409,8 @@ struct socket_read_result socket_read (struct socket_set * s,
      * is to avoid a context switch) which however leads to starvation */
     usleep (1);
     if (result < 0) {    /* some error */
-      perror ("select");
+      if (errno != EINTR)   /* it is normal to be killed during select */
+        perror ("select");
       r.success = -1;    /* error */
       return r;
     } /* else: timed out */
@@ -471,14 +482,11 @@ check_sav (sav, "socket_send_fun");
   if ((sock->is_local == ssd->local_not_remote) &&
       (! same_sockaddr (&(ssd->except_to), ssd->alen,
                         &(sav->addr), sav->alen))) {
-print_sav (sav);
     if (send_on_socket (ssd->message, ssd->msize, ssd->sent_time,
                         sock->sockfd, sav, "socket_send_fun", NULL, -1, -1)) {
       sav->alive_sent = ssd->sent_time;
       if (sav->send_limit > 0) {
         sav->send_limit--;
-if (sav->send_limit == 0)
-printf ("socket_send_fun deleting record, send_limit has reached 0\n");
         if (sav->send_limit == 0)
           return 0;   /* send limit expired, delete the record */
       }
@@ -501,7 +509,6 @@ int socket_send_local (struct socket_set * s, const char * message, int msize,
     { .message = add_priority (message, msize, priority), .msize = msize + 2,
       .sent_time = sent_time, .alen = alen, .local_not_remote = 1, .error = 0 };
   memset (&(ssd.except_to), 0, sizeof (ssd.except_to));
-print_buffer (ssd.message, ssd.msize, "sending local", 64, 1);
   if ((alen > 0) && (alen < sizeof (except_to)))
     memcpy (&(ssd.except_to), &(except_to), alen);
   socket_addr_loop (s, socket_send_fun, &ssd);
@@ -514,7 +521,6 @@ int socket_send_out (struct socket_set * s, const char * message, int msize,
                      unsigned long long int sent_time,
                      struct sockaddr_storage except_to, socklen_t alen)
 {
-print_buffer (message, msize, "sending out", 64, 1);
   struct socket_send_data ssd =
     { .message = message, .msize = msize,
       .sent_time = sent_time, .alen = alen, .local_not_remote = 0, .error = 0 };
@@ -541,8 +547,6 @@ check_sav (sav, "socket_dec_send_limit");
   if ((same_sockaddr (&(dsld->addr), dsld->alen, &(sav->addr), sav->alen)) &&
       (sav->send_limit > 0)) {
     sav->send_limit--;
-if (sav->send_limit == 0)
-printf ("socket_dec_send_limit deleting record, send_limit has reached 0\n");
     return (sav->send_limit != 0);
   }
   return 1;  /* keep the record: no match, or no limit */
@@ -585,11 +589,13 @@ int socket_send_to_ip (int sockfd, const char * message, int msize,
   ssize_t result = sendto (sockfd, message, msize, flags,
                            (struct sockaddr *) (&sas), alen);
   if (result != msize) {
-    perror ("socket_send_to_ip sendto");
-    printf ("error: tried to send %d bytes to fd %d, sent %zd\n",
-            msize, sockfd, result);
-    print_buffer ((char *) &sas, alen, "sent to:", sizeof (sas), 1);
+    if (errno != ENETUNREACH) {  /* ignore "network unreachable" errors */
+      perror ("socket_send_to_ip sendto");
+      printf ("error: tried to send %d bytes to fd %d, sent %zd\n",
+              msize, sockfd, result);
+      print_buffer ((char *) &sas, alen, "sent to:", sizeof (sas), 1);
 debug_crash ();
+    }
     return 0;
   }
   return 1;
@@ -635,7 +641,7 @@ check_sav (sav, "socket_send_keepalives");
 
 /* create a socket and bind it as appropriate for the given address
  * and add it to the given socket set
- * return 1 for success, 0 otherwise */
+ * return the sockfd for success, -1 otherwise */
 int socket_create_bind (struct socket_set * s, int is_local,
                         struct sockaddr_storage addr, socklen_t alen,
                         int quiet)
@@ -646,18 +652,21 @@ int socket_create_bind (struct socket_set * s, int is_local,
   int sockfd = socket (sap->sa_family, SOCK_DGRAM, 0);
   if (sockfd < 0) {
     if (! quiet) perror ("socket_create_bind: socket");
-    return 0;
+    return -1;
   }
   if (bind (sockfd, sap, alen) != 0) {
     if (! quiet) perror ("socket_create_bind: bind");
-    return 0;
+    return -1;
   }
-  return socket_add (s, sockfd, is_local, is_global_v6, is_global_v4);
+  if (socket_add (s, sockfd, is_local, is_global_v6, is_global_v4))
+    return sockfd;
+  if (! quiet) printf ("unable to add %d socket %d\n", sap->sa_family, sockfd);
+  return -1;
 }
 
 /* create a socket and connect it as appropriate for the given address
  * and add it to the given socket set
- * return 1 for success, 0 otherwise */
+ * return the sockfd for success, -1 otherwise */
 int socket_create_connect (struct socket_set * s, int is_local,
                            struct sockaddr_storage addr, socklen_t alen,
                            int quiet)
@@ -672,5 +681,8 @@ int socket_create_connect (struct socket_set * s, int is_local,
     if (! quiet) perror ("socket_create_connect: connect");
     return 0;
   }
-  return socket_add (s, sockfd, is_local, 0, 0);
+  if (socket_add (s, sockfd, is_local, 0, 0))
+    return sockfd;
+  if (! quiet) printf ("could not add %d socket %d\n", sap->sa_family, sockfd);
+  return -1;
 }
