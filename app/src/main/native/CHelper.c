@@ -4,7 +4,6 @@
 //
 
 #include <jni.h>
-#include <lib/pipemsg.h>
 #include <xchat/xcommon.h>
 #include <pthread.h>
 #include <lib/util.h>
@@ -17,7 +16,6 @@
 #include <lib/trace_util.h>
 
 
-static pd p;
 JavaVM * g_vm;
 jobject g_obj;
 jmethodID g_mid;
@@ -71,17 +69,14 @@ void packet_main_loop (void * arg)
 {
     int * socks = (int*)arg;
     int allnet_sock = socks [0];
-    pd p = socks [1];
 
     int rcvd = 0;
     char * packet;
-    int pipe;
     unsigned int pri;
     int timeout = 100;      /* sleep up to 1/10 second */
     char * old_contact = NULL;
     keyset old_kset = -1;
-    while ((rcvd = receive_pipe_message_any (p, timeout, &packet, &pipe, &pri))
-           >= 0) {
+    while ((rcvd = local_receive (timeout, &packet, &pri)) >= 0) {
         int verified, duplicate, broadcast;
         uint64_t seq;
         char * peer;
@@ -181,7 +176,7 @@ void packet_main_loop (void * arg)
             free (acks.peers [i]);
         }
     }
-    printf ("xchat_socket pipe closed, exiting\n");
+    printf ("allnet not responding, exiting\n");
 }
 
 static void * request_key (void * arg_void) {
@@ -331,7 +326,6 @@ Java_org_alnet_allnet_1android_NetworkAPI_startAllnet(JNIEnv *env,
     pthread_create (&t2, NULL, allnet_daemon_main, NULL);
 
     struct allnet_log * alog = init_log ("ios xchat");
-    p = init_pipe_descriptor(alog);
     int result = xchat_init("xchat",dir);
 
     waiting_for_key = 0;
@@ -341,7 +335,6 @@ Java_org_alnet_allnet_1android_NetworkAPI_startAllnet(JNIEnv *env,
     /* create the thread to handle messages from the GUI */
     void * args2 = malloc_or_fail (sizeof (int) * 2 , "gui_socket main");
     ((int *) args2) [0] = sock;
-    ((pd *) args2) [1] = p;
 
     pthread_t t;
     pthread_create (&t, NULL, packet_main_loop, args2);
