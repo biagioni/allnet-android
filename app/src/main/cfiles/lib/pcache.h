@@ -84,8 +84,9 @@ extern void pcache_save_acks (const char * acks, int num_acks, int max_hops);
 /* return 1 if we have the ack, 0 if we do not */
 extern int pcache_ack_found (const char * ack);
 
-/* return 1 if we have the ack for this ID, 0 if we do not */
-extern int pcache_id_acked (const char * id);
+/* return 1 if we have the ack for this ID, 0 if we do not
+ * if returning 1, fill in the ack */
+extern int pcache_id_acked (const char * id, char * ack);
 
 /* return 1 if the ack has not yet been sent to this token,
  * and mark it as sent to this token.
@@ -105,6 +106,6 @@ extern int pcache_trace_request (const unsigned char * id);
 extern int pcache_trace_reply (const char * msg, int msize);
 
 /* save cached information to disk */
-extern void pcache_write ();
+extern void pcache_write (void);
 
 #endif /* PACKET_CACHE_H */

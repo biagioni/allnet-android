@@ -37,7 +37,9 @@
 #include "lib/pcache.h"
 
 extern void allnet_daemon_main (void);
+#ifdef ALLNET_USE_FORK  /* start a keyd process */
 extern void keyd_main (char * pname);
+#endif /* ALLNET_USE_FORK */
 extern void keyd_generate (char * pname);
 
 static struct allnet_log * alog = NULL;
@@ -64,6 +66,7 @@ struct thread_arg {
   pthread_t id;
   void (*string_function) (char *);
   char * string_arg;
+  int start_immediately;
 };
 
 static struct thread_arg thread_args [100];
@@ -76,6 +79,8 @@ static void * generic_thread (void * arg)
     exit (1);
   }
   struct thread_arg * ta = (struct thread_arg *) arg;
+  if (! ta->start_immediately)
+    sleep (2);   /* start the allnet daemon first, then run */
   ta->string_function (ta->string_arg);
   printf ("astart generic_thread: error termination of %s\n", ta->name);
   /* exit (1);  debugging */
@@ -169,6 +174,8 @@ static void make_root_other (int verbose)
 #ifdef ALLNET_USE_FORK
 static void print_pid (int fd, int pid)
 {
+char * p = NULL;
+if ((pid <= 0) || (pid > 0xffff)) printf ("crashing: %d\n", *p);
   static int original_fd = -1; /* for debugging */
   char buffer [100];  /* plenty of bytes, easier than being exact */
   int len = snprintf (buffer, sizeof (buffer), "%d\n", pid);
@@ -312,12 +319,12 @@ static void stop_all ()
 #if ! (defined(_WIN32) || defined(_WIN64) || defined(__CYGWIN__))
     /* calling pkill does not seem to be supported on windows */
     printf ("%s: cannot stop allnet (no pid file %s), ", process_name, fname);
-    printf ("running 'pkill -x allnet|abc'\n");
+    printf ("running 'pkill -x allnetd|abc|allnet-kgen|allnet-keyd'\n");
     /* send a sigint to all allnet processes */
     /* -x specifies that we only use exact match on process names */
     /* allnet|abc kills processes whether they retain the original name
      * or use the new name */
-    execlp ("pkill", "pkill", "-x", "allnet|abc", ((char *)NULL));
+    execlp ("pkill", "pkill", "-x", "allnetd|abc", ((char *)NULL));
     /* execlp should never return */
     perror ("execlp");
     printf ("unable to pkill\n");
@@ -384,7 +391,8 @@ static void replace_command (char * old, int olen, char * new)
 }
 
 static void my_call1 (char * argv, int alen, char * program,
-                      void (*run_function) (char *), int fd, pid_t parent)
+                      void (*run_function) (char *), int fd, pid_t parent,
+                      int start_immediately)
 {
   pid_t child = fork ();
   if (child == 0) {
@@ -392,7 +400,8 @@ static void my_call1 (char * argv, int alen, char * program,
     snprintf (alog->b, alog->s, "calling %s\n", program);
     log_print (alog);
 #ifdef ALLNET_USE_FORK
-    sleep (2);   /* start the allnet daemon first, then run */
+    if (! start_immediately)
+      sleep (2);   /* start the allnet daemon first, then run */
     process_name = program;
     run_function (argv);
     child_return (program, parent, 1);
@@ -401,6 +410,7 @@ static void my_call1 (char * argv, int alen, char * program,
     tap->name = strcpy_malloc (program, "astart my_call1");
     tap->string_function = run_function;
     tap->string_arg = strcpy_malloc (argv, "astart my_call1 string");
+    tap->start_immediately = start_immediately;
     if (pthread_create (&(tap->id), NULL, generic_thread, (void *) tap)) {
       printf ("pthread_create failed for %s\n", program);
       exit (1);
@@ -534,6 +544,11 @@ static void do_root_init ()
 #endif /* __linux__ */
 }
 
+static void call_ad (char * ignored)
+{
+  allnet_daemon_main ();
+}
+
 int astart_main (int argc, char ** argv)
 {
   int ix, jx;
@@ -610,8 +625,10 @@ int astart_main (int argc, char ** argv)
     exit (1);
   }
   free (fname);
+/*
   for (i = 0; i < num_interfaces; i++)
     print_pid (pid_fd, abc_pids [i]);
+*/
 #endif /* ALLNET_USE_FORK */
   if (num_interfaces > 0)
     free (abc_pids);
@@ -629,26 +646,22 @@ int astart_main (int argc, char ** argv)
     log_print (alog);
   }
 
-  /* start all the other programs */
-#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
-  to do: create queues for multipeer
-  multipeer_read_queue_index = rpipes [multipeer_pipe_offset];
-  multipeer_write_queue_index = wpipes [multipeer_pipe_offset];
-printf ("multipeer pipes are %d, %d, multipeer pipe offset is %d\n",
-  multipeer_read_queue_index, multipeer_write_queue_index,
-  multipeer_pipe_offset);
-  multipeer_queue_indices_set = 1;
-#endif /* __IPHONE_OS_VERSION_MIN_REQUIRED */
-  my_call1 (argv [0], alen, "keyd", keyd_main, pid_fd, astart_pid);
-  my_call1 (argv [0], alen, "keygen", keyd_generate, pid_fd, astart_pid);
+  /* start the dependent processes, keyd and keygen */
+#ifdef ALLNET_USE_FORK /* keyd only works as a separate process */
+  my_call1 (argv [0], alen, "allnet-keyd", keyd_main, pid_fd, astart_pid, 0);
+#endif /* ALLNET_USE_FORK */
+  my_call1 (argv [0], alen, "allnet-kgen",
+            keyd_generate, pid_fd, astart_pid, 0);
 
   /* start allnet */
 #ifdef ALLNET_USE_FORK  /* only save pids if we do have processes */
   setup_signal_handler (1);
-  print_pid (pid_fd, getpid ());
+  /* print_pid (pid_fd, getpid ()); terminating, so do not save own pid */
+#endif /* ALLNET_USE_FORK */
+  my_call1 (argv [0], alen, "allnetd", call_ad, pid_fd, astart_pid, 1);
+#ifdef ALLNET_USE_FORK  /* only save pids if we do have processes */
   close (pid_fd);
 #endif /* ALLNET_USE_FORK */
-  allnet_daemon_main ();
 
   return 0;
 }

@@ -435,14 +435,16 @@ static void send_trace (int sock, const unsigned char * address, int abits,
   memcpy (trp->trace_id, trace_id, MESSAGE_ID_SIZE);
   init_trace_entry (trp->trace, 0, my_address, my_abits, 1);
 
-  snprintf (alog->b, alog->s, "sending trace of size %d\n", total_size);
-  log_print (alog);
-  if (! local_send (buffer, total_size, ALLNET_PRIORITY_TRACE))
+  if (! local_send (buffer, total_size, ALLNET_PRIORITY_TRACE)) {
     snprintf (alog->b, alog->s,
               "unable to send trace message of %d bytes\n", total_size);
-  else
+    log_print (alog);
+#ifdef DEBUG_PRINT
+  } else {
     snprintf (alog->b, alog->s, "sent %d-byte trace message\n", total_size);
-  log_print (alog);
+    log_print (alog);
+#endif /* DEBUG_PRINT */
+  }
 }
 
 /* in case of overflow, returns ULLONG_MAX */
@@ -818,7 +820,7 @@ static void wait_for_responses (int sock, char * trace_id, int sec,
                      rememberedh, nh, positionh, alog);
       free (message);
     }
-    local_send_keepalive ();
+    local_send_keepalive (0);
     time_spent = allnet_time_ms () - start;
   }
 #ifdef DEBUG_PRINT
@@ -900,7 +902,7 @@ char * trace_string (const char * tmp_dir, int sleep, const char * dest,
   }
 
   struct allnet_log * alog = init_log ("trace_string");
-  int sock = connect_to_local ("trace_string", "trace_string", NULL, 1);
+  int sock = connect_to_local ("trace_string", "trace_string", NULL, 0, 1);
   if (sock < 0)
     return strcpy_malloc ("unable to connect to allnet", "trace_string");
 
@@ -938,7 +940,7 @@ void trace_pipe (int pipe, struct allnet_queue * queue,
   }
 
   struct allnet_log * alog = init_log ("trace_string");
-  int sock = connect_to_local ("trace_pipe", "trace_pipe", NULL, 1);
+  int sock = connect_to_local ("trace_pipe", "trace_pipe", NULL, 0, 1);
   if (sock < 0) {
     printf ("unable to connect to allnet\n");
     return;

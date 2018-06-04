@@ -24,7 +24,6 @@
 #include "sha.h"
 #include "priority.h"
 #include "crypt_sel.h"
-#include "sockets.h"
 
 #ifdef ALLNET_USE_FORK
 static void find_path (char * arg, char ** path, char ** program)
@@ -81,9 +80,9 @@ static void exec_allnet (const char * arg, const char * config_path)
     char * pname;
     char * arg_copy = strcpy_malloc (arg, "exec_allnet");
     find_path (arg_copy, &path, &pname);
-    char * astart = make_program_path (path, "allnet", arg);
+    char * astart = make_program_path (path, "allnetd", arg);
     if ((astart == NULL) || (access (astart, X_OK) != 0)) {
-      perror ("access, unable to find allnet executable");
+      perror ("access, unable to find allnetd executable");
       printf ("unable to start AllNet daemon %s\n", astart);
       exit (1);   /* only exits the child */
     }
@@ -95,12 +94,12 @@ static void exec_allnet (const char * arg, const char * config_path)
     } else {                 /* replace the NULL with the path */
       args [2] = strcpy_malloc (config_path, "exec_allnet thread path");
     }
-    printf ("calling ");
+#ifdef DEBUG_PRINT
+    printf ("calling");
     int i;
     for (i = 0; args [i] != NULL; i++)
       printf (" %s", args [i]);
-    printf ("\n");
-#ifdef DEBUG_PRINT
+    printf (" (%d args)\n", i);
 #endif /* DEBUG_PRINT */
     execv (astart, args);
     perror ("execv");
@@ -114,76 +113,104 @@ static void exec_allnet (const char * arg, const char * config_path)
   setpgid (child, 0);  /* put the child process in its own process group */
 }
 
-#else /* ALLNET_USE_FORK */
-
-extern int astart_main (int, char **);
-
-static void * call_allnet_main (void * path)
-{
-  allnet_daemon_main ();
-  return NULL;
-}
-
-static void exec_allnet (char * arg, const char * const_path)
-/* iOS/android version, threads instead of fork */
-{
-  pthread_t thread;
-  char * path = NULL;
-  if (const_path != NULL)
-    path = strcpy_malloc (const_path, "exec_allnet path");
-  int error = pthread_create (&thread, NULL, call_allnet_main, (void *)path);
-  if (error) {
-    printf ("ios exec_allnet unable to create thread for allnet main\n");
-    exit (1);  /* no point continuing */
-  }
-}
 #endif /* ALLNET_USE_FORK */
 
-static struct socket_set socket_set = { .num_sockets = 0, .sockets = NULL };
-static struct socket_address_set * socket_sas = NULL;
-static struct socket_address_validity * socket_sav = NULL;
+static int internal_sockfd = -1;
+static struct sockaddr_storage sas;
+static struct sockaddr * sap = (struct sockaddr *) (&sas);
+static struct sockaddr_in * sinp = (struct sockaddr_in *) (&sas);
+static const socklen_t alen = sizeof (struct sockaddr_in);
+static long long int last_sent = 0;
+static int internal_print_send_errors = 1;
 
-void local_send_keepalive ()
+static int send_with_priority (const char * message, int msize, unsigned int p)
 {
+  if (internal_sockfd < 0) {
+    printf ("send_with_priority: unininitialzed socket %d, ls %lld\n",
+            internal_sockfd, last_sent);
+    char * pq = NULL;
+    printf ("crashing %d\n", *pq);
+    return 0;
+  }
+  char * copy = malloc_or_fail (msize + 2, "app_util.c send_with_priority");
+  memcpy (copy, message, msize);
+  writeb16 (copy + msize, p);
+  ssize_t s = sendto (internal_sockfd, copy, msize + 2, 0, sap, alen);
+  if ((s < 0) && (internal_print_send_errors)) {
+int e = errno;
+    perror ("send_with_priority send");
+printf ("send (%d, %p, %d, 0): result %zd, errno %d\n",
+internal_sockfd, copy, msize + 2, s, e);
+  }
+  free (copy);
+  return (s == (msize + 2));
+}
+
+/* send a keepalive unless we have sent messages in the last 5s */
+void local_send_keepalive (int override)
+{
+  long long int now = allnet_time ();
+  if ((! override) && (last_sent + (KEEPALIVE_SECONDS / 2) > now))
+    return;  /* do nothing */
+#if 0
+struct sockaddr_storage local_sas; socklen_t local_alen = sizeof (local_sas);
+getsockname(internal_sockfd, (struct sockaddr *)(&local_sas), &local_alen);
+int port = htons (local_sas.ss_family == AF_INET
+                  ? ((struct sockaddr_in *) (&local_sas))->sin_port
+                  : ((struct sockaddr_in6 *) (&local_sas))->sin6_port);
+printf ("local_send_keepalive from port %04x\n", port);
+#endif /* 0 */
+  last_sent = now;
   unsigned int msize;
   const char * message = keepalive_packet (&msize);
-  socket_send_to (message, msize, ALLNET_PRIORITY_EPSILON, 1,
-                  &socket_set, socket_sas, socket_sav);
+  send_with_priority (message, msize, ALLNET_PRIORITY_EPSILON);
 }
 
 static int connect_once (int print_error)
 {
-  int sock = socket (AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-  struct sockaddr_storage sas;
-  struct sockaddr_in * sin = (struct sockaddr_in *) (&sas);
-  sin->sin_family = AF_INET;
-  sin->sin_addr.s_addr = allnet_htonl (INADDR_LOOPBACK);
-  sin->sin_port = allnet_htons (ALLNET_LOCAL_PORT);
-  socklen_t alen = sizeof (struct sockaddr_in);
-  if (socket_create_connect (&socket_set, 1, sas, alen, ! print_error) >= 0) {
-    /* send a keepalive to start the flow of data */
-    socket_sas = socket_set.sockets + 0;
-    struct socket_address_validity new_sav =
-      { .alen = alen, .alive_rcvd = 1, .alive_sent = 1, 
-        .time_limit = 0, .recv_limit = 0, .send_limit = 0,
-        .send_limit_on_recv = 0 };
-    memset (&(new_sav.addr), 0, sizeof (new_sav.addr));
-    memcpy (&(new_sav.addr), sin, alen);
-    socket_sav = socket_address_add (&socket_set, socket_sas, new_sav);
-    if (socket_sav != NULL) {
-      local_send_keepalive ();
-      struct socket_read_result r;
-      r = socket_read (&socket_set, 2000, 1);
-      if (r.success)
-      if (r.success > 0)
-        return socket_sas->sockfd;
+  memset (&sas, 0, sizeof (sas));
+  sinp->sin_family = AF_INET;
+  sinp->sin_addr.s_addr = allnet_htonl (INADDR_LOOPBACK);
+  sinp->sin_port = allnet_htons (ALLNET_LOCAL_PORT);
+  const char * error_desc = "connect_once socket";
+  internal_sockfd = socket (sinp->sin_family, SOCK_DGRAM, IPPROTO_UDP);
+int debug_recv_count = 0;
+  if (internal_sockfd >= 0) {
+    error_desc = NULL;  /* timeout */
+    long long int start = allnet_time ();
+    int flags = MSG_DONTWAIT;
+    while (allnet_time () < start + 2) {
+      /* send a keepalive to start the flow of data */
+      local_send_keepalive (1);
+      /* now read a response (hopefully) */
+      char buffer [ALLNET_MTU + 2];
+debug_recv_count++;
+      ssize_t r = recv (internal_sockfd, buffer, sizeof (buffer), flags);
+if ((r < 0) && (errno != EAGAIN) && (errno != EWOULDBLOCK)) {
+printf ("connect_once received %d, errno %d, s %d, count %d\n",
+        (int)r, errno, internal_sockfd, debug_recv_count);
+printf ("refused %d, reset %d, notconn %d, badf %d, notsock %d\n",
+ECONNREFUSED, ECONNRESET, ENOTCONN, EBADF, ENOTSOCK);
+}
+      if (r > 2)  /* received an initial packet, which we will discard */
+        return internal_sockfd;  /* success! */
+      if ((r < 0) && (errno != EAGAIN) && (errno != EWOULDBLOCK)) {
+        error_desc = "connect_once recv";
+        char * pq = NULL;
+        printf ("%d\n", *pq);
+        break;
+      }
+      usleep (50000);  /* wait for 50ms */
     }
   }
-  if (print_error && (errno != 0))
-    perror ("connect to alocal");
-  else if (print_error)
+  if (print_error && (errno != 0) && (error_desc != NULL))
+    { printf ("error %d/%d,%d,%d,%d,%d, s %d count %d\n", errno,
+              ECONNREFUSED, ECONNRESET, ENOTCONN, EBADF, ENOTSOCK, internal_sockfd, debug_recv_count);
+      perror (error_desc); }
+  else if (print_error)  /* timed out */
     printf ("no response after connecting to allnet\n");
-  close (sock);
+  close (internal_sockfd);
+  internal_sockfd = -1;
   return -1;
 }
 
@@ -194,7 +221,7 @@ static void read_n_bytes (int fd, char * buffer, int bsize)
   int i;
   for (i = 0; i < bsize; i++) {
     if (read (fd, buffer + i, 1) != 1) {
-      if (errno == EAGAIN) {
+      if ((errno == EAGAIN) || (errno == EWOULDBLOCK)) {
         i--;
         usleep (50000);
       } else
@@ -270,7 +297,7 @@ static void seed_rng ()
 static void * keepalive_thread (void * arg)
 {
   while (1) {
-    local_send_keepalive ();
+    local_send_keepalive (0);
     sleep (KEEPALIVE_SECONDS);
   }
   return NULL;
@@ -283,68 +310,89 @@ static void * keepalive_thread (void * arg)
  * path, if not NULL, tells allnet what path to use for config files
  * the application MUST receive messages, even if it ignores them all.
  * otherwise, after a while (once the buffer is full) allnet/alocal
- * will close the socket. */
+ * will close the socket.
+ * NOTICE: this can only be called ONCE in any given process, so if
+ * there is no fork, there still should only be one call to this function. */
 int connect_to_local (const char * program_name, const char * arg0,
-                      const char * path, int start_keepalive_thread)
+                      const char * path, int start_allnet_if_needed,
+                      int start_keepalive_thread)
 {
+  static int first_call = 1;
+  if (! first_call)
+    close (internal_sockfd);
+  internal_sockfd = -1;
+  internal_print_send_errors = 0;
 #ifndef ANDROID
   seed_rng ();
 #endif /* ANDROID */
-  int sock = connect_once (0);
-  if (sock < 0) {
+#ifdef ALLNET_USE_FORK
+  int sock = connect_once (! start_allnet_if_needed);
+  if ((sock < 0) && start_allnet_if_needed) {
     printf ("%s(%s) unable to connect, starting allnet\n",
             program_name, arg0);
     exec_allnet (strcpy_malloc (arg0, "connect_to_local exec_allnet"),
                  path);
     sleep (1);
     sock = connect_once (1);
-    if (sock < 0) {
+    if (sock < 0)
       printf ("unable to start allnet daemon, giving up\n");
-      return -1;
-    }
   }
-  if (start_keepalive_thread) {
+#else /* ! ALLNET_USE_FORK */
+  int sock = connect_once (1);
+#endif /* ALLNET_USE_FORK */
+  internal_print_send_errors = 1;
+  if (sock < 0)
+    return -1;
+  /* else, success! */
+  if (first_call && start_keepalive_thread) {
     pthread_t ignored;
     pthread_create (&ignored, NULL, keepalive_thread, NULL);
   }
+  first_call = 0;
   return sock;
 }
 
 /* return 1 for success, 0 otherwise */
 int local_send (const char * message, int msize, unsigned int priority)
 {
-  socket_send_to (message, msize, priority, 1,
-                  &socket_set, socket_sas, socket_sav);
-  return 1;
+  if (send_with_priority (message, msize, priority)) {
+    last_sent = allnet_time ();
+    return 1;
+  }
+  return 0;
 }
 
 /* return the message size > 0 for success, 0 otherwise. timeout in ms */
 int local_receive (unsigned int timeout,
                    char ** message, unsigned int * priority)
 {
+  *message = NULL;
+  *priority = 0;
   static int keepalive_count = 0;   /* send a keepalive every 5 rcvd messages */
   if (keepalive_count <= 0) {
-    local_send_keepalive ();
+    local_send_keepalive (1);
     keepalive_count = 5;
   } else {               /* keepalive_count > 0 */
     keepalive_count--;
   }
-  *message = NULL;
-  *priority = 0;
-/* printf ("local_receive socket_read (%u)\n", timeout); */
-  struct socket_read_result r = socket_read (&socket_set, timeout, 1);
-  if (r.success > 0) {
-/* if (r.msize > 2)
-printf ("local_receive socket_read (%u) => %d, type %d\n", timeout, r.msize,
-r.message [1] & 0xff);
-else printf ("local_receive socket_read (%u) => %d\n", timeout, r.msize); */
-    *message = r.message;
-    *priority = r.priority;
-    return r.msize;
-  }
-  if (r.success < 0) { /* there was an error, probably because allnet exited */
-    printf ("the local allnet is no longer responding\n");
-    exit (0);
+  char buffer [ALLNET_MTU + 2];
+  int flags = MSG_DONTWAIT;
+  while (1) {
+    ssize_t r = recv (internal_sockfd, buffer, sizeof (buffer), flags);
+    if ((r > 2) && (r <= ALLNET_MTU + 2)) {
+      *message = memcpy_malloc (buffer, r - 2, "local_receive");
+      *priority = readb16 (buffer + (r - 2));
+      return (int)(r - 2);
+    }
+    if ((r < 0) && (errno != EAGAIN) && (errno != EWOULDBLOCK)) {
+      perror ("local_receive recv");
+      printf ("the local allnet is no longer responding\n");
+      exit (0);
+    }
+    usleep (1000);
+    if (timeout <= 1)
+      return 0;
+    timeout--;
   }
   return 0;
 }

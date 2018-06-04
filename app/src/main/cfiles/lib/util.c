@@ -1647,7 +1647,7 @@ int allnet_htonl (int hostlong)
   char buffer [4];
   uint32_t * p = (uint32_t *) buffer;
   *p = (hostlong & 0xffffffff);
-  return readb32 (buffer);
+  return (int)(readb32 (buffer));
 }
 
 /* returns 1 if the message is expired, 0 otherwise (including if
@@ -1713,7 +1713,6 @@ printf ("time to crash %d\n", 1000 / ah->version);
     snprintf (buffer, sizeof (buffer),
               "received message type %d, transport 0x%x != 0",
               ah->message_type, ah->transport);
-pipemsg_debug_last_received (buffer);
     if (error_desc != NULL) *error_desc = "ack or req with nonzero transport";
     return 0;
   }
@@ -1724,6 +1723,7 @@ pipemsg_debug_last_received (buffer);
     printf ("received ack message, but size %d(%d) mod %d == %d != 0\n",
             payload_size, size, MESSAGE_ID_SIZE,
             payload_size % MESSAGE_ID_SIZE);
+    print_buffer (packet, size, NULL, 100, 1);
     if (error_desc != NULL) *error_desc = "ack size not multiple of 16";
     return 0;
   }

@@ -105,11 +105,10 @@ int ia_to_string (const struct internet_addr * ia, char * buf, size_t bsize)
   return offset;
 }
 
-/* sap must point to at least sizeof (struct sockaddr_in6) bytes */
 /* returns 1 for success, 0 for failure */
 /* if salen is not NULL, it is given the appropriate length (0 for failure) */
 int ia_to_sockaddr (const struct internet_addr * ia,
-                    struct sockaddr * sap, socklen_t * salen)
+                    struct sockaddr_storage * sap, socklen_t * salen)
 {
   struct sockaddr_in  * sin  = (struct sockaddr_in  *) sap;
   struct sockaddr_in6 * sin6 = (struct sockaddr_in6 *) sap;
@@ -134,6 +133,30 @@ int ia_to_sockaddr (const struct internet_addr * ia,
     printf ("coding error: addr_info has version %d\n", ia->ip_version);
     return 0;
   }
+  return 1;
+}
+
+/* returns 1 for success, 0 for failure */
+/* takes sas as input, and returns the result (if any) in sas and alen
+ * ai_embed_v4_in_v6 is needed since apple OSX and perhaps other systems
+ * don't support sending to IPv4 addresses on IPv6 sockets */
+int ai_embed_v4_in_v6 (struct sockaddr_storage * sas, socklen_t * alen)
+{
+  struct sockaddr * sa = (struct sockaddr *) sas;
+  if (sa->sa_family != AF_INET)
+    return 0;   /* nothing to do */
+  struct sockaddr_in * source = (struct sockaddr_in *) sas;
+  struct sockaddr_storage temp;
+  memset (&temp, 0, sizeof (temp));
+  struct sockaddr_in6 * sin6 = (struct sockaddr_in6 *) (&temp);
+  sin6->sin6_family = AF_INET6;
+  sin6->sin6_port = source->sin_port;
+  /* ipv4-in-v6 address has 10 bytes of 0, 2 bytes of ff, then the ipv4 */
+  char * p = (char *) (&(sin6->sin6_addr));
+  p [10] = p [11] = 0xff;
+  memcpy (p + 12, &source->sin_addr, 4);
+  memcpy (sas, &temp, sizeof (*sas));
+  *alen = sizeof (struct sockaddr_in6);
   return 1;
 }
 
@@ -196,7 +219,7 @@ int sockaddr_to_ia (const struct sockaddr * sap, socklen_t addr_size,
 /* returns 1 for success, 0 for failure */
 /* if salen is not NULL, it is given the appropriate length (0 for failure) */
 int ai_to_sockaddr (const struct addr_info * ai,
-                    struct sockaddr * sap, socklen_t * salen)
+                    struct sockaddr_storage * sap, socklen_t * salen)
 {
   return ia_to_sockaddr (&(ai->ip), sap, salen);
 }
@@ -788,6 +811,48 @@ int interface_addrs (struct interface_addr ** interfaces)
   return result;
 }
 
+/* same as interface_addrs, but return the valid broadcast addresses */
+int interface_broadcast_addrs (struct sockaddr_storage ** addrs)
+{
+/* we use a fixed-size array because it is simpler if we don't have to
+ * count first, then allocate.  128 should be more than enough */
+#define MAX_BC_ADDRS	128
+  struct sockaddr_storage intermediate [MAX_BC_ADDRS];  /* copy of result */
+  memset (intermediate, 0, sizeof (intermediate));
+  int socket_fd = socket (AF_INET, SOCK_DGRAM, 0);
+  struct ifreq ifr;
+  int interface_index;
+  int result_count = 0;
+  for (interface_index = 0; interface_index < MAX_BC_ADDRS; interface_index++) {
+#ifndef __APPLE__
+    ifr.ifr_ifindex = interface_index;
+    int success = (ioctl (socket_fd, SIOCGIFNAME, &ifr) >= 0);
+#else
+    int success = (if_indextoname (interface_index, ifr.ifr_name) != NULL);
+#endif /* __APPLE__ */
+    if ((success) && (strlen (ifr.ifr_name) > 0)) {
+      success = (ioctl (socket_fd, SIOCGIFFLAGS, &ifr) >= 0);
+      if (success && (ifr.ifr_flags & IFF_BROADCAST)) {
+        if (ioctl (socket_fd, SIOCGIFBRDADDR, &ifr) >= 0) {
+          struct sockaddr * sap = (struct sockaddr *) &(ifr.ifr_broadaddr);
+          uint32_t ip = htonl (((struct sockaddr_in *) sap)->sin_addr.s_addr);
+          if ((ip != 0) && ((ip >> 24) != 0x7f)) {
+            memcpy (intermediate + result_count, &(ifr.ifr_broadaddr),
+                    sizeof (struct sockaddr));  /* only ipv4, sizeof sockaddr */
+            result_count++;
+          }
+        }
+      }
+    }
+  }
+  close (socket_fd);
+  if ((result_count > 0) && (addrs != NULL))
+    *addrs = memcpy_malloc (intermediate,
+                            sizeof (struct sockaddr_storage) * result_count,
+                            "interface_broadcast_addrs");
+  return result_count;
+}
+
 /* test whether this address is syntactically valid address (e.g.
  * not all zeros), returning 1 if valid, -1 if it is an ipv4-in-ipv6
  * address, and 0 otherwise */
@@ -805,7 +870,7 @@ int is_valid_address (const struct internet_addr * ip)
     if ((readb64 ((char *) ip->ip.s6_addr) == 0) &&
         (readb64 ((char *) ip->ip.s6_addr + 8) == 0))  /* all-zeros address */
       return 0;
-    char first_byte = *((char *) ip->ip.s6_addr);
+    int first_byte = (*((char *) ip->ip.s6_addr)) & 0xff;
     if ((first_byte == 0xff) ||           /* multicast */
         (first_byte == 0xfc) || (first_byte == 0xfd))  /* unique local addr */
       return 0;

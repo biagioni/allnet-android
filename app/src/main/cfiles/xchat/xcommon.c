@@ -284,7 +284,7 @@ int xchat_init (const char * arg0, const char * path)
 {
   if (alog == NULL)
     alog = init_log ("xchat/xcommon");
-  int sock = connect_to_local ("xcommon", arg0, path, 1);
+  int sock = connect_to_local ("xcommon", arg0, path, 1, 1);
   if (sock < 0)
     return -1;
 #ifdef SO_NOSIGPIPE
@@ -599,7 +599,6 @@ static int handle_clear (struct allnet_header * hp, char * data,
     printf ("data packet size %d less than sig %d, dropping\n", dsize, ssize);
     print_buffer ((char *) hp, dsize + ALLNET_SIZE (hp->transport),
                   "original data", dsize + ALLNET_SIZE (hp->transport), 1);
-    pipemsg_debug_last_received ("xcommon handle_clear");
     return 0;
   }
   data += sizeof (struct allnet_app_media_header);

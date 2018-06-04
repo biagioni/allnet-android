@@ -54,6 +54,7 @@
 
 static struct allnet_log * alog = NULL;
 
+#ifndef ALLNET_RESOURCE_CONSTRAINED  /* actively participate in the DHT */
 struct ping_all_args {
   int finished;
   int sockfd_v6;   /* -1 if not valid */
@@ -67,7 +68,7 @@ static int assign_sockfds (struct socket_address_set * sock, void * ref)
   struct ping_all_args * a = (struct ping_all_args *) ref;
   if ((a->sockfd_v6 == -1) && (sock->is_global_v6))
     a->sockfd_v6 = sock->sockfd;
-  if ((a->sockfd_v4 == -1) && (sock->is_global_v4))
+  if ((a->sockfd_v4 == -1) && (sock->is_global_v4) && (! sock->is_global_v6))
     a->sockfd_v4 = sock->sockfd;
   return 1;
 }
@@ -136,16 +137,22 @@ static void * ping_all_pending (void * arg)
     struct sockaddr_storage sas;
     memset (&sas, 0, sizeof (sas));
     socklen_t alen = 0;
-    ia_to_sockaddr (&(ai.ip), (struct sockaddr *) (&sas), &alen);
-    if ((ai.ip.ip_version == 4) && (a->sockfd_v4 >= 0))
-      socket_send_to_ip (a->sockfd_v4, message, msize, sas, alen);
-    else if (a->sockfd_v6 >= 0)  /* try to send on v6 even for v4 addrs */
-      socket_send_to_ip (a->sockfd_v6, message, msize, sas, alen);
+    ia_to_sockaddr (&(ai.ip), &sas, &alen);
+    int sockfd = a->sockfd_v4;
+    if ((ai.ip.ip_version == 6) || (a->sockfd_v4 < 0)) {
+      sockfd = a->sockfd_v6;
+      if (ai.ip.ip_version == 4)  /* sockfd_v4 is < 0, send on v6 socket */
+        ai_embed_v4_in_v6 (&sas, &alen);
+    }
+    if (sockfd >= 0)
+      socket_send_to_ip (sockfd, message, msize, sas, alen,
+                         "adht.c/ping_all_pending");
   }
   free (message);
   a->finished = 1;
   return NULL;
 }
+#endif /* ALLNET_RESOURCE_CONSTRAINED -- actively participate in the DHT */
 
 /* at the right time, create a DHT packet to send out my routing table
  * the socket set is used to send messages to potential DHT peers
@@ -154,7 +161,10 @@ int dht_update (struct socket_set * s, char ** message)
 {
   if (alog == NULL)
     alog = init_log ("adht");
-  *message = 0;
+  *message = NULL;
+#ifdef ALLNET_RESOURCE_CONSTRAINED  /* do not actively participate in the DHT */
+  return 0;
+#else /* ! ALLNET_RESOURCE_CONSTRAINED -- actively participate in the DHT */
   static unsigned long long int next_time = 0;
   static int expire_count = 0;    /* when it reaches 10, expire old entries */
   static unsigned char my_address [ADDRESS_SIZE];
@@ -229,6 +239,7 @@ int dht_update (struct socket_set * s, char ** message)
     expire_count = 0;
   }
   return send_size;
+#endif /* ALLNET_RESOURCE_CONSTRAINED */
 }
 
 /* add information from a newly received DHT packet */
@@ -307,7 +318,7 @@ void dht_process (char * message, unsigned int msize,
       struct sockaddr_storage ping_addr;
       struct sockaddr * pingp = (struct sockaddr *) (&ping_addr);
       socklen_t plen = 0;
-      ai_to_sockaddr (ai, pingp, &plen);
+      ai_to_sockaddr (ai, &ping_addr, &plen);
       if (! is_in_routing_table (pingp, plen))
         routing_add_ping (ai);
     }

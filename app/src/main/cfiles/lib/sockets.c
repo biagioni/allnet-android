@@ -32,7 +32,8 @@ static void debug_crash ()
 {
   int i = 3;
   i = i - i;  /* 0 */
-  printf ("now crashing: %d\n", 100 / i);
+    char * p = NULL;
+  printf ("now crashing: %d\n", *p);
 }
 
 static void print_sav (struct socket_address_validity * sav)
@@ -305,6 +306,7 @@ static void update_read (struct sockaddr_storage sas, socklen_t alen,
     struct socket_address_validity * sav = sock->send_addrs + i;
 check_sav (sav, "update_read");
     if (same_sockaddr (&sas, alen, &(sav->addr), sav->alen)) {  /* found! */
+/* printf ("update_read %d found: ", sock->sockfd); print_sav(sav); */
       *savp = sav;
       *is_new = 0;
       sav->alive_rcvd = rcvd_time;
@@ -323,7 +325,7 @@ static struct socket_read_result
   record_message (struct socket_set * s, long long int rcvd_time,
                   struct socket_address_set * sock,
                   struct sockaddr_storage sas, socklen_t alen,
-                  const char * buffer, ssize_t rcvd)
+                  const char * buffer, int rcvd)
 {
   int is_local = sock->is_local;
   int delta = (is_local ? 2 : 0);    /* local packets have priority also */
@@ -367,8 +369,8 @@ static struct socket_read_result
                                MSG_DONTWAIT, sap, &alen);
       /* all packets must have a min header, local packets also have priority */
       int min = ALLNET_HEADER_SIZE + ((sock->is_local) ? 2 : 0);
-      if (rcvd >= (ssize_t) min)
-        return record_message (s, rcvd_time, sock, sas, alen, buffer, rcvd);
+      if ((rcvd >= (ssize_t) min) && (rcvd <= sizeof (buffer)))
+        return record_message (s, rcvd_time, sock, sas, alen, buffer, (int)rcvd);
       if (errno == ECONNREFUSED) {  /* connected socket was closed by peer */
         result.success = -1;    /* error on this socket */
         result.sock = sock;
@@ -419,6 +421,41 @@ struct socket_read_result socket_read (struct socket_set * s,
   return r;
 }
 
+/* any of these may be null, si and ai set to -1 if they are not known. */
+static void send_error (const char * message, int msize, int flags, int res,
+                        const struct sockaddr_storage sas, socklen_t alen,
+                        const char * desc, struct socket_set * s,
+                        int sockfd, struct socket_address_validity * sav,
+                        int si, int ai)
+{
+  int e = errno;  /* save the value of errno */
+  const char * es = strerror (e);
+  printf ("%s sendto: %d (%s)\n", desc, e, es);
+  char desc_addr [1000] = "";
+  print_sockaddr_str ((struct sockaddr *) (&sas), alen, 0,
+                      desc_addr, sizeof (desc_addr));
+  void * p = NULL;
+  int alen2 = 0;
+  if (sav != NULL) {
+    p = (&(sav->addr));
+    alen2 = sav->alen;
+  }
+  printf ("sendto (%d, %p, %d, %d, %p (%s), %d/%d) => %d\n",
+          sockfd, message, msize, flags, p, desc_addr, alen, alen2, res);
+  if ((si >= 0) && (ai >= 0))
+    printf ("si %d, ai %d:\n", si, ai);
+  if (s != NULL)
+    print_socket_set (s);
+  if (sav != NULL)
+    print_sav (sav);
+  /* no need to die for network or host unreachable or unavailable addrs */
+  if ((e != ENETUNREACH) && (e != EHOSTUNREACH) &&
+      (e != EADDRNOTAVAIL)) {
+    char * q = NULL;
+    printf ("now crashing: %d\n", *q);
+  }
+}
+
 /* returns 1 for success, 0 for error */
 static int send_on_socket (const char * message, int msize,
                            unsigned long long int sent_time,
@@ -439,27 +476,11 @@ check_sav (sav, "send_on_socket");
     sav->alive_sent = sent_time;
     return 1;
   }
+  char desc2 [1000];
+  snprintf (desc2, sizeof (desc2), "%s send_on_socket", desc);
   /* some error, so the rest of this function is for debugging */
-  if (errno != ECONNREFUSED) {
-/* connection refused means ad died, because the only "connections" (over UDP)
- * are from the local clients to the allnet daemon */
-    char * desc2 = strcat_malloc (desc, " sendto", "send_on_socket");
-    perror (desc2);
-    printf ("sendto (%d, %p, %d, %d, %p, %d):\n"
-            "  tried to send %d bytes to socket %d, sent %d, errno %d\n",
-            sockfd, message, msize, flags,
-            (struct sockaddr *) (&(sav->addr)), sav->alen,
-            msize, sockfd, (int) result, errno);
-    if ((s != NULL) && (si >= 0) && (ai >= 0)) {
-      printf ("si %d, ai %d:\n", si, ai);
-      print_socket_set (s);
-    } else {
-      print_sav (sav);
-    }
-    free (desc2);
-    ai = ai - ai;   /* divide by 0 to crash */
-    printf ("now crashing: %d\n", 100 / ai);
-  }
+  send_error (message, msize, flags, (int)result,
+              sav->addr, sav->alen, desc2, s, sockfd, sav, si, ai);
   return 0;
 }
 
@@ -487,12 +508,17 @@ check_sav (sav, "socket_send_fun");
       sav->alive_sent = ssd->sent_time;
       if (sav->send_limit > 0) {
         sav->send_limit--;
-        if (sav->send_limit == 0)
-          return 0;   /* send limit expired, delete the record */
+if (sav->send_limit == 0) {
+printf ("socket_send_fun (%d) reached 0 send limit, removing: ", sock->sockfd);
+print_sav(sav);
+}
+        if (sav->send_limit == 0)  /* reached send limit */
+          return 0;   /* send limit expired, delete the address */
       }
     } else {
       ssd->error = 1;
-      printf ("socket_send_fun (%d) had an error\n", sock->sockfd);
+      printf ("socket_send_fun (%d) had an error, removing\n", sock->sockfd);
+      return 0;   /* some error, delete the address */
     }
   }
   return 1;         /* do not delete */
@@ -580,7 +606,8 @@ check_sav (addr, "socket_send_to");
 /* send to an address that may not even be in a socket set -- this is how
  * we can connect to new systems without receiving from them first */
 int socket_send_to_ip (int sockfd, const char * message, int msize,
-                       struct sockaddr_storage sas, socklen_t alen)
+                       struct sockaddr_storage sas, socklen_t alen,
+                       const char * debug)
 {
   int flags = 0;
 #ifdef MSG_NOSIGNAL
@@ -588,17 +615,13 @@ int socket_send_to_ip (int sockfd, const char * message, int msize,
 #endif /* MSG_NOSIGNAL */
   ssize_t result = sendto (sockfd, message, msize, flags,
                            (struct sockaddr *) (&sas), alen);
-  if (result != msize) {
-    if (errno != ENETUNREACH) {  /* ignore "network unreachable" errors */
-      perror ("socket_send_to_ip sendto");
-      printf ("error: tried to send %d bytes to fd %d, sent %zd\n",
-              msize, sockfd, result);
-      print_buffer ((char *) &sas, alen, "sent to:", sizeof (sas), 1);
-debug_crash ();
-    }
-    return 0;
-  }
-  return 1;
+  if (result == msize)
+    return 1;
+  char desc [1000];
+  snprintf (desc, sizeof (desc), "%s socket_send_to_ip", debug);
+  send_error (message, msize, flags, (int)result, sas, alen,
+              desc, NULL, sockfd, NULL, -1, -1);
+  return 0;
 }
 
 /* send a keepalive to addresses whose sent time + local/remote <= current_time 
@@ -661,28 +684,5 @@ int socket_create_bind (struct socket_set * s, int is_local,
   if (socket_add (s, sockfd, is_local, is_global_v6, is_global_v4))
     return sockfd;
   if (! quiet) printf ("unable to add %d socket %d\n", sap->sa_family, sockfd);
-  return -1;
-}
-
-/* create a socket and connect it as appropriate for the given address
- * and add it to the given socket set
- * return the sockfd for success, -1 otherwise */
-int socket_create_connect (struct socket_set * s, int is_local,
-                           struct sockaddr_storage addr, socklen_t alen,
-                           int quiet)
-{
-  struct sockaddr * sap = (struct sockaddr *) (&addr);
-  int sockfd = socket (sap->sa_family, SOCK_DGRAM, 0);
-  if (sockfd < 0) {
-    if (! quiet) perror ("socket_create_connect: socket");
-    return 0;
-  }
-  if (connect (sockfd, sap, alen) != 0) {
-    if (! quiet) perror ("socket_create_connect: connect");
-    return 0;
-  }
-  if (socket_add (s, sockfd, is_local, 0, 0))
-    return sockfd;
-  if (! quiet) printf ("could not add %d socket %d\n", sap->sa_family, sockfd);
   return -1;
 }
