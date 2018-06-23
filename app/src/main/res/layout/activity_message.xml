@@ -39,6 +39,7 @@
             android:background="@android:color/background_light"
             android:ems="10"
             android:fontFamily="@font/roboto_medium"
+            android:hint="@string/message"
             android:inputType="textMultiLine"
             android:textColor="@android:color/black" />
 
@@ -51,7 +52,7 @@
             android:fontFamily="@font/roboto_medium"
             android:minWidth="200dp"
             android:onClick="sendMessage"
-            android:text="Send"
+            android:text="@string/send"
             android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
             android:textColor="@android:color/background_light" />
     </LinearLayout>

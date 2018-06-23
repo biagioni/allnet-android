@@ -9,7 +9,7 @@ import org.alnet.allnet_android.inflate
 
 class GroupAdapter(private val contacts: List<Pair<String, Boolean>>, listener: ItemClickListener): RecyclerView.Adapter<GroupAdapter.ViewHolder>() {
 
-    public interface ItemClickListener{
+    interface ItemClickListener{
         fun onclick(contact: String, selected: Boolean)
     }
 
@@ -33,7 +33,7 @@ class GroupAdapter(private val contacts: List<Pair<String, Boolean>>, listener: 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(contact: Pair<String, Boolean>, listener: ItemClickListener){
-            itemView.tvGroup.setText(contact.first)
+            itemView.tvGroup.text = contact.first
             itemView.checkBox.isChecked = contact.second
             itemView.setOnClickListener(View.OnClickListener {
                 itemView.checkBox.isChecked = !itemView.checkBox.isChecked

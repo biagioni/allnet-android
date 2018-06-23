@@ -23,7 +23,6 @@
             android:clickable="false"
             android:fontFamily="@font/roboto_medium"
             android:gravity="center_vertical"
-            android:text="TextView"
             android:textColor="@android:color/black" />
 
         <CheckBox

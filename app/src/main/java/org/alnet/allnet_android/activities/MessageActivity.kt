@@ -26,7 +26,7 @@ class MessageActivity : AppCompatActivity(), INetwork {
         val layout = LinearLayoutManager(this)
         rvMessage.layoutManager = layout
 
-        supportActionBar!!.setTitle(NetworkAPI.contact)
+        supportActionBar!!.title = NetworkAPI.contact
         NetworkAPI.listMessages()
     }
 
@@ -39,7 +39,7 @@ class MessageActivity : AppCompatActivity(), INetwork {
         val msg = etText!!.text.toString()
         NetworkAPI.sendMessage(msg, NetworkAPI.contact!!)
         etText.text.clear()
-        val formatter = SimpleDateFormat("MMM dd, yyyy 'at' HH:mm:ss")
+        val formatter = SimpleDateFormat("MMM dd, yyyy 'at' HH:mm:ss", Locale.getDefault())
         val current = Date()
         NetworkAPI.messages.add(MessageModel(msg, MSG_TYPE_SENT, formatter.format(current), 0))
         updateUI()

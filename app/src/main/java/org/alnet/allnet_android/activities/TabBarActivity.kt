@@ -30,7 +30,7 @@ class TabBarActivity : AppCompatActivity() {
         toolBar = supportActionBar
         if (toolBar != null) {
             toolBar!!.setDisplayHomeAsUpEnabled(false)
-            toolBar!!.setTitle("Contacts")
+            toolBar!!.title = "Contacts"
         }
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)

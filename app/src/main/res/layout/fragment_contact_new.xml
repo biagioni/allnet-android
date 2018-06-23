@@ -35,7 +35,7 @@
                     android:paddingLeft="4sp"
                     android:paddingRight="4sp"
                     android:paddingTop="16sp"
-                    android:text="Name"
+                    android:text="@string/name"
                     android:textAlignment="center"
                     android:textSize="16sp" />
 
@@ -43,13 +43,13 @@
                     android:id="@+id/etName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="16sp"
+                    android:layout_marginStart="16sp"
                     android:layout_weight="1"
                     android:background="@null"
                     android:ems="10"
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="center_vertical"
-                    android:hint="NAME"
+                    android:hint="@string/name"
                     android:inputType="textEmailAddress"
                     android:paddingBottom="8sp"
                     android:paddingTop="16sp"
@@ -85,7 +85,7 @@
                     android:paddingLeft="4sp"
                     android:paddingRight="4sp"
                     android:paddingTop="16sp"
-                    android:text="Secret"
+                    android:text="@string/secret"
                     android:textAlignment="center"
                     android:textSize="16sp" />
 
@@ -93,13 +93,13 @@
                     android:id="@+id/etSecret"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="16sp"
+                    android:layout_marginStart="16sp"
                     android:layout_weight="1"
                     android:background="@null"
                     android:ems="10"
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="center_vertical"
-                    android:hint="SECRET"
+                    android:hint="@string/secret"
                     android:inputType="textEmailAddress"
                     android:paddingBottom="8sp"
                     android:paddingTop="16sp"
@@ -135,7 +135,7 @@
                     android:paddingLeft="4sp"
                     android:paddingRight="4sp"
                     android:paddingTop="16sp"
-                    android:text="Type"
+                    android:text="@string/type"
                     android:textAlignment="center"
                     android:textSize="16sp" />
 
@@ -144,7 +144,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="8sp"
-                    android:layout_marginLeft="16sp"
+                    android:layout_marginStart="16sp"
                     android:layout_marginTop="16sp"
                     android:layout_weight="1" />
 
@@ -166,7 +166,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/roboto_medium"
-                android:text="* new contact reachable via the internet or within wireless range (10m/30ft)"
+                android:text="@string/new_contact_reachable_via_the_internet_or_within_wireless_range_10m_30ft"
                 android:textAlignment="textStart" />
 
             <Button
@@ -174,7 +174,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:text="Request Contact" />
+                android:text="@string/request_contact" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvIncompletes"

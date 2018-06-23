@@ -151,7 +151,7 @@ object NetworkAPI{
     }
 
     fun formatDate(time: Long): String{
-        val formatter = SimpleDateFormat("MMM dd, yyyy 'at' HH:mm:ss")
+        val formatter = SimpleDateFormat("MMM dd, yyyy 'at' HH:mm:ss", Locale.getDefault())
         val current = Date(time)
         return formatter.format(current)
     }

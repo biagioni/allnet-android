@@ -73,7 +73,7 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
         activity.runOnUiThread {
             val layoutManager = LinearLayoutManager(activity)
             mRecyclerView!!.layoutManager = layoutManager
-            val adapter = ContactAdapter(contacts, settings, this);
+            val adapter = ContactAdapter(contacts, settings, this)
             mRecyclerView!!.adapter = adapter
         }
     }

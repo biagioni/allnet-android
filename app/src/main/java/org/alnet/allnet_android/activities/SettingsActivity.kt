@@ -21,16 +21,16 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         if (NetworkAPI.isGroup(NetworkAPI.contact!!) == 1){
-            tvManageParticipants.setText("Manage participants")
-            tvDeleteUser.setText("Delete group")
+            tvManageParticipants.text = getString(R.string.manage_participants)
+            tvDeleteUser.text = getString(R.string.delete_group)
             isGroup = true
         }else{
-            tvManageParticipants.setText("Manage groups")
-            tvDeleteUser.setText("Delete user")
+            tvManageParticipants.text = getString(R.string.manage_groups)
+            tvDeleteUser.text = getString(R.string.delete_user)
             isGroup = false
         }
 
-        supportActionBar!!.setTitle(NetworkAPI.contact)
+        supportActionBar!!.title = NetworkAPI.contact
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         updateUI()
@@ -106,7 +106,7 @@ class SettingsActivity : AppCompatActivity() {
     fun updateUI(){
         etName.setText(NetworkAPI.contact)
         var size = NetworkAPI.conversationSize(NetworkAPI.contact!!)
-        tvConversationSize.setText(size + " MB")
+        tvConversationSize.text = size + " MB"
         swuitchVisible.isChecked = NetworkAPI.isInvisible(NetworkAPI.contact!!) == 0
     }
 }

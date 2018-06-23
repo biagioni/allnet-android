@@ -1,5 +1,6 @@
 package org.alnet.allnet_android.activities
 
+import android.annotation.SuppressLint
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +18,7 @@ class KeyExchangeActivity : AppCompatActivity(), INetwork {
     var secret: String? = null
     var connectionType: Int? = null
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_key_exchange)
@@ -27,19 +29,19 @@ class KeyExchangeActivity : AppCompatActivity(), INetwork {
         secret = intent.extras["secret"].toString()
         var connectionType = intent.extras["type"]
 
-        supportActionBar?.setTitle(name)
+        supportActionBar?.title = name
 
         NetworkAPI.listener = this
 
         if (connectionType == 2) {
-            tvSecret.text = "None"
-            tvOptionalSecret.text = "None"
+            tvSecret.text = getString(R.string.none)
+            tvOptionalSecret.text = getString(R.string.none)
             NetworkAPI.createGroup(name!!)
         }else{
             NetworkAPI.generateRandomKey()
-            tvInfo.text = "Key exchange in progress\nWaiting for key from:\n " + name.toString()
+            tvInfo.text = "${getString(R.string.key_in_progress)}\n${getString(R.string.waiting_key)}\n${name.toString()}"
             if (secret.isNullOrEmpty()){
-                tvOptionalSecret.text = "None"
+                tvOptionalSecret.text = getString(R.string.none)
             }else{
                 tvOptionalSecret.text  = secret.toString()
             }
@@ -69,14 +71,15 @@ class KeyExchangeActivity : AppCompatActivity(), INetwork {
 
     //-----------NetworkAPI delegation----------------------
 
+    @SuppressLint("SetTextI18n")
     override fun groupCreated(result: Int) {
         runOnUiThread {
             if (result == 1) {
                 tvInfo.setTextColor(resources.getColor(R.color.colorPrimary))
-                tvInfo.text = "Created group with success!"
+                tvInfo.text = getString(R.string.created_group)
             } else {
                 tvInfo.setTextColor(resources.getColor(R.color.colorAccent))
-                tvInfo.text = "It was not possible to create the group" + name!!
+                tvInfo.text = "${getString(R.string.not_possible)}${name!!}"
             }
         }
     }
@@ -89,11 +92,12 @@ class KeyExchangeActivity : AppCompatActivity(), INetwork {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun keyGenerated(contact: String) {
         if (name == contact){
             runOnUiThread {
                 tvInfo.setTextColor(resources.getColor(R.color.colorAccent))
-                tvInfo.text = "Key was sent\nWaiting for key from:\n" + contact
+                tvInfo.text = "${getString(R.string.key_sent)}\n${getString(R.string.waiting_key)}\n$contact"
             }
         }
     }
@@ -102,7 +106,7 @@ class KeyExchangeActivity : AppCompatActivity(), INetwork {
         if (name == contact) {
             runOnUiThread {
                 tvInfo.setTextColor(resources.getColor(R.color.colorPrimary))
-                tvInfo.text = "Key was exchanged with SUCCESS!!!"
+                tvInfo.text = getString(R.string.key_exchanged)
             }
         }
         NetworkAPI.completeExchange(contact)

@@ -59,7 +59,7 @@ class ContactNewFragment : Fragment(), INetwork, ContactIncompleteAdapter.ItemCl
     fun updateUI(){
         val layoutManager = LinearLayoutManager(activity)
         mRecyclerView!!.layoutManager = layoutManager
-        val adapter = ContactIncompleteAdapter(NetworkAPI.incompleteContacts, this);
+        val adapter = ContactIncompleteAdapter(NetworkAPI.incompleteContacts, this)
         mRecyclerView!!.adapter = adapter
     }
 

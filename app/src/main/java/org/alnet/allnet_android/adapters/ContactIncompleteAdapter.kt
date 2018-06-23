@@ -15,7 +15,7 @@ import org.alnet.allnet_android.model.ContactModel
 
 class ContactIncompleteAdapter(private val contacts: List<String>, listener: ItemClickListener): RecyclerView.Adapter<ContactIncompleteAdapter.ViewHolder>() {
 
-    public interface ItemClickListener{
+    interface ItemClickListener{
         fun onclick(contact: String)
     }
 

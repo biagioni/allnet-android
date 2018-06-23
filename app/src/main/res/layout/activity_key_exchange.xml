@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
-                android:text="Shared secret:"
+                android:text="@string/shared_secret"
                 android:textSize="18sp" />
 
             <TextView
@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
-                android:text="-"
+                android:text="@string/hiffen"
                 android:textColor="#19BB7B"
                 android:textSize="20sp" />
 
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/roboto_medium"
-                android:text="Optional secret:"
+                android:text="@string/optional_secret"
                 android:textSize="18sp" />
 
             <TextView
@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
-                android:text="-"
+                android:text="@string/hiffen"
                 android:textColor="#19BB7B"
                 android:textSize="20sp" />
 
@@ -64,7 +64,7 @@
                 android:background="#EBEBF1"
                 android:fontFamily="@font/roboto_medium"
                 android:padding="6dp"
-                android:text="-"
+                android:text="@string/hiffen"
                 android:textColor="#A85363"
                 android:textSize="18sp" />
 
@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:onClick="resendKey"
-                android:text="Resend key" />
+                android:text="@string/resend_key" />
         </LinearLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

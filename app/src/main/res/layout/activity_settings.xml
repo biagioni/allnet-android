@@ -24,7 +24,6 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView37"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="0"
@@ -32,10 +31,11 @@
                     android:gravity="center"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:text="Name"
+                    android:text="@string/name"
                     android:textColor="@android:color/black" />
 
                 <EditText
+                    android:hint="@string/name"
                     android:id="@+id/etName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -45,7 +45,8 @@
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="right|center_vertical"
                     android:inputType="textPersonName"
-                    android:textColor="#9A9A9A" />
+                    android:textColor="#9A9A9A"
+                    tools:ignore="RtlHardcoded" />
             </LinearLayout>
 
             <TextView
@@ -65,23 +66,23 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/imageView78"
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0"
                     android:background="#155AA7"
                     android:padding="4dp"
-                    app:srcCompat="@drawable/eye" />
+                    app:srcCompat="@drawable/eye"
+                    android:contentDescription="@string/privacy" />
 
                 <Switch
                     android:id="@+id/swuitchVisible"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
                     android:layout_weight="0"
                     android:drawablePadding="4dp"
                     android:fontFamily="@font/roboto_medium"
-                    android:text="Visible" />
+                    android:text="@string/visible" />
 
             </LinearLayout>
 
@@ -103,11 +104,11 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/imageView21"
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0"
                     android:background="#B44D62"
+                    android:contentDescription="@string/notifications"
                     android:padding="4dp"
                     app:srcCompat="@drawable/notification" />
 
@@ -115,12 +116,12 @@
                     android:id="@+id/switchNotification"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
                     android:layout_weight="0"
                     android:checked="true"
                     android:drawablePadding="4dp"
                     android:fontFamily="@font/roboto_medium"
-                    android:text="Notifications" />
+                    android:text="@string/_notifications" />
 
             </LinearLayout>
 
@@ -142,11 +143,11 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/imageView"
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0"
                     android:background="#12A76F"
+                    android:contentDescription="@string/save"
                     android:padding="4dp"
                     app:srcCompat="@drawable/save" />
 
@@ -154,12 +155,12 @@
                     android:id="@+id/switchSaveMsgs"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
                     android:layout_weight="0"
                     android:checked="true"
                     android:drawablePadding="4dp"
                     android:fontFamily="@font/roboto_medium"
-                    android:text="Save messages" />
+                    android:text="@string/save_messages" />
 
             </LinearLayout>
 
@@ -185,11 +186,11 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0"
                     android:fontFamily="@font/roboto_medium"
-                    android:gravity="left|center_vertical"
+                    android:gravity="start|center_vertical"
                     android:onClick="manageGroups"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:text="Manage participants"
+                    android:text="@string/manage_participants"
                     android:textColor="#0433FF" />
 
             </LinearLayout>
@@ -217,11 +218,11 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:fontFamily="@font/roboto_medium"
-                    android:gravity="left|center_vertical"
+                    android:gravity="start|center_vertical"
                     android:onClick="deleteConversation"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:text="Delete  conversation"
+                    android:text="@string/delete_conversation"
                     android:textColor="#BC312F" />
 
                 <TextView
@@ -230,12 +231,13 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0"
                     android:fontFamily="@font/roboto_medium"
-                    android:gravity="left|center_vertical"
+                    android:gravity="start|center_vertical"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:text="500 MB"
+                    android:text="@string/_500_mb"
                     android:textAlignment="textEnd"
-                    android:textColor="#9A9A9A" />
+                    android:textColor="#9A9A9A"
+                    tools:ignore="RtlCompat" />
 
             </LinearLayout>
 
@@ -257,15 +259,15 @@
 
                 <TextView
                     android:id="@+id/tvDeleteUser"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0"
                     android:fontFamily="@font/roboto_medium"
-                    android:gravity="left|center_vertical"
+                    android:gravity="start|center_vertical"
                     android:onClick="deleteUser"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:text="Delete user"
+                    android:text="@string/delete_user"
                     android:textColor="#BC312F" />
 
             </LinearLayout>

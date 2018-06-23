@@ -1,6 +1,7 @@
 package org.alnet.allnet_android.fragments
 
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -39,6 +40,7 @@ class MoreFragment : Fragment(), INetwork {
 
     //-----------NetworkAPI delegation----------------------
 
+    @SuppressLint("SetTextI18n")
     override fun msgTrace(msg: String) {
         activity.runOnUiThread {
             if (tvOutput?.text?.count()!! > 0){

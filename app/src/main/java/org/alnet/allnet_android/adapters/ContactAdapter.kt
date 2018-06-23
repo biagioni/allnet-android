@@ -14,7 +14,7 @@ import org.alnet.allnet_android.model.ContactModel
  */
 class ContactAdapter(private val contacts: List<ContactModel>, val sets: Boolean, listener: ItemClickListener): RecyclerView.Adapter<ContactAdapter.ViewHolder>() {
 
-    public interface ItemClickListener{
+    interface ItemClickListener{
         fun onclick(contact: ContactModel)
     }
 
@@ -52,7 +52,7 @@ class ContactAdapter(private val contacts: List<ContactModel>, val sets: Boolean
             if (NetworkAPI.unreadMessages.contains(contact.name)){
                 itemView.tvNotification.visibility = View.VISIBLE
                 val count = NetworkAPI.unreadMessages.filter { it == contact.name }.count()
-                itemView.tvNotification.setText(count.toString())
+                itemView.tvNotification.text = count.toString()
             }else{
                 itemView.tvNotification.visibility = View.INVISIBLE
             }

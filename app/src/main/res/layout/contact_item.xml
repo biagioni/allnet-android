@@ -25,7 +25,8 @@
             android:layout_height="match_parent"
             android:layout_weight="0"
             android:scaleType="fitStart"
-            app:srcCompat="@drawable/user" />
+            app:srcCompat="@drawable/user"
+            android:contentDescription="@string/user" />
 
         <TextView
             android:id="@+id/tvNotification"
@@ -46,7 +47,6 @@
             android:layout_weight="1"
             android:fontFamily="@font/roboto_medium"
             android:gravity="center_vertical"
-            android:text="TextView"
             android:textColor="@android:color/black"
             android:textSize="16sp" />
 
@@ -57,7 +57,8 @@
             android:layout_weight="0"
             android:scaleType="fitCenter"
             android:visibility="invisible"
-            app:srcCompat="@drawable/settings" />
+            app:srcCompat="@drawable/settings"
+            android:contentDescription="@string/notifications" />
     </LinearLayout>
 
     <TextView
@@ -67,7 +68,6 @@
         android:layout_marginBottom="4dp"
         android:layout_weight="1"
         android:fontFamily="@font/roboto_medium"
-        android:text="TextView"
         android:textAlignment="textEnd"
         android:textColor="?android:attr/colorButtonNormal"
         android:textSize="10sp" />

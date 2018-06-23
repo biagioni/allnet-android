@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="left"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="60dp"
+    android:layout_gravity="start"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="60dp"
     android:layout_marginTop="4dp">
 
     <LinearLayout
@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/msg_received_background"
-        android:gravity="left"
+        android:gravity="start"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,7 +29,6 @@
             android:layout_margin="4dp"
             android:fontFamily="@font/roboto_medium"
             android:padding="4dp"
-            android:text="TextView"
             android:textAlignment="viewStart"
             android:textColor="@android:color/black"
             android:textSize="14sp" />
@@ -43,7 +42,6 @@
             android:layout_marginRight="4dp"
             android:fontFamily="@font/roboto_medium"
             android:padding="2dp"
-            android:text="TextView"
             android:textAlignment="textEnd"
             android:textColor="?attr/colorButtonNormal"
             android:textSize="10sp" />

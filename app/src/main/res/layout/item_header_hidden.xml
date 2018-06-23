@@ -10,10 +10,10 @@
         android:id="@+id/textView14"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:background="#EEEEEE"
         android:fontFamily="@font/roboto_medium"
         android:gravity="center_vertical"
-        android:text="Hidden contacts"
+        android:text="@string/hidden_contacts"
         android:textSize="17sp" />
 </LinearLayout>

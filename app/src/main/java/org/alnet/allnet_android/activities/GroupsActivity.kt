@@ -24,11 +24,11 @@ class GroupsActivity : AppCompatActivity(), INetwork, GroupAdapter.ItemClickList
         NetworkAPI.listener = this
 
         if (isGroup){
-            supportActionBar!!.setTitle("Groups")
+            supportActionBar!!.title = "Groups"
             NetworkAPI.members.clear()
             NetworkAPI.loadMembers(NetworkAPI.contact!!)
         }else{
-            supportActionBar!!.setTitle("Participants")
+            supportActionBar!!.title = "Participants"
             NetworkAPI.groups.clear()
             NetworkAPI.loadGroups(NetworkAPI.contact!!)
         }
