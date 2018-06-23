@@ -1,5 +1,6 @@
 package org.alnet.allnet_android.activities
 
+import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -103,10 +104,11 @@ class SettingsActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    @SuppressLint("SetTextI18n")
     fun updateUI(){
         etName.setText(NetworkAPI.contact)
-        var size = NetworkAPI.conversationSize(NetworkAPI.contact!!)
-        tvConversationSize.text = size + " MB"
+        val size = NetworkAPI.conversationSize(NetworkAPI.contact!!)
+        tvConversationSize.text = "$size${getString(R.string.mb)}"
         swuitchVisible.isChecked = NetworkAPI.isInvisible(NetworkAPI.contact!!) == 0
     }
 }

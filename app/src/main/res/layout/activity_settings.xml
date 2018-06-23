@@ -1,284 +1,267 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.alnet.allnet_android.activities.SettingsActivity"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    tools:context="org.alnet.allnet_android.activities.SettingsActivity">
-
-    <ScrollView
+    android:layout_height="match_parent">
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginBottom="2dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="2dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="center"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:text="@string/name"
-                    android:textColor="@android:color/black" />
-
-                <EditText
-                    android:hint="@string/name"
-                    android:id="@+id/etName"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:ems="10"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="right|center_vertical"
-                    android:inputType="textPersonName"
-                    android:textColor="#9A9A9A"
-                    tools:ignore="RtlHardcoded" />
-            </LinearLayout>
+            android:layout_height="50dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView16"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#e6eaea" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginBottom="2dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="0"
-                android:orientation="horizontal">
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="@string/name"
+                android:textColor="@android:color/black" />
 
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0"
-                    android:background="#155AA7"
-                    android:padding="4dp"
-                    app:srcCompat="@drawable/eye"
-                    android:contentDescription="@string/privacy" />
-
-                <Switch
-                    android:id="@+id/swuitchVisible"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="0"
-                    android:drawablePadding="4dp"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="@string/visible" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/textView17"
+            <EditText
+                android:hint="@string/name"
+                android:id="@+id/etName"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="0"
-                android:background="#e6eaea" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginBottom="2dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="2dp"
-                android:layout_weight="0"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0"
-                    android:background="#B44D62"
-                    android:contentDescription="@string/notifications"
-                    android:padding="4dp"
-                    app:srcCompat="@drawable/notification" />
-
-                <Switch
-                    android:id="@+id/switchNotification"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="0"
-                    android:checked="true"
-                    android:drawablePadding="4dp"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="@string/_notifications" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/textView19"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="0"
-                android:background="#e6eaea" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginBottom="2dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="2dp"
-                android:layout_weight="0"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0"
-                    android:background="#12A76F"
-                    android:contentDescription="@string/save"
-                    android:padding="4dp"
-                    app:srcCompat="@drawable/save" />
-
-                <Switch
-                    android:id="@+id/switchSaveMsgs"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="0"
-                    android:checked="true"
-                    android:drawablePadding="4dp"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="@string/save_messages" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/textView20"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="0"
-                android:background="#e6eaea" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginBottom="2dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="2dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tvManageParticipants"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="start|center_vertical"
-                    android:onClick="manageGroups"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:text="@string/manage_participants"
-                    android:textColor="#0433FF" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/textView21"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="0"
-                android:background="#e6eaea" />
-
-            <LinearLayout
-                android:id="@+id/layoutDeleteConversation"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginBottom="2dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="2dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/textView15"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="start|center_vertical"
-                    android:onClick="deleteConversation"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:text="@string/delete_conversation"
-                    android:textColor="#BC312F" />
-
-                <TextView
-                    android:id="@+id/tvConversationSize"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="start|center_vertical"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:text="@string/_500_mb"
-                    android:textAlignment="textEnd"
-                    android:textColor="#9A9A9A"
-                    tools:ignore="RtlCompat" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/textView22"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="0"
-                android:background="#e6eaea" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginBottom="2dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="2dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tvDeleteUser"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="start|center_vertical"
-                    android:onClick="deleteUser"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:text="@string/delete_user"
-                    android:textColor="#BC312F" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/textView23"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="0"
-                android:background="#e6eaea" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:ems="10"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="right|center_vertical"
+                android:inputType="textPersonName"
+                android:textColor="#9A9A9A"
+                tools:ignore="RtlHardcoded" />
         </LinearLayout>
-    </ScrollView>
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#e6eaea" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_weight="0"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:background="#155AA7"
+                android:padding="4dp"
+                app:srcCompat="@drawable/eye"
+                android:contentDescription="@string/privacy" />
+
+            <Switch
+                android:id="@+id/swuitchVisible"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_weight="0"
+                android:drawablePadding="4dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/visible" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="0"
+            android:background="#e6eaea" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_weight="0"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:background="#B44D62"
+                android:contentDescription="@string/notifications"
+                android:padding="4dp"
+                app:srcCompat="@drawable/notification" />
+
+            <Switch
+                android:id="@+id/switchNotification"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:checked="true"
+                android:drawablePadding="4dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/_notifications" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView19"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="0"
+            android:background="#e6eaea" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_weight="0"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:background="#12A76F"
+                android:contentDescription="@string/save"
+                android:padding="4dp"
+                app:srcCompat="@drawable/save" />
+
+            <Switch
+                android:id="@+id/switchSaveMsgs"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:checked="true"
+                android:drawablePadding="4dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/save_messages" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView20"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="0"
+            android:background="#e6eaea" />
+
+        <TextView
+            android:id="@+id/tvManageParticipants"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_weight="0"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="start|center_vertical"
+            android:onClick="manageGroups"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="@string/manage_participants"
+            android:textColor="#0433FF" />
+
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="0"
+            android:background="#e6eaea" />
+
+        <LinearLayout
+            android:id="@+id/layoutDeleteConversation"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="start|center_vertical"
+                android:onClick="deleteConversation"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="@string/delete_conversation"
+                android:textColor="#BC312F" />
+
+            <TextView
+                android:id="@+id/tvConversationSize"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="start|center_vertical"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="@string/_500_mb"
+                android:textAlignment="textEnd"
+                android:textColor="#9A9A9A"
+                tools:ignore="RtlCompat" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView22"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="0"
+            android:background="#e6eaea" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvDeleteUser"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="start|center_vertical"
+                android:onClick="deleteUser"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="@string/delete_user"
+                android:textColor="#BC312F" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView23"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="0"
+            android:background="#e6eaea" />
+    </LinearLayout>
+</ScrollView>

@@ -25,9 +25,8 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val view  = inflater!!.inflate(R.layout.fragment_contact_list, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view  = inflater.inflate(R.layout.fragment_contact_list, container, false)
         mRecyclerView = view.recyclerView
         NetworkAPI.listener = this
         updateUI(NetworkAPI.contacts)
@@ -70,7 +69,7 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
 
 
     fun updateUI(contacts: ArrayList<ContactModel>){
-        activity.runOnUiThread {
+        activity?.runOnUiThread {
             val layoutManager = LinearLayoutManager(activity)
             mRecyclerView!!.layoutManager = layoutManager
             val adapter = ContactAdapter(contacts, settings, this)
