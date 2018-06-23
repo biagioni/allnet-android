@@ -14,6 +14,7 @@
 #include <xchat/store.h>
 #include <fcntl.h>
 #include <lib/trace_util.h>
+#include <lib/app_util.h>
 
 
 JavaVM * g_vm;
@@ -30,7 +31,7 @@ static char expecting_trace [MESSAGE_ID_SIZE];
 static int trace_count = 0;
 static unsigned long long int trace_start_time = 0;
 
-extern void allnet_daemon_main();
+extern int astart_main(int argc, char ** argv);
 extern void trace_to_string (char * string, size_t slen,
                              struct allnet_mgmt_trace_reply * trace,
                              int trace_count, unsigned long long int trace_start_time);
@@ -91,7 +92,7 @@ void packet_main_loop (void * arg)
 
         //received key generated
         pthread_mutex_lock(&key_generated_mutex);  // don't allow changes to keyContact until a key has been generated
-        if ((! waiting_for_key) && keyContact != NULL)  {
+        if (( waiting_for_key) && keyContact != NULL)  {
             jmethodID methodid = (*NewEnv)->GetMethodID(NewEnv, netAPI, "callbackKeyGenerated", "(Ljava/lang/String;)V");
             if(!methodid) {
                 return;
@@ -320,10 +321,10 @@ Java_org_alnet_allnet_1android_NetworkAPI_startAllnet(JNIEnv *env,
     const char * dir=strcpy_malloc((*env)->GetStringUTFChars( env, path_ , NULL ),"startAllnetDeamon") ;
     syslog (LOG_DAEMON | LOG_WARNING, " directoryC : %s\n",dir);
     char * args [] = { "allnet", "-v","-d",dir, NULL };
-    //astart_main(4, args);
+    astart_main(4, args);
 
-    pthread_t t2;
-    pthread_create (&t2, NULL, allnet_daemon_main, NULL);
+    //pthread_t t2;
+   // pthread_create (&t2, NULL, allnet_daemon_main, NULL);
 
     struct allnet_log * alog = init_log ("ios xchat");
     int result = xchat_init("xchat",dir);
