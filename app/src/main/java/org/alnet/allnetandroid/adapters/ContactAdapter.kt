@@ -1,36 +1,30 @@
-package org.alnet.allnet_android.adapters
+package org.alnet.allnetandroid.adapters
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.contact_item.view.*
-import org.alnet.allnet_android.NetworkAPI
-import org.alnet.allnet_android.R
-import org.alnet.allnet_android.inflate
-import org.alnet.allnet_android.model.ContactModel
+import org.alnet.allnetandroid.NetworkAPI
+import org.alnet.allnetandroid.R
+import org.alnet.allnetandroid.inflate
+import org.alnet.allnetandroid.model.ContactModel
 
 /**
  * Created by docouto on 3/26/18.
  */
-class ContactAdapter(private val contacts: List<ContactModel>, val sets: Boolean, listener: ItemClickListener): RecyclerView.Adapter<ContactAdapter.ViewHolder>() {
+class ContactAdapter(private val contacts: List<ContactModel>, val sets: Boolean, var listener: ItemClickListener): RecyclerView.Adapter<ContactAdapter.ViewHolder>() {
 
     interface ItemClickListener{
         fun onclick(contact: ContactModel)
     }
 
-    var listener: ItemClickListener
-
-    init {
-        this.listener = listener
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        if (viewType == 2){
+        return if (viewType == 2){
             val inflatedView = parent.inflate(R.layout.item_header_hidden, false)
-            return ViewHolder(inflatedView)
+            ViewHolder(inflatedView)
         }else {
             val inflatedView = parent.inflate(R.layout.contact_item, false)
-            return ViewHolder(inflatedView)
+            ViewHolder(inflatedView)
         }
     }
 
@@ -65,7 +59,7 @@ class ContactAdapter(private val contacts: List<ContactModel>, val sets: Boolean
             itemView.tvName.text = contact.name
             itemView.tvDate.text = contact.lastMessage
 
-            itemView.setOnClickListener(View.OnClickListener {
+            itemView.setOnClickListener({
                 listener.onclick(contact)
             })
         }

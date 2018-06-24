@@ -60,7 +60,7 @@ JNIEnv *AttachJava() {
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *jvm, void *reserved) {
     g_vm = jvm;
     JNIEnv *NewEnv = AttachJava();
-    jclass mActivityClass= (*NewEnv)->FindClass(NewEnv, "org/alnet/allnet_android/NetworkAPI");
+    jclass mActivityClass= (*NewEnv)->FindClass(NewEnv, "org/alnet/allnetandroid/NetworkAPI");
     netAPI = (jclass)((*NewEnv)->NewGlobalRef(NewEnv, mActivityClass));
 
     return JNI_VERSION_1_6;
@@ -309,12 +309,12 @@ int lastTime(char * contact)
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_init(JNIEnv *env, jobject instance) {
+Java_org_alnet_allnetandroid_NetworkAPI_init(JNIEnv *env, jobject instance) {
     g_obj = (jclass)((*env)->NewGlobalRef(env, instance));
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_startAllnet(JNIEnv *env,
+Java_org_alnet_allnetandroid_NetworkAPI_startAllnet(JNIEnv *env,
                                                           jobject instance,
                                                           jstring path_) {
 
@@ -351,7 +351,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_startAllnet(JNIEnv *env,
 
 ///////////////////////Contact/Messages functions///////////////////////////////////
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_getContacts(JNIEnv *env,
+Java_org_alnet_allnetandroid_NetworkAPI_getContacts(JNIEnv *env,
                                                       jobject instance) {
     char ** contatcs;
     int nc = all_contacts(&contatcs);
@@ -368,7 +368,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_getContacts(JNIEnv *env,
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_getHiddenContacts(JNIEnv *env,
+Java_org_alnet_allnetandroid_NetworkAPI_getHiddenContacts(JNIEnv *env,
                                                       jobject instance) {
     char ** contatcs;
     int nc = invisible_contacts(&contatcs);
@@ -384,7 +384,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_getHiddenContacts(JNIEnv *env,
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_getMessages(JNIEnv *env, jobject instance, jstring c) {
+Java_org_alnet_allnetandroid_NetworkAPI_getMessages(JNIEnv *env, jobject instance, jstring c) {
 
     const char * contact = strcpy_malloc((*env)->GetStringUTFChars( env, c , NULL ),"contact");
 
@@ -415,7 +415,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_getMessages(JNIEnv *env, jobject insta
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_sendMessage(JNIEnv *env,
+Java_org_alnet_allnetandroid_NetworkAPI_sendMessage(JNIEnv *env,
                                                                       jobject instance,
                                                                       jstring message,
                                                                       jstring contact) {
@@ -433,7 +433,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_sendMessage(JNIEnv *env,
 
 ///////////////////////Key exchange functions///////////////////////////////////
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_generateRandomKey(JNIEnv *env,
+Java_org_alnet_allnetandroid_NetworkAPI_generateRandomKey(JNIEnv *env,
                                                       jobject instance) {
 #define MAX_RANDOM  15
     char randomString [MAX_RANDOM];
@@ -453,7 +453,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_generateRandomKey(JNIEnv *env,
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_requestNewContact(
+Java_org_alnet_allnetandroid_NetworkAPI_requestNewContact(
         JNIEnv *env,
         jobject instance,
         jstring contact,
@@ -493,7 +493,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_requestNewContact(
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_resendKeyForNewContact(
+Java_org_alnet_allnetandroid_NetworkAPI_resendKeyForNewContact(
         JNIEnv *env,
         jobject instance,
         jstring contact) {
@@ -504,7 +504,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_resendKeyForNewContact(
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_removeNewContact(
+Java_org_alnet_allnetandroid_NetworkAPI_removeNewContact(
         JNIEnv *env,
         jobject instance,
         jstring contact) {
@@ -519,7 +519,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_removeNewContact(
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_createGroup(
+Java_org_alnet_allnetandroid_NetworkAPI_createGroup(
         JNIEnv *env,
         jobject instance,
         jstring contact) {
@@ -536,7 +536,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_createGroup(
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_completeExchange(
+Java_org_alnet_allnetandroid_NetworkAPI_completeExchange(
         JNIEnv *env,
         jobject instance,
         jstring contact) {
@@ -549,7 +549,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_completeExchange(
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_fecthIncompletedKeys(
+Java_org_alnet_allnetandroid_NetworkAPI_fecthIncompletedKeys(
         JNIEnv *env,
         jobject instance) {
 
@@ -567,7 +567,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_fecthIncompletedKeys(
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_getKeyForContact(
+Java_org_alnet_allnetandroid_NetworkAPI_getKeyForContact(
         JNIEnv *env,
         jobject instance,
         jstring cont) {
@@ -620,7 +620,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_getKeyForContact(
 ///////////////////////more functions//////////////////////////
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_startTrace(
+Java_org_alnet_allnetandroid_NetworkAPI_startTrace(
         JNIEnv *env,
         jobject instance,
         jint hops) {
@@ -637,7 +637,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_startTrace(
 
 ///////////////////////////settings functions /////////////////////////////
 JNIEXPORT jint JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_isGroup(
+Java_org_alnet_allnetandroid_NetworkAPI_isGroup(
         JNIEnv *env,
         jobject instance,
         jstring contact) {
@@ -647,7 +647,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_isGroup(
 }
 
 JNIEXPORT jstring JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_conversationSize(
+Java_org_alnet_allnetandroid_NetworkAPI_conversationSize(
         JNIEnv *env,
         jobject instance,
         jstring contact) {
@@ -665,7 +665,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_conversationSize(
 }
 
 JNIEXPORT jint JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_isInvisible(
+Java_org_alnet_allnetandroid_NetworkAPI_isInvisible(
         JNIEnv *env,
         jobject instance,
         jstring contact) {
@@ -675,7 +675,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_isInvisible(
 }
 
 JNIEXPORT jint JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_deleteConversation(
+Java_org_alnet_allnetandroid_NetworkAPI_deleteConversation(
         JNIEnv *env,
         jobject instance,
         jstring contact) {
@@ -685,7 +685,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_deleteConversation(
 }
 
 JNIEXPORT jint JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_deleteUser(
+Java_org_alnet_allnetandroid_NetworkAPI_deleteUser(
         JNIEnv *env,
         jobject instance,
         jstring contact) {
@@ -697,7 +697,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_deleteUser(
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_makeVisible(
+Java_org_alnet_allnetandroid_NetworkAPI_makeVisible(
         JNIEnv *env,
         jobject instance,
         jstring contact) {
@@ -706,7 +706,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_makeVisible(
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_makeInvisible(
+Java_org_alnet_allnetandroid_NetworkAPI_makeInvisible(
         JNIEnv *env,
         jobject instance,
         jstring contact) {
@@ -715,7 +715,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_makeInvisible(
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_renameContact(
+Java_org_alnet_allnetandroid_NetworkAPI_renameContact(
         JNIEnv *env,
         jobject instance,
         jstring contact,
@@ -726,7 +726,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_renameContact(
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_loadMembers(
+Java_org_alnet_allnetandroid_NetworkAPI_loadMembers(
         JNIEnv *env,
         jobject instance,
         jstring contact) {
@@ -759,7 +759,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_loadMembers(
 
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_loadGroups(
+Java_org_alnet_allnetandroid_NetworkAPI_loadGroups(
         JNIEnv *env,
         jobject instance,
         jstring contact) {
@@ -791,7 +791,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_loadGroups(
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_addToGroup(
+Java_org_alnet_allnetandroid_NetworkAPI_addToGroup(
         JNIEnv *env,
         jobject instance,
         jstring group,
@@ -802,7 +802,7 @@ Java_org_alnet_allnet_1android_NetworkAPI_addToGroup(
 }
 
 JNIEXPORT void JNICALL
-Java_org_alnet_allnet_1android_NetworkAPI_removeFromGroup(
+Java_org_alnet_allnetandroid_NetworkAPI_removeFromGroup(
         JNIEnv *env,
         jobject instance,
         jstring group,

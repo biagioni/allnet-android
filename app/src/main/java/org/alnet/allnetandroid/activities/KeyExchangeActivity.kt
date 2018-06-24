@@ -1,22 +1,20 @@
-package org.alnet.allnet_android.activities
+package org.alnet.allnetandroid.activities
 
 import android.annotation.SuppressLint
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.activity_key_exchange.*
-import org.alnet.allnet_android.INetwork
-import org.alnet.allnet_android.NetworkAPI
-import org.alnet.allnet_android.R
+import org.alnet.allnetandroid.INetwork
+import org.alnet.allnetandroid.NetworkAPI
+import org.alnet.allnetandroid.R
 
 class KeyExchangeActivity : AppCompatActivity(), INetwork {
 
     var name: String? = null
     var secret: String? = null
-    var connectionType: Int? = null
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +25,7 @@ class KeyExchangeActivity : AppCompatActivity(), INetwork {
 
         name = intent.extras["name"].toString()
         secret = intent.extras["secret"].toString()
-        var connectionType = intent.extras["type"]
+        val connectionType = intent.extras["type"]
 
         supportActionBar?.title = name
 

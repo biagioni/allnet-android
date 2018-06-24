@@ -1,4 +1,4 @@
-package org.alnet.allnet_android.fragments
+package org.alnet.allnetandroid.fragments
 
 
 import android.content.Intent
@@ -9,23 +9,23 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import org.alnet.allnet_android.R
+import org.alnet.allnetandroid.R
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import kotlinx.android.synthetic.main.fragment_contact_new.view.*
-import org.alnet.allnet_android.INetwork
-import org.alnet.allnet_android.NetworkAPI
-import org.alnet.allnet_android.activities.KeyExchangeActivity
-import org.alnet.allnet_android.adapters.ContactIncompleteAdapter
+import org.alnet.allnetandroid.INetwork
+import org.alnet.allnetandroid.NetworkAPI
+import org.alnet.allnetandroid.activities.KeyExchangeActivity
+import org.alnet.allnetandroid.adapters.ContactIncompleteAdapter
 
 
 class ContactNewFragment : Fragment(), INetwork, ContactIncompleteAdapter.ItemClickListener {
 
     var spinner: Spinner? = null
-    var editTextName: EditText? = null
-    var editTextSecret: EditText? = null
-    var mRecyclerView: RecyclerView? = null
+    private var editTextName: EditText? = null
+    private var editTextSecret: EditText? = null
+    private var mRecyclerView: RecyclerView? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_contact_new, container, false)
@@ -55,14 +55,14 @@ class ContactNewFragment : Fragment(), INetwork, ContactIncompleteAdapter.ItemCl
         return view
     }
 
-    fun updateUI(){
+    private fun updateUI(){
         val layoutManager = LinearLayoutManager(activity)
         mRecyclerView!!.layoutManager = layoutManager
         val adapter = ContactIncompleteAdapter(NetworkAPI.incompleteContacts, this)
         mRecyclerView!!.adapter = adapter
     }
 
-    fun sendInfo(){
+    private fun sendInfo(){
         val name = editTextName!!.text
         val secret = editTextSecret!!.text
         val index = spinner!!.selectedItemPosition

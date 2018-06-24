@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.alnet.allnet_android.activities.MessageActivity">
+    tools:context="org.alnet.allnetandroid.activities.MessageActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvMessage"

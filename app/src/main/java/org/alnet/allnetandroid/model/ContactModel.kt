@@ -1,4 +1,4 @@
-package org.alnet.allnet_android.model
+package org.alnet.allnetandroid.model
 
 /**
  * Created by docouto on 3/31/18.

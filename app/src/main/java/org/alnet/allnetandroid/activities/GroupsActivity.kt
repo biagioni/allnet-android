@@ -1,17 +1,17 @@
-package org.alnet.allnet_android.activities
+package org.alnet.allnetandroid.activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_groups.*
-import org.alnet.allnet_android.INetwork
-import org.alnet.allnet_android.NetworkAPI
-import org.alnet.allnet_android.R
-import org.alnet.allnet_android.adapters.GroupAdapter
+import org.alnet.allnetandroid.INetwork
+import org.alnet.allnetandroid.NetworkAPI
+import org.alnet.allnetandroid.R
+import org.alnet.allnetandroid.adapters.GroupAdapter
 
 class GroupsActivity : AppCompatActivity(), INetwork, GroupAdapter.ItemClickListener {
 
-    var isGroup = false
+    private var isGroup = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

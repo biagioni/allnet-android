@@ -1,21 +1,20 @@
-package org.alnet.allnet_android.activities
+package org.alnet.allnetandroid.activities
 
 import android.annotation.SuppressLint
-import android.content.DialogInterface
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.activity_settings.*
-import org.alnet.allnet_android.NetworkAPI
-import org.alnet.allnet_android.R
+import org.alnet.allnetandroid.NetworkAPI
+import org.alnet.allnetandroid.R
 
 class SettingsActivity : AppCompatActivity() {
 
-    var isGroup = false
+    private var isGroup = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,16 +62,16 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     fun deleteConversation(view: View){
-        var builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this)
         builder.setMessage("Are you sure you want to delete the conversation?")
 
-        builder.setPositiveButton("Delete", DialogInterface.OnClickListener {
+        builder.setPositiveButton("Delete", {
             dialogInterface, i ->
             NetworkAPI.deleteConversation(NetworkAPI.contact!!)
             updateUI()
         })
 
-        builder.setNegativeButton("Cancel", DialogInterface.OnClickListener {
+        builder.setNegativeButton("Cancel", {
             dialogInterface, i ->
 
         })
@@ -81,16 +80,16 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     fun deleteUser(view: View){
-        var builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this)
         builder.setMessage("Are you sure you want to delete the conversation?")
 
-        builder.setPositiveButton("Delete", DialogInterface.OnClickListener {
+        builder.setPositiveButton("Delete", {
             dialogInterface, i ->
             NetworkAPI.deleteUser(NetworkAPI.contact!!)
             finish()
         })
 
-        builder.setNegativeButton("Cancel", DialogInterface.OnClickListener {
+        builder.setNegativeButton("Cancel", {
             dialogInterface, i ->
 
         })
@@ -105,7 +104,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    fun updateUI(){
+    private fun updateUI(){
         etName.setText(NetworkAPI.contact)
         val size = NetworkAPI.conversationSize(NetworkAPI.contact!!)
         tvConversationSize.text = "$size${getString(R.string.mb)}"

@@ -1,4 +1,4 @@
-package org.alnet.allnet_android
+package org.alnet.allnetandroid
 
 import android.support.annotation.LayoutRes
 import android.view.LayoutInflater

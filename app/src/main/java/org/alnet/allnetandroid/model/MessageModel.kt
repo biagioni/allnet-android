@@ -1,12 +1,12 @@
-package org.alnet.allnet_android.model
+package org.alnet.allnetandroid.model
 
 /**
  * Created by docouto on 3/31/18.
  */
 
-val MSG_TYPE_RCVD = 1
-val MSG_TYPE_SENT = 2
-val MSG_TYPE_SENT_ACKED = 3
+const val MSG_TYPE_RCVD = 1
+const val MSG_TYPE_SENT = 2
+const val MSG_TYPE_SENT_ACKED = 3
 
 class MessageModel(
     var message: String,

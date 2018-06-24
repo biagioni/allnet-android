@@ -1,9 +1,7 @@
-package org.alnet.allnet_android
+package org.alnet.allnetandroid
 
-import android.util.Log
-import kotlinx.android.synthetic.main.activity_key_exchange.*
-import org.alnet.allnet_android.model.ContactModel
-import org.alnet.allnet_android.model.MessageModel
+import org.alnet.allnetandroid.model.ContactModel
+import org.alnet.allnetandroid.model.MessageModel
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -42,7 +40,7 @@ object NetworkAPI{
 
     var groups = ArrayList<Pair<String, Boolean>>()
     var members = ArrayList<Pair<String, Boolean>>()
-    var groupMembers = ArrayList<String>()
+    private var groupMembers = ArrayList<String>()
 
     var initialized = false
     var contact: String? = null
@@ -84,7 +82,7 @@ object NetworkAPI{
     }
 
     fun callbackGroups(contact: String){
-        var allGroups = contacts.filter { isGroup(it.name) == 1 }.map { it.name }
+        val allGroups = contacts.filter { isGroup(it.name) == 1 }.map { it.name }
         groups.add(Pair(contact, allGroups.contains(contact)))
         listener?.listGroupUpdated()
     }
@@ -150,7 +148,7 @@ object NetworkAPI{
         }
     }
 
-    fun formatDate(time: Long): String{
+    private fun formatDate(time: Long): String{
         val formatter = SimpleDateFormat("MMM dd, yyyy 'at' HH:mm:ss", Locale.getDefault())
         val current = Date(time)
         return formatter.format(current)

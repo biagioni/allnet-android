@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="org.alnet.allnet_android.activities.SettingsActivity"
+    tools:context="org.alnet.allnetandroid.activities.SettingsActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
@@ -64,7 +64,6 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0"
                 android:background="#155AA7"
                 android:padding="4dp"
                 app:srcCompat="@drawable/eye"
@@ -75,7 +74,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
-                android:layout_weight="0"
                 android:drawablePadding="4dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="@string/visible" />

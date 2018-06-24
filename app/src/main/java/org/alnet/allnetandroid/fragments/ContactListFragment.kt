@@ -1,4 +1,4 @@
-package org.alnet.allnet_android.fragments
+package org.alnet.allnetandroid.fragments
 
 
 import android.content.Intent
@@ -8,17 +8,17 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
 import kotlinx.android.synthetic.main.fragment_contact_list.view.*
-import org.alnet.allnet_android.*
-import org.alnet.allnet_android.activities.MessageActivity
-import org.alnet.allnet_android.activities.SettingsActivity
-import org.alnet.allnet_android.adapters.ContactAdapter
-import org.alnet.allnet_android.model.ContactModel
+import org.alnet.allnetandroid.*
+import org.alnet.allnetandroid.activities.MessageActivity
+import org.alnet.allnetandroid.activities.SettingsActivity
+import org.alnet.allnetandroid.adapters.ContactAdapter
+import org.alnet.allnetandroid.model.ContactModel
 
 
 class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListener {
 
     var settings = false
-    var mRecyclerView: RecyclerView? = null
+    private var mRecyclerView: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +68,7 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
     }
 
 
-    fun updateUI(contacts: ArrayList<ContactModel>){
+    private fun updateUI(contacts: ArrayList<ContactModel>){
         activity?.runOnUiThread {
             val layoutManager = LinearLayoutManager(activity)
             mRecyclerView!!.layoutManager = layoutManager

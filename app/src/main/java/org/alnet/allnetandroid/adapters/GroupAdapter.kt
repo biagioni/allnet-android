@@ -1,22 +1,16 @@
-package org.alnet.allnet_android.adapters
+package org.alnet.allnetandroid.adapters
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.group_item.view.*
-import org.alnet.allnet_android.R
-import org.alnet.allnet_android.inflate
+import org.alnet.allnetandroid.R
+import org.alnet.allnetandroid.inflate
 
-class GroupAdapter(private val contacts: List<Pair<String, Boolean>>, listener: ItemClickListener): RecyclerView.Adapter<GroupAdapter.ViewHolder>() {
+class GroupAdapter(private val contacts: List<Pair<String, Boolean>>, val listener: ItemClickListener): RecyclerView.Adapter<GroupAdapter.ViewHolder>() {
 
     interface ItemClickListener{
         fun onclick(contact: String, selected: Boolean)
-    }
-
-    var listener: ItemClickListener
-
-    init {
-        this.listener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,7 +29,7 @@ class GroupAdapter(private val contacts: List<Pair<String, Boolean>>, listener: 
         fun bind(contact: Pair<String, Boolean>, listener: ItemClickListener){
             itemView.tvGroup.text = contact.first
             itemView.checkBox.isChecked = contact.second
-            itemView.setOnClickListener(View.OnClickListener {
+            itemView.setOnClickListener({
                 itemView.checkBox.isChecked = !itemView.checkBox.isChecked
                 listener.onclick(contact.first, itemView.checkBox.isChecked)
             })

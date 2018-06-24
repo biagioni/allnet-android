@@ -1,16 +1,16 @@
-package org.alnet.allnet_android.activities
+package org.alnet.allnetandroid.activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import kotlinx.android.synthetic.main.activity_message.*
-import org.alnet.allnet_android.INetwork
-import org.alnet.allnet_android.NetworkAPI
-import org.alnet.allnet_android.R
-import org.alnet.allnet_android.adapters.MessageAdapter
-import org.alnet.allnet_android.model.MSG_TYPE_SENT
-import org.alnet.allnet_android.model.MessageModel
+import org.alnet.allnetandroid.INetwork
+import org.alnet.allnetandroid.NetworkAPI
+import org.alnet.allnetandroid.R
+import org.alnet.allnetandroid.adapters.MessageAdapter
+import org.alnet.allnetandroid.model.MSG_TYPE_SENT
+import org.alnet.allnetandroid.model.MessageModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -45,7 +45,7 @@ class MessageActivity : AppCompatActivity(), INetwork {
         updateUI()
     }
 
-    fun updateUI(){
+    private fun updateUI(){
         runOnUiThread {
             val adapter = MessageAdapter(NetworkAPI.messages)
             rvMessage.adapter = adapter

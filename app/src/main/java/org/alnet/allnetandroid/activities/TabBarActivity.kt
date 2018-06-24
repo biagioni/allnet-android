@@ -1,22 +1,20 @@
-package org.alnet.allnet_android.activities
+package org.alnet.allnetandroid.activities
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_tab_bar.*
-import org.alnet.allnet_android.NetworkAPI
-import org.alnet.allnet_android.R
-import org.alnet.allnet_android.fragments.ContactListFragment
-import org.alnet.allnet_android.fragments.ContactNewFragment
-import org.alnet.allnet_android.fragments.MoreFragment
+import org.alnet.allnetandroid.NetworkAPI
+import org.alnet.allnetandroid.R
+import org.alnet.allnetandroid.fragments.ContactListFragment
+import org.alnet.allnetandroid.fragments.ContactNewFragment
+import org.alnet.allnetandroid.fragments.MoreFragment
 
 class TabBarActivity : AppCompatActivity() {
 
-    var toolBar: ActionBar? = null
+    private var toolBar: ActionBar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +36,7 @@ class TabBarActivity : AppCompatActivity() {
         loadFragment(ContactListFragment())
     }
 
-    fun loadFragment(fragment: Fragment){
+    private fun loadFragment(fragment: Fragment){
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.frame_container, fragment)
         transaction.addToBackStack(null)

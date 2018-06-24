@@ -1,4 +1,4 @@
-package org.alnet.allnet_android.fragments
+package org.alnet.allnetandroid.fragments
 
 
 import android.annotation.SuppressLint
@@ -8,12 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
-import kotlinx.android.synthetic.main.fragment_more.*
 import kotlinx.android.synthetic.main.fragment_more.view.*
-import org.alnet.allnet_android.INetwork
-import org.alnet.allnet_android.NetworkAPI
-import org.alnet.allnet_android.R
+import org.alnet.allnetandroid.INetwork
+import org.alnet.allnetandroid.NetworkAPI
+import org.alnet.allnetandroid.R
 
 
 class MoreFragment : Fragment(), INetwork {
