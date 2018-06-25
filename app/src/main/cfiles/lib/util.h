@@ -1,4 +1,7 @@
 /* util.h: useful functions used by different programs */
+#ifndef HAVE_OPENSSL
+#define HAVE_OPENSSL
+#endif /* HAVE_OPENSSL */
 
 #ifndef ALLNET_UTIL_H
 #define ALLNET_UTIL_H
