@@ -77,7 +77,7 @@ void packet_main_loop (void * arg)
     int timeout = 100;      /* sleep up to 1/10 second */
     char * old_contact = NULL;
     keyset old_kset = -1;
-    while ((rcvd = local_receive (timeout, &packet, &pri)) >= 0) {
+    while ((rcvd = local_receive ((unsigned int) timeout, &packet, &pri)) >= 0) {
         int verified, duplicate, broadcast;
         uint64_t seq;
         char * peer;
@@ -104,7 +104,7 @@ void packet_main_loop (void * arg)
         pthread_mutex_unlock(&key_generated_mutex);
         ///////////////////////////////
 
-        int mlen = handle_packet (sock, packet, rcvd, pri,
+        int mlen = handle_packet (sock, packet, (unsigned int) rcvd, pri,
                                   &peer, &kset, &message, &desc,
                                   &verified, &seq, &mtime,
                                   &duplicate, &broadcast, &acks, &trace);
@@ -162,7 +162,7 @@ void packet_main_loop (void * arg)
         /* handle_packet may have changed what has and has not been acked */
         int i;
         for (i = 0; i < acks.num_acks; i++) {
-            printf ("displaying ack sequence number %lld for peer %s\n", acks.acks[i], acks.peers[i]);
+            printf ("displaying ack sequence number %lu for peer %s\n", acks.acks[i], acks.peers[i]);
 
             //ack messages
             jmethodID methodid = (*NewEnv)->GetMethodID(NewEnv, netAPI, "callbackAckMessages", "(Ljava/lang/String;)V");
@@ -185,7 +185,8 @@ static void * request_key (void * arg_void) {
     struct request_key_arg * arg = (struct request_key_arg *) arg_void;
     waiting_for_key = 1;
     // next line will be slow if it has to generate the key from scratch
-    create_contact_send_key(arg->sock, arg->contact, arg->secret1, arg->secret2, arg->hops);
+    create_contact_send_key(arg->sock, arg->contact, arg->secret1, arg->secret2,
+                            (unsigned int) arg->hops);
     make_invisible(arg->contact);  // make sure the new contact is not (yet) visible
     waiting_for_key = 0;
     pthread_mutex_unlock(&key_generated_mutex);
@@ -305,7 +306,7 @@ int lastTime(char * contact)
     }
     if (nk > 0)
         free (k);
-    return latest_time;
+    return (int) latest_time;
 }
 
 JNIEXPORT void JNICALL
@@ -320,7 +321,7 @@ Java_org_alnet_allnetandroid_NetworkAPI_startAllnet(JNIEnv *env,
 
     const char * dir=strcpy_malloc((*env)->GetStringUTFChars( env, path_ , NULL ),"startAllnetDeamon") ;
     syslog (LOG_DAEMON | LOG_WARNING, " directoryC : %s\n",dir);
-    char * args [] = { "allnet", "-v","-d",dir, NULL };
+    char * args [] = {"allnet", "-v", "-d", (char *) dir, NULL };
     astart_main(4, args);
 
     //pthread_t t2;
@@ -338,7 +339,7 @@ Java_org_alnet_allnetandroid_NetworkAPI_startAllnet(JNIEnv *env,
     ((int *) args2) [0] = sock;
 
     pthread_t t;
-    pthread_create (&t, NULL, packet_main_loop, args2);
+    pthread_create (&t, NULL, (void *(*)(void *)) packet_main_loop, args2);
 
     jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callback", "(I)V");
     if(!methodid) {
@@ -437,8 +438,8 @@ Java_org_alnet_allnetandroid_NetworkAPI_generateRandomKey(JNIEnv *env,
                                                       jobject instance) {
 #define MAX_RANDOM  15
     char randomString [MAX_RANDOM];
-    random_string(&randomString, MAX_RANDOM);
-    normalize_secret(&randomString);
+    random_string((char *) &randomString, MAX_RANDOM);
+    normalize_secret((char *) &randomString);
 
     jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callbackRandomKey",
                                              "(Ljava/lang/String;)V");
@@ -510,11 +511,11 @@ Java_org_alnet_allnetandroid_NetworkAPI_removeNewContact(
         jstring contact) {
     const char * ccontact = strcpy_malloc((*env)->GetStringUTFChars( env, contact , NULL ),"contact");
     if (! waiting_for_key) {
-        printf("resending key to %@\n", ccontact);
+        printf("resending key to %s\n", ccontact);
         resend_contact_key (sock, ccontact);
-        printf("resent key to %@\n", ccontact);
+        printf("resent key to %s\n", ccontact);
     } else {
-        printf("resend key for new contact %@: still generating key\n", ccontact);
+        printf("resend key for new contact %s: still generating key\n", ccontact);
     }
 }
 
@@ -629,7 +630,7 @@ Java_org_alnet_allnetandroid_NetworkAPI_startTrace(
     memset (&addr, 0, MESSAGE_ID_SIZE);
     trace_count++;
     trace_start_time = allnet_time_ms();
-    if (! start_trace(sock, addr , 0, chops, 0, expecting_trace)) {
+    if (! start_trace(sock, addr , 0, (unsigned int) chops, 0, expecting_trace)) {
         printf("unable to start trace\n");
     }
 
