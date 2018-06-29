@@ -1,5 +1,9 @@
 /* crypt_sel.h: interface to different implementations of crypto primitives */
 
+#ifndef HAVE_OPENSSL
+#define HAVE_OPENSSL
+#endif /* HAVE_OPENSSL */
+
 #ifndef ALLNET_CRYPT_SELECTOR_H
 #define ALLNET_CRYPT_SELECTOR_H
 
