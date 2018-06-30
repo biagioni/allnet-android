@@ -47,6 +47,7 @@
     <string name="delete_user">Delete user</string>
     <string name="mb">MB</string>
     <string name="date">date</string>
+    <string name="done">Done</string>
 
     <string-array name="contact_type">
         <item>regular internet contact</item>

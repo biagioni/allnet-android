@@ -54,12 +54,14 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
         when (item?.itemId) {
             R.id.menuEdit -> {
                 if (!settings){
+                    item.title = getString(R.string.done)
                     settings = true
                     updateUI(NetworkAPI.contacts)
                     NetworkAPI.hiddencontacts.clear()
                     NetworkAPI.getHiddenContacts()
                 }else {
                     settings = false
+                    item.title = getString(R.string.edit)
                     updateUI(NetworkAPI.contacts)
                 }
             }
