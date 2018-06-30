@@ -92,7 +92,7 @@ void packet_main_loop (void * arg)
 
         //received key generated
         pthread_mutex_lock(&key_generated_mutex);  // don't allow changes to keyContact until a key has been generated
-        if (( waiting_for_key) && keyContact != NULL)  {
+        if (( !waiting_for_key) && keyContact != NULL)  {
             jmethodID methodid = (*NewEnv)->GetMethodID(NewEnv, netAPI, "callbackKeyGenerated", "(Ljava/lang/String;)V");
             if(!methodid) {
                 return;
