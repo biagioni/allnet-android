@@ -50,9 +50,12 @@ class ContactNewFragment : Fragment(), INetwork, ContactIncompleteAdapter.ItemCl
 
         NetworkAPI.fecthIncompletedKeys()
 
-        updateUI()
-
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateUI()
     }
 
     private fun updateUI(){
