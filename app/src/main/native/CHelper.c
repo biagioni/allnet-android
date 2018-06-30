@@ -162,8 +162,6 @@ void packet_main_loop (void * arg)
         /* handle_packet may have changed what has and has not been acked */
         int i;
         for (i = 0; i < acks.num_acks; i++) {
-            printf ("displaying ack sequence number %lu for peer %s\n", acks.acks[i], acks.peers[i]);
-
             //ack messages
             jmethodID methodid = (*NewEnv)->GetMethodID(NewEnv, netAPI, "callbackAckMessages", "(Ljava/lang/String;)V");
             if(!methodid) {
