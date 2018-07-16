@@ -16,6 +16,10 @@
 #include "priority.h"
 #include "ai.h"   /* same_sockaddr */
 
+#ifdef ALLNET_NETPACKET_SUPPORT
+#include <linux/if_packet.h>
+#endif /* ALLNET_NETPACKET_SUPPORT */
+
 static pthread_mutex_t global_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 static void lock (const char * caller)
@@ -83,11 +87,12 @@ void print_socket_set (struct socket_set * s)
   int si;
   for (si = 0; si < s->num_sockets; si++) {
     struct socket_address_set * sas = &(s->sockets [si]);
-    printf ("socket %d/%d: sockfd %d, %s%s%s%d addrs\n",
+    printf ("socket %d/%d: sockfd %d, %s%s%s%s%d addrs\n",
             si, s->num_sockets, sas->sockfd,
             ((sas->is_local) ? "local, " : ""),
             ((sas->is_global_v6) ? "globalv6, " : ""),
-            ((sas->is_global_v4) ? "globalv4, " : ""), sas->num_addrs);
+            ((sas->is_global_v4) ? "globalv4, " : ""),
+            ((sas->is_broadcast) ? "bc, " : ""), sas->num_addrs);  
     int ai;
     for (ai = 0; ai < sas->num_addrs; ai++) {
       struct socket_address_validity * sav = &(sas->send_addrs [ai]);
@@ -100,7 +105,8 @@ void print_socket_set (struct socket_set * s)
 void check_sav (struct socket_address_validity * sav, const char * desc)
 {
   if ((sav->alen > sizeof (sav->addr)) ||
-      (sav->alen < sizeof (struct sockaddr_in))) {
+      (sav->alen < sizeof (struct sockaddr_in)) ||
+      (sav->alen == 18)) {
     printf ("%s: illegal alen ", desc);
     print_sav (sav);
     debug_crash ();
@@ -124,11 +130,11 @@ static int socket_sock_loop_locked (struct socket_set * s,
   for (si = 0; si < s->num_sockets; si++) {
     struct socket_address_set * sas = &(s->sockets [si]);
     if (! f (sas, ref)) {  /* delete this element */
-printf ("socket_sock_loop deleting socket %d\n", sas->sockfd);
+      close (sas->sockfd);
       count++;
       /* compress the array to replace the deleted element */
       int sim;
-      for (sim = si; sim + 1 < sas->num_addrs; sim++)
+      for (sim = si; sim + 1 < s->num_sockets; sim++)
         s->sockets [sim] = s->sockets [sim + 1];
       s->num_sockets--;
       si--;   /* so the loop does the next element, which is now at si */
@@ -178,7 +184,7 @@ int socket_addr_loop (struct socket_set * s, socket_addr_loop_fun f, void * ref)
 
 /* return 1 if was able to add, and 0 otherwise (e.g. if already in the set) */
 static int socket_add_locked (struct socket_set * s, int sockfd, int is_local,
-                              int is_global_v6, int is_global_v4)
+                              int is_global_v6, int is_global_v4, int is_bc)
 {
   int si;
   for (si = 0; si < s->num_sockets; si++)
@@ -192,6 +198,7 @@ static int socket_add_locked (struct socket_set * s, int sockfd, int is_local,
   s->sockets [index].is_local = is_local;
   s->sockets [index].is_global_v6 = is_global_v6;
   s->sockets [index].is_global_v4 = is_global_v4;
+  s->sockets [index].is_broadcast = is_bc;
   s->sockets [index].num_addrs = 0;
   s->sockets [index].send_addrs = NULL;
   return 1;
@@ -199,10 +206,22 @@ static int socket_add_locked (struct socket_set * s, int sockfd, int is_local,
 /* returns a pointer to the new sav, or NULL in case of errors (e.g.
  * if this address is already in the structure, or if the socket isn't) */
 static struct socket_address_validity *
-  socket_address_add_locked (struct socket_set * s,
-                             struct socket_address_set * sock,
+  socket_address_add_locked (struct socket_set * s, int sockfd,
                              struct socket_address_validity addr)
 {
+  struct socket_address_set * sock = NULL;
+  int si;
+  for (si = 0; si < s->num_sockets; si++) {
+    if (s->sockets [si].sockfd == sockfd) {
+      sock = s->sockets + si;
+      break;
+    }
+  }
+  if (sock == NULL) {  /* not found */
+    printf ("unable to add sav to socket %d, sockets are:\n", sockfd);
+    print_socket_set (s);
+    return NULL;
+  }
   int ai;
   for (ai = 0; ai < sock->num_addrs; ai++) {
     struct socket_address_validity * sav = &(sock->send_addrs [ai]);
@@ -221,25 +240,24 @@ static struct socket_address_validity *
 
 /* return 1 if was able to add, and 0 otherwise (e.g. if already in the set) */
 int socket_add (struct socket_set * s, int socket, int is_local,
-                int is_global_v6, int is_global_v4)
+                int is_global_v6, int is_global_v4, int is_bc)
 {
   lock ("socket_add");
   int result = socket_add_locked (s, socket, is_local,
-                                  is_global_v6, is_global_v4);
+                                  is_global_v6, is_global_v4, is_bc);
   unlock ("socket_add");
   return result;
 }
 /* returns a pointer to the new sav, or NULL in case of errors (e.g.
  * if this address is already in the structure, or if the socket isn't) */
 struct socket_address_validity *
-  socket_address_add (struct socket_set * s,
-                      struct socket_address_set * sock,
+  socket_address_add (struct socket_set * s, int sockfd,
                       struct socket_address_validity addr)
 {
   lock ("socket_address_add");
 check_sav (&addr, "socket_address_add return value");
   struct socket_address_validity * result =
-    socket_address_add_locked (s, sock, addr);
+    socket_address_add_locked (s, sockfd, addr);
   unlock ("socket_address_add");
   return result;
 }
@@ -280,7 +298,7 @@ struct socket_set * debug_copy = debug_copy_socket_set (s);
   }
   if (! rld.updated) {   /* likely error -- report for now */
     char st [1000];
-    print_sockaddr_str ((struct sockaddr *) &addr, alen, 0, st, sizeof (st));
+    print_sockaddr_str ((struct sockaddr *) &addr, alen, st, sizeof (st));
     printf ("warning: update_recv_limit %s did not update any addresses\n", st);
     print_socket_set (s);
 #ifdef DEBUG_SOCKETS
@@ -378,6 +396,15 @@ static struct socket_read_result
   int is_new = 0;
   int recv_limit_reached = 0;
   struct socket_address_validity * sav = NULL;
+#ifdef ALLNET_NETPACKET_SUPPORT
+/* received packets on AF_PACKET have a size that reflects actual
+ * bytes of hardware address but can't be used for sending */
+  if ((sas.ss_family == AF_PACKET) && (alen < sizeof (struct sockaddr_ll))) {
+    char * ptr = (char *) (&sas);   /* clear the last few bytes */
+    memset (ptr + alen, 0, sizeof (struct sockaddr_ll) - alen);
+    alen = sizeof (struct sockaddr_ll);
+  }
+#endif /* ALLNET_NETPACKET_SUPPORT */
   update_read (sas, alen, sock, rcvd_time, &sav, &is_new, &recv_limit_reached);
 if (! is_new) check_sav (sav, "update_read result");
   struct socket_read_result r =
@@ -474,7 +501,7 @@ static void send_error (const char * message, int msize, int flags, int res,
   const char * es = strerror (e);
   printf ("%s sendto: %d (%s)\n", desc, e, es);
   char desc_addr [1000] = "";
-  print_sockaddr_str ((struct sockaddr *) (&sas), alen, 0,
+  print_sockaddr_str ((struct sockaddr *) (&sas), alen,
                       desc_addr, sizeof (desc_addr));
   void * p = NULL;
   int alen2 = 0;
@@ -518,11 +545,13 @@ check_sav (sav, "send_on_socket");
     sav->alive_sent = sent_time;
     return 1;
   }
-  char desc2 [1000];
-  snprintf (desc2, sizeof (desc2), "%s send_on_socket", desc);
-  /* some error, so the rest of this function is for debugging */
-  send_error (message, msize, flags, (int)result,
-              sav->addr, sav->alen, desc2, s, sockfd, sav, si, ai);
+  if (errno != EADDRNOTAVAIL) {
+    char desc2 [1000];
+    snprintf (desc2, sizeof (desc2), "%s send_on_socket", desc);
+    /* some error, so the rest of this function is for debugging */
+    send_error (message, msize, flags, (int)result,
+                sav->addr, sav->alen, desc2, s, sockfd, sav, si, ai);
+  }
   return 0;
 }
 
@@ -562,7 +591,9 @@ check_sav (sav, "socket_send_fun");
       }
     } else {
       ssd->error = 1;
+#ifdef DEBUG_SOCKETS
       printf ("socket_send_fun (%d) had an error, removing\n", sock->sockfd);
+#endif /* DEBUG_SOCKETS */
       return 0;   /* some error, delete the address */
     }
   }
@@ -647,7 +678,7 @@ check_sav (addr, "socket_send_to");
   int result = send_on_socket (message, msize, sent_time, sock->sockfd, addr,
                                "socket_send_to", NULL, -1, -1);
   if (allocated != NULL)
-    free (allocated);
+    free (allocated); 
   struct dec_send_limit_data dsld = { .alen = addr->alen };
   memcpy (&(dsld.addr), &(addr->addr), sizeof (addr->addr));
   socket_addr_loop_locked (s, socket_dec_send_limit, &dsld);
@@ -669,10 +700,12 @@ int socket_send_to_ip (int sockfd, const char * message, int msize,
                            (struct sockaddr *) (&sas), alen);
   if (result == msize)
     return 1;
-  char desc [1000];
-  snprintf (desc, sizeof (desc), "%s socket_send_to_ip", debug);
-  send_error (message, msize, flags, (int)result, sas, alen,
-              desc, NULL, sockfd, NULL, -1, -1);
+  if (errno != ENETUNREACH) {
+    char desc [1000];
+    snprintf (desc, sizeof (desc), "%s socket_send_to_ip", debug);
+    send_error (message, msize, flags, (int)result, sas, alen,
+                desc, NULL, sockfd, NULL, -1, -1);
+  }
   return 0;
 }
 
@@ -733,7 +766,7 @@ int socket_create_bind (struct socket_set * s, int is_local,
     if (! quiet) perror ("socket_create_bind: bind");
     return -1;
   }
-  if (socket_add (s, sockfd, is_local, is_global_v6, is_global_v4))
+  if (socket_add (s, sockfd, is_local, is_global_v6, is_global_v4, 0))
     return sockfd;
   if (! quiet) printf ("unable to add %d socket %d\n", sap->sa_family, sockfd);
   return -1;

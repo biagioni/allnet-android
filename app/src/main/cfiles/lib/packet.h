@@ -1,9 +1,5 @@
 /* packet.h: definition of AllNet packet headers */
 
-#ifndef HAVE_OPENSSL
-#define HAVE_OPENSSL
-#endif /* HAVE_OPENSSL */
-
 #ifndef PACKET_H
 #define PACKET_H
 

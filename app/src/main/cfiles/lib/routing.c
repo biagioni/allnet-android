@@ -908,7 +908,6 @@ static int delete_matching_address (struct socket_address_set * sock,
   return 1;      /* keep */
 }
 
-#define DEBUG_PRINT
 /* expires old DHT entries that haven't been refreshed since the last call
  * and removes them from the socket set */
 void routing_expire_dht (struct socket_set * s)
@@ -940,7 +939,6 @@ void routing_expire_dht (struct socket_set * s)
   for (i = 0; i < MAX_PEERS; i++) {
     if ((peers [i].ai.nbits > 0) && (! peers [i].refreshed)) {
       struct addr_info copy = peers [i].ai;
-print_buffer ((char *) &(copy.ip.ip), 16, "moving to ping", 16, 1);
       socket_addr_loop (s, delete_matching_address, &copy);
       peers [i].ai.nbits = 0;
       changed = 1;
@@ -968,7 +966,6 @@ print_buffer ((char *) &(copy.ip.ip), 16, "moving to ping", 16, 1);
   print_ping_list (0);
 #endif /* DEBUG_PRINT */
 }
-#undef DEBUG_PRINT
 
 static struct addr_info * get_nth_peer (int n)
 {

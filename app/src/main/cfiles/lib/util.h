@@ -1,7 +1,4 @@
 /* util.h: useful functions used by different programs */
-#ifndef HAVE_OPENSSL
-#define HAVE_OPENSSL
-#endif /* HAVE_OPENSSL */
 
 #ifndef ALLNET_UTIL_H
 #define ALLNET_UTIL_H
@@ -86,11 +83,9 @@ extern void print_bitstring (const unsigned char * x, int xoff, int nbits,
                              int print_eol);
 
 /* print an arbitrary socket address */
-/* tcp should be 1 for TCP, 0 for UDP, -1 for neither */
-extern void print_sockaddr (const struct sockaddr * sap, socklen_t addr_size,
-                            int tcp);
+extern void print_sockaddr (const struct sockaddr * sap, socklen_t addr_size);
 extern int print_sockaddr_str (const struct sockaddr * sap,
-                               socklen_t addr_size, int tcp,
+                               socklen_t addr_size,
                                char * string, unsigned int string_size);
 
 /* print a message with the current time */
@@ -303,6 +298,18 @@ extern int minz (int from, int subtract);
    etc
  */
 extern int binary_log (unsigned long long int value);
+
+#ifndef __APPLE__
+#ifndef __CYGWIN__
+#ifndef _WIN32
+#ifndef _WIN64
+#ifndef __OpenBSD__
+#define ALLNET_NETPACKET_SUPPORT
+#endif /* __OpenBSD__ */
+#endif /* _WIN64 */
+#endif /* _WIN32 */
+#endif /* __CYGWIN__ */
+#endif /* __APPLE__ */
 
 /* 2017/09/20: android seems to support fork, so only use threads for iOS */
 #if defined(__IPHONE_OS_VERSION_MIN_REQUIRED) || defined(ANDROID)
