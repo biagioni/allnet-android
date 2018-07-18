@@ -57,7 +57,6 @@ add_library( # Sets the name of the library.
               src/main/cfiles/lib/abc.c
               src/main/cfiles/lib/pid_bloom.c
               src/main/cfiles/lib/sockets.c
-              src/main/cfiles/mgmt/traced.c
               src/main/cfiles/mgmt/keyd.c
               src/main/cfiles/mgmt/trace.c
                )
