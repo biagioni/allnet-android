@@ -60,11 +60,6 @@ add_library( # Sets the name of the library.
               src/main/cfiles/mgmt/traced.c
               src/main/cfiles/mgmt/keyd.c
               src/main/cfiles/mgmt/trace.c
-              src/main/cfiles/abc/abc.c
-              src/main/cfiles/abc/abc-ip.c
-              src/main/cfiles/abc/abc-wifi.c
-              src/main/cfiles/abc/abc-iface.c
-              src/main/cfiles/abc/abc-iw.c
                )
 
  include_directories(src/main/cfiles)
