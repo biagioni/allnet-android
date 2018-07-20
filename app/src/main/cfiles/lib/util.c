@@ -53,6 +53,12 @@ void print_buffer (const char * buffer, unsigned int count, const char * desc,
     printf ("\n");
 }
 
+/* compute a power of two */
+static unsigned int p2 (unsigned int exponent)
+{
+  return 1 << exponent;
+}
+
 /* returns from - subtract if from >= subtract, otherwise returns 0 */
 int minz (int from, int subtract)
 {
@@ -345,12 +351,6 @@ static int mgmt_to_string (int mtype, const char * hp, unsigned int hsize,
   return r;
 }
 
-/* compute a power of two */
-static unsigned int p2 (unsigned int exponent)
-{
-  return 1 << exponent;
-}
-
 static int bitmap_to_string (char * to, unsigned int tsize,
                              unsigned int exponent,
                              unsigned char ** my_bitmap, int add_slash)
@@ -363,22 +363,24 @@ static int bitmap_to_string (char * to, unsigned int tsize,
   if (exponent <= 0)
     return off;
   off += snprintf (to + off, minz (tsize, off), ": ");
-  int num_bits = p2 (exponent);
+  int num_bits = p2 (exponent);  /* already checked exponent > 0 */
   int num_bytes = (num_bits + 7) / 8;
   unsigned char * bitmap = *my_bitmap;
   *my_bitmap = bitmap + num_bytes;  /* return value */
-  int i, b;
-  int found = 0;
-  for (i = 0; i < num_bytes; i++) {
-    unsigned char byte = bitmap [i];
-    if (byte != 0) {
-      for (b = 0; b < 8; b++) {
-        if ((byte >> b) & 1) {
-          off += snprintf (to + off, minz (tsize, off), "%s%x",
-                           ((found) ? ", " : ""), i * 8 + b);
-          found = 1;
-        }
-      }
+  int found = 0;  /* did we find anything? */
+  int i;
+  for (i = 0; i < num_bits; i++) {
+    int sixteen = i;  /* the index/mask functions always require 16 bits */
+    if (exponent < 16)
+      sixteen = sixteen << (16 - exponent);
+    else if (exponent > 16)
+      sixteen = sixteen << (exponent - 16);
+    int index = allnet_bitmap_byte_index (exponent, sixteen);
+    int mask = allnet_bitmap_byte_mask (exponent, sixteen);
+    if (bitmap [index] & mask) {
+      off += snprintf (to + off, minz (tsize, off), "%s%x",
+                       ((found) ? ", " : ""), i);
+      found = 1;
     }
   }
   if (! found)
@@ -873,6 +875,49 @@ int bitstring_matches (const unsigned char * x, int xoff,
     if (get_bit (x, xoff + i) != get_bit (y, yoff + i))
       return 0;
   return 1;
+}
+
+/* functions used to modify and read data request bitmaps
+ * power_two is the size of the bitmap, in bits.
+ * first_sixteen holds the first sixteen bits of the address or ID.
+ * these functions return a byte index, 0 <= index < 2^power_two,
+ * or a mask equal to 1 << offset, where 0 <= offset < 8,
+ * as long as: 0 < power_two <= 16, and 0 <= first_sixteen < 2^16,
+ * (if these constraints are not respected, these functions return -1) */
+
+static void compute_index_mask (int power_two, int first_sixteen,
+                                int * indexp, int * maskp)
+{
+#define MASK_SIXTEEN	0xffff
+  *indexp = -1;
+  *maskp = -1;
+  if ((power_two <= 0) || (power_two > 16))
+    return;
+  if ((first_sixteen < 0) || (first_sixteen > MASK_SIXTEEN))
+    return;
+  int significant_bits = (first_sixteen & MASK_SIXTEEN) >> (16 - power_two);
+  int index = significant_bits / 8;
+  int offset = significant_bits % 8;
+  int mask = (1 << (7 - offset)) & 0xff;
+  *indexp = index;
+  *maskp = mask;
+#undef MASK_SIXTEEN
+}
+
+int allnet_bitmap_byte_index (int power_two, int first_sixteen)
+{
+  int index;
+  int mask;
+  compute_index_mask (power_two, first_sixteen, &index, &mask);
+  return index;
+}
+
+int allnet_bitmap_byte_mask (int power_two, int first_sixteen)
+{
+  int index;
+  int mask;
+  compute_index_mask (power_two, first_sixteen, &index, &mask);
+  return mask;
 }
 
 /* AllNet time begins January 1st, 2000.  This may be different from
@@ -1669,7 +1714,7 @@ extern int is_valid_message (const char * packet, unsigned int size,
     return 0;
   }
 /* received a message with a header */
-  struct allnet_header * ah = (struct allnet_header *) packet;
+  const struct allnet_header * ah = (const struct allnet_header *) packet;
 /* make sure version, address bit counts and hops are sane */
   if ((ah->version != ALLNET_VERSION) ||
       (ah->src_nbits > ADDRESS_BITS) || (ah->dst_nbits > ADDRESS_BITS) ||
@@ -1704,8 +1749,26 @@ printf ("time to crash %d\n", 1000 / ah->version);
     snprintf (buffer, sizeof (buffer),
               "received message type %d, transport 0x%x != 0",
               ah->message_type, ah->transport);
+/* printf ("%s", buffer); */
     if (error_desc != NULL) *error_desc = "ack or req with nonzero transport";
     return 0;
+  }
+  if (ah->message_type == ALLNET_TYPE_DATA_REQ) {  /* check the sizes */
+    const struct allnet_data_request * rp = (const struct allnet_data_request *)
+      ALLNET_DATA_START (ah, ah->transport, size);
+    int wanted = sizeof (struct allnet_data_request);
+/* add 6 (rather than 7) so that if power_two is 0, we add 0 bytes
+ * for that bitmap */
+    wanted += (p2 (rp->dst_bits_power_two) + 6) / 8;
+    wanted += (p2 (rp->src_bits_power_two) + 6) / 8;
+    wanted += (p2 (rp->mid_bits_power_two) + 6) / 8;
+    if (wanted > size) {
+      if (error_desc != NULL) *error_desc = "data request too small";
+printf ("got data request of size %d, expected %d (%d, %d, %d)\n",
+size, wanted, rp->dst_bits_power_two, rp->src_bits_power_two,
+rp->mid_bits_power_two);
+      return 0;
+    }
   }
   int payload_size = size -
                      ALLNET_AFTER_HEADER (ah->transport, (unsigned int) size);
