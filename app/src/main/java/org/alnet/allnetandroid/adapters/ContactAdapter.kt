@@ -12,7 +12,8 @@ import org.alnet.allnetandroid.model.ContactModel
 /**
  * Created by docouto on 3/26/18.
  */
-class ContactAdapter(private val contacts: List<ContactModel>, val sets: Boolean, var listener: ItemClickListener): RecyclerView.Adapter<ContactAdapter.ViewHolder>() {
+class ContactAdapter(private val contacts: List<ContactModel>, val sets: Boolean, var listener:
+ItemClickListener): RecyclerView.Adapter<ContactAdapter.ViewHolder>() {
 
     interface ItemClickListener{
         fun onclick(contact: ContactModel)
