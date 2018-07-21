@@ -6,10 +6,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.message_item_send.view.*
 import org.alnet.allnetandroid.R
 import org.alnet.allnetandroid.inflate
-import org.alnet.allnetandroid.model.MSG_TYPE_RCVD
-import org.alnet.allnetandroid.model.MSG_TYPE_SENT
-import org.alnet.allnetandroid.model.MSG_TYPE_SENT_ACKED
-import org.alnet.allnetandroid.model.MessageModel
+import org.alnet.allnetandroid.model.*
 
 /**
  * Created by docouto on 3/26/18.
@@ -25,6 +22,10 @@ class MessageAdapter(private val messages: List<MessageModel>): RecyclerView.Ada
             }
             MSG_TYPE_SENT -> {
                 val inflatedView = parent.inflate(R.layout.message_item_send, false)
+                ViewHolder(inflatedView)
+            }
+            MSG_MISSED -> {
+                val inflatedView = parent.inflate(R.layout.message_item_missing, false)
                 ViewHolder(inflatedView)
             }
             else -> {

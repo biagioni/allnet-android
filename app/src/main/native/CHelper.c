@@ -404,7 +404,7 @@ Java_org_alnet_allnetandroid_NetworkAPI_getMessages(JNIEnv *env, jobject instanc
         for (int i = 0; i < messages_used; i++) {
             struct message_store_info mi = *(messages + (messages_used - i - 1));
 
-            jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callbackMessages", "(Ljava/lang/String;IJI)V");
+            jmethodID methodid = (*env)->GetMethodID(env, netAPI, "callbackMessages", "(Ljava/lang/String;IJII)V");
             if(!methodid) {
                 return;
             }
@@ -414,7 +414,8 @@ Java_org_alnet_allnetandroid_NetworkAPI_getMessages(JNIEnv *env, jobject instanc
             long time = mi.time + ALLNET_Y2K_SECONDS_IN_UNIX;
 
 
-            (*env)->CallVoidMethod(env, g_obj , methodid, string, mi.msg_type, time, mi.message_has_been_acked);
+            (*env)->CallVoidMethod(env, g_obj , methodid, string, mi.msg_type, time,
+                                   mi.message_has_been_acked, mi.prev_missing);
 
         }
     }

@@ -41,7 +41,7 @@ class MessageActivity : AppCompatActivity(), INetwork {
         etText.text.clear()
         val formatter = SimpleDateFormat("MMM dd, yyyy 'at' HH:mm:ss", Locale.getDefault())
         val current = Date()
-        NetworkAPI.messages.add(MessageModel(msg, MSG_TYPE_SENT, formatter.format(current), 0))
+        NetworkAPI.messages.add(MessageModel(msg, MSG_TYPE_SENT, formatter.format(current), 0, 0))
         updateUI()
     }
 
