@@ -1,5 +1,7 @@
 package org.alnet.allnetandroid.adapters
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +9,12 @@ import kotlinx.android.synthetic.main.message_item_send.view.*
 import org.alnet.allnetandroid.R
 import org.alnet.allnetandroid.inflate
 import org.alnet.allnetandroid.model.*
+import android.graphics.drawable.GradientDrawable
+import android.os.Build
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
+
 
 /**
  * Created by docouto on 3/26/18.
@@ -54,6 +62,22 @@ class MessageAdapter(private val messages: List<MessageModel>): RecyclerView.Ada
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(messageModel: MessageModel){
+            if (messageModel.type == MSG_TYPE_RCVD) {
+                var fractionOfDay:Double = 1.0
+
+                val SECONDS_PER_DAY = (24 * 60 * 60).toDouble()
+
+                val formatter = SimpleDateFormat("MMM dd, yyyy 'at' HH:mm:ss", Locale.getDefault())
+                val date = formatter.parse(messageModel.date).time
+                val dateNow = Date().time
+                val elapsed = TimeUnit.DAYS.convert(dateNow - date, TimeUnit.MILLISECONDS)
+
+                if (elapsed < SECONDS_PER_DAY) {
+                    fractionOfDay = elapsed / SECONDS_PER_DAY
+                }
+                val myGrad = itemView.background as GradientDrawable
+                myGrad.setStroke(5, Color.rgb(255,255,255))
+            }
             itemView.tvMessage.text = messageModel.message
             itemView.tvDate.text = messageModel.date
         }
