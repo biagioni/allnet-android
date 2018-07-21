@@ -1,6 +1,7 @@
 package org.alnet.allnetandroid
 
 import org.alnet.allnetandroid.model.ContactModel
+import org.alnet.allnetandroid.model.MSG_MISSED
 import org.alnet.allnetandroid.model.MessageModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -63,10 +64,22 @@ object NetworkAPI{
         getContacts()
     }
 
+    fun checkMissingMessages(){
+        val missingMessages = messages.filter{it.prevMissing > 0}
+        for (msg in missingMessages) {
+            var msgModel = MessageModel(
+                    "${msg.prevMissing} message${
+            if (msg.prevMissing == 1) "" else "s"} missing", MSG_MISSED,
+                    "", msg.message_has_been_acked,
+                    0)
+            messages.add(missingMessages.indexOf(msg) + 1, msgModel)
+        }
+    }
+
     fun callbackContacts(contact: String, time: Long){
         val formatted = formatDate(time)
         contacts.add(ContactModel(contact, formatted, 1))
-        contacts.sortByDescending { it.lastMessage }
+        contacts.sortedByDescending { it.lastMessage }
         listener?.listContactsUpdated()
     }
 
@@ -75,9 +88,10 @@ object NetworkAPI{
         listener?.listHiddenContactsUpdated()
     }
 
-    fun callbackMessages(message: String, type: Int, time: Long, acked: Int){
+    fun callbackMessages(message: String, type: Int, time: Long, acked: Int, prevMissing: Int){
         val formatted = formatDate(time)
-        messages.add(MessageModel(message,type, formatted, acked))
+        messages.add(MessageModel(message,type, formatted, acked, prevMissing))
+        checkMissingMessages()
         listener?.listMsgUpdated()
     }
 
