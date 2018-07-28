@@ -520,10 +520,14 @@ void packet_to_string (const char * buffer, unsigned int bsize,
     } else if (hp->message_type == ALLNET_TYPE_DATA_REQ) {
       struct allnet_data_request * adrp =
         (struct allnet_data_request *) (buffer + (ALLNET_SIZE (hp->transport)));
+      char token_string [200];
+      buffer_to_string ((char *) adrp->token, sizeof (adrp->token), "token",
+                        100, 0, token_string, sizeof (token_string));
       char time_string [100];
       allnet_time_string (readb64u (adrp->since), time_string);
       off += snprintf (to + off, minz (itsize, off),
-                       ", requesting since %s, ", time_string);
+                       ", %s, requesting since %s, ",
+                       token_string, time_string);
       off += snprintf (to + off, minz (itsize, off), "dst/src/mid bitmaps");
       unsigned char * bitmap = adrp->dst_bitmap;
       off += bitmap_to_string (to + off, minz (itsize, off),
@@ -1236,6 +1240,17 @@ void * memcat_malloc (const void * bytes1, size_t bsize1,
   return result;
 }
 
+/* returns true if all the bytes of memory are set to value (or bsize is 0) */
+int memget (void * bytes, int value, size_t bsize)
+{
+  char * p = bytes;
+  int i;
+  for (i = 0; i < bsize; i++)
+    if (p [i] != value)
+      return 0;
+  return 1;
+}
+
 /* returns -1 in case of errors, usually if the file doesn't exist */
 long long int file_size (const char * file_name)
 {
@@ -1742,21 +1757,42 @@ printf ("time to crash %d\n", 1000 / ah->version);
     return 0;
   }
 /* check the validity of the packet, as defined in packet.h */
-  if (((ah->message_type == ALLNET_TYPE_ACK) ||
-       (ah->message_type == ALLNET_TYPE_DATA_REQ)) &&
-      (ah->transport != 0)) {
+  if ((ah->message_type == ALLNET_TYPE_ACK) && (ah->transport != 0)) {
     char buffer [10000];
     snprintf (buffer, sizeof (buffer),
-              "received message type %d, transport 0x%x != 0",
-              ah->message_type, ah->transport);
+              "received ack, transport 0x%x != 0", ah->transport);
 /* printf ("%s", buffer); */
-    if (error_desc != NULL) *error_desc = "ack or req with nonzero transport";
+    if (error_desc != NULL) *error_desc = "req with nonzero transport";
     return 0;
   }
-  if (ah->message_type == ALLNET_TYPE_DATA_REQ) {  /* check the sizes */
+  if (ah->message_type == ALLNET_TYPE_DATA_REQ) {
+/* do not enforce for now -- still experimental  2018/07/25
+    if ((ah->transport & ALLNET_TRANSPORT_DO_NOT_CACHE) == 0) {
+      if (error_desc != NULL) *error_desc = "req fails to specify do-not-cache";
+      return 0;
+    }
+ */
+    /* check the sizes */
     const struct allnet_data_request * rp = (const struct allnet_data_request *)
       ALLNET_DATA_START (ah, ah->transport, size);
     int wanted = sizeof (struct allnet_data_request);
+    if (wanted > size) {
+      if (error_desc != NULL) *error_desc = "data request too small";
+printf ("got data request of size %d, min %d\n", size, wanted);
+      return 0;
+    }
+    if (rp->dst_bits_power_two > 16) {  /* size doesn't fit in an ALLNET_MTU */
+      if (error_desc != NULL) *error_desc = "data request dst > 16";
+      return 0;
+    }
+    if (rp->src_bits_power_two > 16) {  /* size doesn't fit in an ALLNET_MTU */
+      if (error_desc != NULL) *error_desc = "data request src > 16";
+      return 0;
+    }
+    if (rp->mid_bits_power_two > 16) {  /* size doesn't fit in an ALLNET_MTU */
+      if (error_desc != NULL) *error_desc = "data request mid > 16";
+      return 0;
+    }
 /* add 6 (rather than 7) so that if power_two is 0, we add 0 bytes
  * for that bitmap */
     wanted += (p2 (rp->dst_bits_power_two) + 6) / 8;
@@ -1764,9 +1800,11 @@ printf ("time to crash %d\n", 1000 / ah->version);
     wanted += (p2 (rp->mid_bits_power_two) + 6) / 8;
     if (wanted > size) {
       if (error_desc != NULL) *error_desc = "data request too small";
+/*
 printf ("got data request of size %d, expected %d (%d, %d, %d)\n",
 size, wanted, rp->dst_bits_power_two, rp->src_bits_power_two,
 rp->mid_bits_power_two);
+*/
       return 0;
     }
   }
