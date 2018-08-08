@@ -362,7 +362,7 @@ Java_org_alnet_allnetandroid_NetworkAPI_getContacts(JNIEnv *env,
 
         int latest_time_received = lastTime(contatcs[i]);
 
-        long last = 0;
+        long last = latest_time_received;
         if (latest_time_received > 0) {
             last = latest_time_received + ALLNET_Y2K_SECONDS_IN_UNIX;
         }

@@ -3,7 +3,6 @@ package org.alnet.allnetandroid
 import org.alnet.allnetandroid.model.ContactModel
 import org.alnet.allnetandroid.model.MSG_MISSED
 import org.alnet.allnetandroid.model.MessageModel
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -77,7 +76,7 @@ object NetworkAPI{
     }
 
     fun callbackContacts(contact: String, time: Long){
-        val formatted = formatDate(time)
+        val formatted = Date(time*1000L).toDateString()
         contacts.add(ContactModel(contact, formatted, 1))
         contacts.sortedByDescending { it.lastMessage }
         listener?.listContactsUpdated()
@@ -89,7 +88,7 @@ object NetworkAPI{
     }
 
     fun callbackMessages(message: String, type: Int, time: Long, acked: Int, prevMissing: Int){
-        val formatted = formatDate(time)
+        val formatted = Date(time*1000L).toDateString()
         messages.add(MessageModel(message,type, formatted, acked, prevMissing))
         checkMissingMessages()
         listener?.listMsgUpdated()
@@ -161,13 +160,6 @@ object NetworkAPI{
             //todo notification
         }
     }
-
-    private fun formatDate(time: Long): String{
-        val formatter = SimpleDateFormat("MMM dd, yyyy 'at' HH:mm:ss", Locale.getDefault())
-        val current = Date(time*1000L)
-        return formatter.format(current)
-    }
-
 
     external fun addToGroup(group: String, contact: String)
     external fun removeFromGroup(group: String, contact: String)

@@ -11,6 +11,7 @@ import org.alnet.allnetandroid.inflate
 import org.alnet.allnetandroid.model.*
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
+import org.alnet.allnetandroid.toDate
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -67,8 +68,7 @@ class MessageAdapter(private val messages: List<MessageModel>): RecyclerView.Ada
 
                 val SECONDS_PER_DAY = (24 * 60 * 60).toDouble()
 
-                val formatter = SimpleDateFormat("MMM dd, yyyy 'at' HH:mm:ss", Locale.getDefault())
-                val date = formatter.parse(messageModel.date).time
+                val date = messageModel.date.toDate().time
                 val dateNow = Date().time
                 val elapsed = TimeUnit.DAYS.convert(dateNow - date, TimeUnit.MILLISECONDS)
 

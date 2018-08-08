@@ -11,7 +11,7 @@ import org.alnet.allnetandroid.R
 import org.alnet.allnetandroid.adapters.MessageAdapter
 import org.alnet.allnetandroid.model.MSG_TYPE_SENT
 import org.alnet.allnetandroid.model.MessageModel
-import java.text.SimpleDateFormat
+import org.alnet.allnetandroid.toDateString
 import java.util.*
 
 class MessageActivity : AppCompatActivity(), INetwork {
@@ -39,9 +39,7 @@ class MessageActivity : AppCompatActivity(), INetwork {
         val msg = etText!!.text.toString()
         NetworkAPI.sendMessage(msg, NetworkAPI.contact!!)
         etText.text.clear()
-        val formatter = SimpleDateFormat("MMM dd, yyyy 'at' HH:mm:ss", Locale.getDefault())
-        val current = Date()
-        NetworkAPI.messages.add(MessageModel(msg, MSG_TYPE_SENT, formatter.format(current), 0, 0))
+        NetworkAPI.messages.add(MessageModel(msg, MSG_TYPE_SENT, Date().toDateString(), 0, 0))
         updateUI()
     }
 
