@@ -67,13 +67,15 @@ class MessageAdapter(private val messages: List<MessageModel>): RecyclerView.Ada
 
                 val date = messageModel.date.toDate().time
                 val dateNow = Date().time
-                val elapsed = TimeUnit.DAYS.convert(dateNow - date, TimeUnit.MILLISECONDS)
+                val seconds = dateNow - date
+                val elapsed = TimeUnit.MILLISECONDS.toSeconds(seconds)
 
                 if (elapsed < SECONDS_PER_DAY) {
                     fractionOfDay = elapsed / SECONDS_PER_DAY
                 }
+                val redValue = (255*fractionOfDay).toInt()
                 val myGrad = itemView.background as GradientDrawable
-                myGrad.setStroke(5, Color.rgb((255*fractionOfDay).toInt(),255,255))
+                myGrad.setStroke(5, Color.rgb( redValue,255,255))
             }
             itemView.tvMessage.text = messageModel.message
             itemView.tvDate.text = messageModel.date

@@ -8,9 +8,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ce6dfec1-d9c0-423f-ab9f-8ac34d14ef6a" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/NetworkAPI.kt" afterPath="$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/NetworkAPI.kt" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/adapters/MessageAdapter.kt" afterPath="$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/adapters/MessageAdapter.kt" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/native/CHelper.c" afterPath="$PROJECT_DIR$/app/src/main/native/CHelper.c" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -43,11 +41,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="NetworkAPI.kt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="NetworkAPI.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/NetworkAPI.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="91" column="0" lean-forward="true" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
+            <state relative-caret-position="86">
+              <caret line="79" column="0" lean-forward="false" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -70,6 +68,16 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="435">
               <caret line="41" column="23" lean-forward="false" selection-start-line="41" selection-start-column="23" selection-end-line="41" selection-end-column="23" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MessageAdapter.kt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/adapters/MessageAdapter.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="322">
+              <caret line="76" column="0" lean-forward="false" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -2318,11 +2326,11 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/message_item_received.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/activities/MessageActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/Extensions.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/adapters/MessageAdapter.kt" />
         <option value="$PROJECT_DIR$/app/src/main/native/CHelper.c" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/model/ContactModel.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/model/MessageModel.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/NetworkAPI.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/adapters/MessageAdapter.kt" />
       </list>
     </option>
   </component>
@@ -2800,7 +2808,16 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="111" />
+      <breakpoints>
+        <breakpoint enabled="true" type="OCSymbolicBreakpointType">
+          <properties>
+            <option name="moduleName" value="libart.so" />
+            <option name="symbolPattern" value="art_sigsegv_fault" />
+          </properties>
+          <option name="timeStamp" value="119" />
+        </breakpoint>
+      </breakpoints>
+      <option name="time" value="120" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -3113,16 +3130,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/adapters/MessageAdapter.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding>
-            <element signature="e#42#490#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-27/java/util/ArrayList.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="133">
@@ -3149,14 +3156,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/activities/MessageActivity.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="41" column="23" lean-forward="false" selection-start-line="41" selection-start-column="23" selection-end-line="41" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/native/CHelper.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="218">
@@ -3175,8 +3174,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/NetworkAPI.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="91" column="0" lean-forward="true" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
+        <state relative-caret-position="86">
+          <caret line="79" column="0" lean-forward="false" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/activities/MessageActivity.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="41" column="23" lean-forward="false" selection-start-line="41" selection-start-column="23" selection-end-line="41" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/adapters/MessageAdapter.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="76" column="0" lean-forward="false" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
           <folding />
         </state>
       </provider>
