@@ -66,19 +66,22 @@ object NetworkAPI{
     fun checkMissingMessages(){
         val missingMessages = messages.filter{it.prevMissing > 0}
         for (msg in missingMessages) {
-            var msgModel = MessageModel(
+            val msgModel = MessageModel(
                     "${msg.prevMissing} message${
             if (msg.prevMissing == 1) "" else "s"} missing", MSG_MISSED,
-                    "", msg.message_has_been_acked,
+                    msg.date, msg.message_has_been_acked,
                     0)
             messages.add(missingMessages.indexOf(msg) + 1, msgModel)
+
         }
+        messages.sortBy { it.date.toDate() }
+        listener?.listMsgUpdated()
     }
 
     fun callbackContacts(contact: String, time: Long){
         val formatted = Date(time*1000L).toDateString()
         contacts.add(ContactModel(contact, formatted, 1))
-        contacts.sortedByDescending { it.lastMessage }
+        contacts.sortByDescending { it.lastMessage.toDate() }
         listener?.listContactsUpdated()
     }
 
@@ -91,6 +94,7 @@ object NetworkAPI{
         val formatted = Date(time*1000L).toDateString()
         messages.add(MessageModel(message,type, formatted, acked, prevMissing))
         checkMissingMessages()
+        messages.sortBy { it.date.toDate() }
         listener?.listMsgUpdated()
     }
 
