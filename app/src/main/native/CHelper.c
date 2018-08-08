@@ -362,7 +362,7 @@ Java_org_alnet_allnetandroid_NetworkAPI_getContacts(JNIEnv *env,
 
         int latest_time_received = lastTime(contatcs[i]);
 
-        long last = latest_time_received;
+        jlong last = latest_time_received;
         if (latest_time_received > 0) {
             last = latest_time_received + ALLNET_Y2K_SECONDS_IN_UNIX;
         }
@@ -413,8 +413,8 @@ Java_org_alnet_allnetandroid_NetworkAPI_getMessages(JNIEnv *env, jobject instanc
 
             long time = mi.time + ALLNET_Y2K_SECONDS_IN_UNIX;
 
-
-            (*env)->CallVoidMethod(env, g_obj , methodid, string, mi.msg_type, time,
+            jlong  timeLong  = time;
+            (*env)->CallVoidMethod(env, g_obj , methodid, string, mi.msg_type, timeLong,
                                    mi.message_has_been_acked, mi.prev_missing);
 
         }

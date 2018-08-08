@@ -1,6 +1,5 @@
 package org.alnet.allnetandroid.adapters
 
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -10,9 +9,7 @@ import org.alnet.allnetandroid.R
 import org.alnet.allnetandroid.inflate
 import org.alnet.allnetandroid.model.*
 import android.graphics.drawable.GradientDrawable
-import android.os.Build
 import org.alnet.allnetandroid.toDate
-import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
