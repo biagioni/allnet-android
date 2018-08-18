@@ -18,16 +18,22 @@ import android.app.PendingIntent
 import android.content.Context.NOTIFICATION_SERVICE
 import android.app.NotificationManager
 import android.content.Context
+import android.app.NotificationChannel
+import android.os.Build
+
+
 
 
 class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListener {
 
     var settings = false
+    val CHANNEL_ID = "mynotifications"
     private var mRecyclerView: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        createNotificationChannel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -84,6 +90,22 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
         }
     }
 
+    private fun createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "notification"
+            val description = "messages"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance)
+            channel.description = description
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            val notificationManager = activity!!.getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
     //-----------Adapter delegation----------------------
 
     override fun onclick(contact: ContactModel) {
@@ -110,11 +132,13 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
         val emptyIntent = Intent()
         val pendingIntent = PendingIntent.getActivity(context, 0,
                 emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-        val mBuilder = NotificationCompat.Builder(context)
+        val mBuilder = NotificationCompat.Builder(context!!, CHANNEL_ID)
                 .setContentTitle(contact)
                 .setSmallIcon(R.drawable.ic_stat_name)
                 .setContentText(message)
                 .setContentIntent(pendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true)
         val notificationManager = activity!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(1, mBuilder.build())
     }

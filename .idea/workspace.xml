@@ -7,27 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce6dfec1-d9c0-423f-ab9f-8ac34d14ef6a" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_stat_name.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_stat_name.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_stat_name.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_stat_name.png" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/ad.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/ad.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/astart.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/astart.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/abc.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/abc.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/mgmt.h" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/mgmt.h" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/pcache.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/pcache.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/pcache.h" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/pcache.h" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/sockets.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/sockets.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/sockets.h" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/sockets.h" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/trace_util.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/trace_util.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/util.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/util.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/lib/util.h" afterPath="$PROJECT_DIR$/app/src/main/cfiles/lib/util.h" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/xchat/gui_respond.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/xchat/gui_respond.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/cfiles/xchat/xchat_term.c" afterPath="$PROJECT_DIR$/app/src/main/cfiles/xchat/xchat_term.c" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/NetworkAPI.kt" afterPath="$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/NetworkAPI.kt" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/activities/TabBarActivity.kt" afterPath="$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/activities/TabBarActivity.kt" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/fragments/ContactListFragment.kt" afterPath="$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/fragments/ContactListFragment.kt" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -84,12 +64,12 @@
       <file leaf-file-name="ContactListFragment.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/fragments/ContactListFragment.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="394">
-              <caret line="110" column="65" lean-forward="false" selection-start-line="110" selection-start-column="65" selection-end-line="110" selection-end-column="65" />
+            <state relative-caret-position="257">
+              <caret line="134" column="2" lean-forward="false" selection-start-line="134" selection-start-column="2" selection-end-line="134" selection-end-column="2" />
               <folding>
-                <element signature="e#44#784#0" expanded="true" />
-                <element signature="e#2103#2127#0" expanded="true" />
-                <element signature="e#2413#2437#0" expanded="true" />
+                <element signature="e#44#847#0" expanded="true" />
+                <element signature="e#2243#2267#0" expanded="true" />
+                <element signature="e#2553#2577#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -2579,7 +2559,7 @@
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
     <property name="settings.editor.selected.configurable" value="android.sdk-updates" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="device.picker.selection" value="E1MGA2E7B1610530" />
+    <property name="device.picker.selection" value="Nexus_5X_API_27_2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="android.project.structure.last.selected" value="app" />
     <property name="android.project.structure.proportion" value="0.15" />
@@ -2825,6 +2805,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="45" y="24" width="1634" height="989" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -2833,7 +2814,7 @@
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.6017897" sideWeight="0.50753766" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32997763" sideWeight="0.4924623" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32997763" sideWeight="0.4924623" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32997763" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32997763" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Flutter Outline" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -2890,14 +2871,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="11" column="20" lean-forward="true" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="69" lean-forward="false" selection-start-line="20" selection-start-column="69" selection-end-line="20" selection-end-column="69" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3242,14 +3215,22 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="20" column="69" lean-forward="false" selection-start-line="20" selection-start-column="69" selection-end-line="20" selection-end-column="69" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/org/alnet/allnetandroid/fragments/ContactListFragment.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="394">
-          <caret line="110" column="65" lean-forward="false" selection-start-line="110" selection-start-column="65" selection-end-line="110" selection-end-column="65" />
+        <state relative-caret-position="257">
+          <caret line="134" column="2" lean-forward="false" selection-start-line="134" selection-start-column="2" selection-end-line="134" selection-end-column="2" />
           <folding>
-            <element signature="e#44#784#0" expanded="true" />
-            <element signature="e#2103#2127#0" expanded="true" />
-            <element signature="e#2413#2437#0" expanded="true" />
+            <element signature="e#44#847#0" expanded="true" />
+            <element signature="e#2243#2267#0" expanded="true" />
+            <element signature="e#2553#2577#0" expanded="true" />
           </folding>
         </state>
       </provider>
