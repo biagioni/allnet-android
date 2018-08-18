@@ -4,6 +4,7 @@ package org.alnet.allnetandroid.fragments
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.NotificationCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
@@ -13,6 +14,10 @@ import org.alnet.allnetandroid.activities.MessageActivity
 import org.alnet.allnetandroid.activities.SettingsActivity
 import org.alnet.allnetandroid.adapters.ContactAdapter
 import org.alnet.allnetandroid.model.ContactModel
+import android.app.PendingIntent
+import android.content.Context.NOTIFICATION_SERVICE
+import android.app.NotificationManager
+import android.content.Context
 
 
 class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListener {
@@ -100,8 +105,18 @@ class ContactListFragment : Fragment(), INetwork, ContactAdapter.ItemClickListen
         updateUI(NetworkAPI.contacts)
     }
 
-    override fun newMsgReceived(contact: String) {
+    override fun newMsgReceived(contact: String, message: String) {
         updateUI(NetworkAPI.contacts)
+        val emptyIntent = Intent()
+        val pendingIntent = PendingIntent.getActivity(context, 0,
+                emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val mBuilder = NotificationCompat.Builder(context)
+                .setContentTitle(contact)
+                .setSmallIcon(R.drawable.ic_stat_name)
+                .setContentText(message)
+                .setContentIntent(pendingIntent)
+        val notificationManager = activity!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(1, mBuilder.build())
     }
 
     override fun listHiddenContactsUpdated() {

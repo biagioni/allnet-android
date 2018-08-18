@@ -18,7 +18,7 @@ interface INetwork {
     fun listGroupUpdated(){}
     fun listMemberUpdated(){}
 
-    fun newMsgReceived(contact: String){}
+    fun newMsgReceived(contact: String, message: String){}
     fun generatedRandomKey(key: String){}
     fun keyGenerated(contact: String){}
     fun keyExchanged(contact: String){}
@@ -117,8 +117,12 @@ object NetworkAPI{
         listener?.generatedRandomKey(key)
     }
 
-    fun callbackKeyGenerated(contact: String){
-        listener?.keyGenerated(contact)
+    fun callbackKeyGenerated(contact: String?){
+        if (contact != null) {
+            listener?.keyGenerated(contact)
+        }else{
+            listener?.keyGenerated("")
+        }
     }
 
     fun callbackKeyExchanged(contact: String){
@@ -156,12 +160,11 @@ object NetworkAPI{
                 listMessages()
             }else {
                 unreadMessages.add(contact)
-                listener?.newMsgReceived(contact)
+                listener?.newMsgReceived(contact, message)
             }
         }else{
             unreadMessages.add(contact)
-            listener?.newMsgReceived(contact)
-            //todo notification
+            listener?.newMsgReceived(contact, message)
         }
     }
 
