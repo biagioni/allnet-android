@@ -32,9 +32,9 @@
 #include "lib/allnet_log.h"
 #include "lib/packet.h"
 #include "lib/configfiles.h"
-#include "lib/allnet_queue.h"
 #include "lib/ai.h"
 #include "lib/pcache.h"
+#include "lib/routing.h"
 
 extern void allnet_daemon_main (void);
 #ifdef ALLNET_USE_FORK  /* start a keyd process */
@@ -289,6 +289,7 @@ static void stop_all_on_signal (int signal)
     }
     debug_close (fd, "stop_all_on_signal");
     /* deleting the pid file keeps others from doing what we are doing */
+    close (fd);
     unlink (fname);
     /* now stop all the other processes */
     int i;
@@ -306,6 +307,7 @@ static void stop_all_on_signal (int signal)
 /* save whatever state needs saving, then stop everything */
 static void save_state (int signal)
 {
+  routing_save_peers ();
   pcache_write ();
   exit (0);
 }
@@ -415,6 +417,7 @@ static void my_call1 (char * argv, int alen, char * program,
       printf ("pthread_create failed for %s\n", program);
       exit (1);
     }
+    pthread_detach (tap->id);
 #endif /* ALLNET_USE_FORK */
   }
   /* parent, not much to do */

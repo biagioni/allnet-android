@@ -63,9 +63,11 @@ struct socket_set * debug_copy_socket_set (const struct socket_set * s)
   for (si = 0; si < s->num_sockets; si++) {
     na += s->sockets [si].num_addrs;
   }
-  char * p = malloc (sizeof (struct socket_set) +
-                     s->num_sockets * sizeof (struct socket_address_set) +
-                     na * sizeof (struct socket_address_validity));
+  char * p = malloc_or_fail (sizeof (struct socket_set) +
+                             s->num_sockets
+                                * sizeof (struct socket_address_set) +
+                             na * sizeof (struct socket_address_validity),
+                             "debug_copy_socket_set");
   struct socket_set * res = (struct socket_set *) p;
   struct socket_address_set * sasp = (struct socket_address_set *)
     (p + sizeof (struct socket_set));
@@ -118,13 +120,17 @@ void check_sav (struct socket_address_validity * sav, const char * desc)
   }
 }
 
-static char * add_priority (const char * message, int msize, unsigned int p)
+static void add_priority (const char * message, int msize, unsigned int p,
+                          char * buffer, int bsize)
 {
   int new_size = msize + 2;
-  char * result = malloc_or_fail (new_size, "add_priority");
-  memcpy (result, message, msize);
-  writeb16 (result + msize, p);
-  return result;
+  if (new_size > bsize) {
+    printf ("add_priority error: new size %d = %d + 2 > buffer size %d\n",
+            new_size, msize, bsize);
+    exit (1);
+  }
+  memcpy (buffer, message, msize);
+  writeb16 (buffer + msize, p);
 }
 
 static int socket_sock_loop_locked (struct socket_set * s,
@@ -359,8 +365,7 @@ static int make_fdset (struct socket_set * s, fd_set * set)
 
 static void update_read (struct sockaddr_storage sas, socklen_t alen,
                          struct socket_address_set * sock,
-                         long long int rcvd_time,
-                         const char * message, int msize, int auth,
+                         long long int rcvd_time, int auth,
                          struct socket_address_validity ** savp,
                          int * is_new, int * recv_limit_reached)
 {
@@ -391,13 +396,12 @@ static struct socket_read_result
   record_message (struct socket_set * s, long long int rcvd_time,
                   struct socket_address_set * sock,
                   struct sockaddr_storage sas, socklen_t alen,
-                  const char * buffer, int rcvd, int auth)
+                  char * buffer, int rcvd, int auth)
 {
   int is_local = sock->is_local;
   int delta = (is_local ? 2 : 0);    /* local packets have priority also */
   assert (rcvd >= ((ssize_t) (ALLNET_HEADER_SIZE + delta)));
   int msize = rcvd - delta;
-  char * message = memcpy_malloc (buffer, msize, "sockets/record_message");
   int priority = (is_local ? readb16 (buffer + msize) : 1);
   int is_new = 0;
   int recv_limit_reached = 0;
@@ -411,11 +415,11 @@ static struct socket_read_result
     alen = sizeof (struct sockaddr_ll);
   }
 #endif /* ALLNET_NETPACKET_SUPPORT */
-  update_read (sas, alen, sock, rcvd_time, message, msize, auth,
+  update_read (sas, alen, sock, rcvd_time, auth,
                &sav, &is_new, &recv_limit_reached);
 if (! is_new) check_sav (sav, "update_read result");
   struct socket_read_result r =
-    { .success = 1, .message = message, .msize = msize,
+    { .success = 1, .message = buffer, .msize = msize,
       .priority = priority, .sock = sock, .alen = alen,
       .socket_address_is_new = is_new, .sav = sav,
       .recv_limit_reached = recv_limit_reached };
@@ -429,7 +433,7 @@ if (! is_new) check_sav (r.sav, "record_message result");
 /* returns the max parameter to pass to select */
 /* called with the mutex locked, unlocks it before returning */
 static struct socket_read_result
-  get_message (struct socket_set * s, fd_set * set,
+  get_message (struct socket_set * s, char * buffer, fd_set * set,
                long long int rcvd_time,
                struct socket_read_result result)  /* result init'd by caller */
 {
@@ -440,12 +444,11 @@ static struct socket_read_result
       struct sockaddr_storage sas;
       struct sockaddr * sap = (struct sockaddr *) (&sas);
       socklen_t alen = sizeof (sas);
-      char buffer [ALLNET_MTU + 2];  /* + 2 needed for local sockets */
-      ssize_t rcvd = recvfrom (sock->sockfd, buffer, sizeof (buffer),
+      ssize_t rcvd = recvfrom (sock->sockfd, buffer, SOCKET_READ_MIN_BUFFER,
                                MSG_DONTWAIT, sap, &alen);
       /* all packets must have a min header, local packets also have priority */
       int min = ALLNET_HEADER_SIZE + ((sock->is_local) ? 2 : 0);
-      if ((rcvd >= (ssize_t) min) && (rcvd <= sizeof (buffer))) {
+      if ((rcvd >= (ssize_t) min) && (rcvd <= SOCKET_READ_MIN_BUFFER)) {
         int auth = ((sock->is_global_v4 || sock->is_global_v6) ?
                     is_auth_keepalive (sas, s->random_secret, 
                                        sizeof (s->random_secret), s->counter,
@@ -467,8 +470,9 @@ static struct socket_read_result
   return result;
 }
 
+/* the buffer must have length at least SOCKET_READ_MIN_BUFFER = ALLNET_MTU+2 */
 struct socket_read_result socket_read (struct socket_set * s,
-                                       int timeout,
+                                       char * buffer, int timeout,
                                        long long int rcvd_time)
 {
   struct socket_read_result r = { .success = 0, .message = NULL, .msize = 0,
@@ -485,7 +489,7 @@ struct socket_read_result socket_read (struct socket_set * s,
     struct timeval tv = { .tv_sec = 0, .tv_usec = 10000 };
     int result = select (max_pipe, &receiving, NULL, NULL, &tv);
     if (result > 0)      /* found something, get_message unlocks global_mutex */
-      return get_message (s, &receiving, rcvd_time, r);
+      return get_message (s, buffer, &receiving, rcvd_time, r);
     unlock ("socket_read");
     /* sleep a little while so others have a chance to acquire the lock.
      * otherwise, linux will not grant the lock to others until it
@@ -621,8 +625,10 @@ int socket_send_local (struct socket_set * s, const char * message, int msize,
                        unsigned int priority, unsigned long long int sent_time,
                        struct sockaddr_storage except_to, socklen_t alen)
 {
+  char buffer [ALLNET_MTU + 2];
+  add_priority (message, msize, priority, buffer, sizeof (buffer));
   struct socket_send_data ssd =
-    { .message = add_priority (message, msize, priority), .msize = msize + 2,
+    { .message = buffer, .msize = msize + 2,
       .sent_time = sent_time, .alen = alen, .local_not_remote = 1, .error = 0 };
   memset (&(ssd.except_to), 0, sizeof (ssd.except_to));
   if ((alen > 0) && (alen < sizeof (except_to)))
@@ -683,16 +689,14 @@ int socket_send_to (const char * message, int msize, unsigned int priority,
 {
 check_sav (addr, "socket_send_to");
   lock ("socket_send_to");
-  char * allocated = NULL;  /* local: copy message, then free after sending */
+  char buffer [ALLNET_MTU + 2]; /* local: copy message to the buffer */
   if (sock->is_local) {
-    allocated = add_priority (message, msize, priority);
-    message = allocated;
+    add_priority (message, msize, priority, buffer, sizeof (buffer));
+    message = buffer;
     msize += 2;
   }
   int result = send_on_socket (message, msize, sent_time, sock->sockfd, addr,
                                "socket_send_to", NULL, -1, -1);
-  if (allocated != NULL)
-    free (allocated); 
   struct dec_send_limit_data dsld = { .alen = addr->alen };
   memcpy (&(dsld.addr), &(addr->addr), sizeof (addr->addr));
   socket_addr_loop_locked (s, socket_dec_send_limit, &dsld);
@@ -734,10 +738,10 @@ int socket_send_keepalives (struct socket_set * s, long long int current_time,
   int count = 0;
   unsigned int msize;
   const char * message = keepalive_packet (&msize); /* small, w/o auth */
-  char * message_with_priority = NULL;
+  char message_with_priority [ALLNET_MTU + 2];
   if (local)
-    message_with_priority =
-      add_priority (message, msize, ALLNET_PRIORITY_EPSILON);
+    add_priority (message, msize, ALLNET_PRIORITY_EPSILON,
+                  message_with_priority, sizeof (message_with_priority));
   int msize_local = msize + 2;
   int si;
   for (si = 0; si < s->num_sockets; si++) {
@@ -752,30 +756,19 @@ int socket_send_keepalives (struct socket_set * s, long long int current_time,
     for (ai = 0; ai < sas->num_addrs; ai++) {
       struct socket_address_validity * sav = &(sas->send_addrs [ai]);
 check_sav (sav, "socket_send_keepalives");
-/*    long long int delta = ((sas->is_local) ? local : remote);
-      if (sav->alive_sent + delta >= current_time) {
-*/
-      char * auth_msg = NULL;
+      char auth_msg [ALLNET_MTU];
       if (sas->is_global_v4 || sas->is_global_v6) {
-        unsigned int asize;
-        auth_msg = keepalive_malloc (sav->addr, s->random_secret,
-                                     sizeof (s->random_secret), s->counter,
-                                     sav->keepalive_auth, &asize);
+        size = keepalive_auth (auth_msg, sizeof (auth_msg),
+                               sav->addr, s->random_secret,
+                               sizeof (s->random_secret), s->counter,
+                               sav->keepalive_auth);
         msg = auth_msg;
-        size = asize;
       }
       if (send_on_socket (msg, size, current_time, sas->sockfd, sav,
                           "socket_send_keepalives", s, si, ai))
         count++;
-      if (auth_msg != NULL)
-        free (auth_msg);
-/*
-      }
-*/
     }
   }
-  if (message_with_priority != NULL)
-    free (message_with_priority);
   return count;
 }
 

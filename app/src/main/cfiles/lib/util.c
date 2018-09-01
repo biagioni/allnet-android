@@ -343,13 +343,11 @@ static int mgmt_to_string (int mtype, const char * hp, unsigned int hsize,
     break;
   case ALLNET_MGMT_KEEPALIVE:
     r += snprintf (to + r, minz (itsize, r), "keepalive");
-    struct allnet_header * allnet_hp = (struct allnet_header *) hp;
-    int ka_hsize = ALLNET_MGMT_HEADER_SIZE (allnet_hp->transport);
-    if (itsize >= ka_hsize + KEEPALIVE_AUTHENTICATION_SIZE)
-      r += buffer_to_string (hp + ka_hsize, KEEPALIVE_AUTHENTICATION_SIZE,
+    if (hsize >= KEEPALIVE_AUTHENTICATION_SIZE)
+      r += buffer_to_string (hp, KEEPALIVE_AUTHENTICATION_SIZE,
                              ", sender auth", 20, 0, to + r, minz (itsize, r));
-    if (itsize >= ka_hsize + 2 * KEEPALIVE_AUTHENTICATION_SIZE)
-      r += buffer_to_string (hp + ka_hsize + KEEPALIVE_AUTHENTICATION_SIZE,
+    if (hsize >= 2 * KEEPALIVE_AUTHENTICATION_SIZE)
+      r += buffer_to_string (hp + KEEPALIVE_AUTHENTICATION_SIZE,
                              KEEPALIVE_AUTHENTICATION_SIZE, ", receiver auth",
                              20, 0, to + r, minz (itsize, r));
     break;
@@ -486,16 +484,15 @@ void packet_to_string (const char * buffer, unsigned int bsize,
       off += snprintf (to + off, minz (itsize, off), " do-not-cache");
   }
   if (hp->message_type == ALLNET_TYPE_MGMT) {
-    if (bsize < (ALLNET_MGMT_HEADER_SIZE(t))) {
-      off += snprintf (to + off, minz (itsize, off), " mgmt size %d, need %zd", 
-                       bsize, ALLNET_MGMT_HEADER_SIZE(t));
+    int data_offset = ALLNET_MGMT_HEADER_SIZE (t);
+    if (bsize < data_offset) {
+      off += snprintf (to + off, minz (itsize, off), " mgmt size %d, need %d", 
+                       bsize, data_offset);
     } else {
       struct allnet_mgmt_header * mp =
         (struct allnet_mgmt_header *) (buffer + ALLNET_SIZE(t));
-      const char * next = buffer + ALLNET_MGMT_HEADER_SIZE(t);
-      unsigned int nsize = 0;
-      if (bsize > (ALLNET_MGMT_HEADER_SIZE(t)))
-        nsize = bsize - ALLNET_MGMT_HEADER_SIZE(t);
+      const char * next = buffer + data_offset;
+      unsigned int nsize = minz (bsize, data_offset);
       off += mgmt_to_string (mp->mgmt_type, next, nsize,
                              to + off, minz (itsize, off));
     }
@@ -523,10 +520,16 @@ void packet_to_string (const char * buffer, unsigned int bsize,
         off += snprintf (to + off, minz (itsize, off), " = %u acks + %u bytes",
                          num_acks, dsize - num_acks * MESSAGE_ID_SIZE);
       unsigned int i;
-      for (i = 0; i < num_acks; i++)
-        off += buffer_to_string (buffer + ALLNET_SIZE (hp->transport) +
-                                 i * MESSAGE_ID_SIZE, MESSAGE_ID_SIZE,
+      for (i = 0; i < num_acks; i++) {
+        const char * ackp = buffer + ALLNET_SIZE (hp->transport) +
+                            i * MESSAGE_ID_SIZE;
+        off += buffer_to_string (ackp, MESSAGE_ID_SIZE,
                                  ", ", 5, 0, to + off, minz (itsize, off));
+        char hash [MESSAGE_ID_SIZE];
+        sha512_bytes (ackp, MESSAGE_ID_SIZE, hash, sizeof (hash));
+        off += buffer_to_string (hash, MESSAGE_ID_SIZE,
+                                 " -> ", 5, 0, to + off, minz (itsize, off));
+      }
     } else if (hp->message_type == ALLNET_TYPE_DATA_REQ) {
       struct allnet_data_request * adrp =
         (struct allnet_data_request *) (buffer + (ALLNET_SIZE (hp->transport)));
@@ -669,14 +672,16 @@ const char * keepalive_packet (unsigned int * size)
   return result;
 }
 
-/* return a larger and malloc'd keepalive packet, computing the
+/* return a larger keepalive packet in the given buffer, computing the
  * sender authentication and filling in the receiver authentication
  * (must be of size KEEPALIVE_AUTHENTICATION_SIZE), or
  * if receiver_auth is NULL or all zeros, the packet is shorter
- * also stores into size the size to send */
-char * keepalive_malloc (struct sockaddr_storage addr,
-                         const char * secret, int slen, long long int counter,
-                         const char * receiver_auth, unsigned int * size)
+ * returns the size to send, always <= bsize (0 for errors) */
+int keepalive_auth (char * buffer, int bsize,
+                    struct sockaddr_storage addr,
+                    const char * secret, int slen,
+                    long long int counter,
+                    const char * receiver_auth)
 {
   unsigned int hsize = 0;
   const char * header = keepalive_packet (&hsize);  /* header is from above */
@@ -687,15 +692,17 @@ char * keepalive_malloc (struct sockaddr_storage addr,
     larger = 1;
   if (larger)
     rsize += KEEPALIVE_AUTHENTICATION_SIZE;
-  char * result = malloc_or_fail (rsize, "keepalive_malloc");
-  memcpy (result, header, hsize);
+  if (rsize > bsize) {
+printf ("likely error: keepalive size %d, buffer size %d\n", rsize, bsize);
+    return 0;
+  }
+  memcpy (buffer, header, hsize);
   compute_sender_auth (addr, secret, slen, counter,
-                       result + hsize, KEEPALIVE_AUTHENTICATION_SIZE);
+                       buffer + hsize, KEEPALIVE_AUTHENTICATION_SIZE);
   if (larger)
-    memcpy (result + hsize + KEEPALIVE_AUTHENTICATION_SIZE,
+    memcpy (buffer + hsize + KEEPALIVE_AUTHENTICATION_SIZE,
             receiver_auth, KEEPALIVE_AUTHENTICATION_SIZE);
-  *size = rsize;
-  return result;
+  return rsize;
 }
 
 /* malloc, initialize, and return an ack message for a received packet.
